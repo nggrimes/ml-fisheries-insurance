@@ -527,14 +527,14 @@ temp_filter<-temp_in %>%
 ### top species
 
 
-top_100_species<-pacfin_all5 %>% 
+top_species<-pacfin_all5 %>% 
   filter(spp_code!="Confidential") %>% 
   group_by(spp_code) %>% 
   summarize(total_rev=sum(revenues_usd)) %>% 
   slice_max(total_rev,n=15)
 
 state_tot_rev<-pacfin_all5 %>% 
-  filter(spp_code %in% top_100_species$spp_code) %>% 
+  filter(spp_code %in% top_species$spp_code) %>% 
   group_by(state,spp_code,year) %>% 
   summarize(total_rev=sum(revenues_usd))
 
@@ -542,8 +542,15 @@ ca_tot_rev<-state_tot_rev %>%
   filter(state=="California")
 
 ggplot(ca_tot_rev,aes(x=year,y=total_rev,color=spp_code))+
-  geom_line()
+  geom_line()+
+  viridis::scale_color_viridis(discrete =TRUE)+
+  theme_classic()
 
+load(here::here("data","sst_noaa_dhw_1985-2020.Rdata"))
+
+sst_sf<-sst %>% 
+  st_as_sf(coords=c("longitude","latitude"),crs=4326) %>% 
+  st_intersection()
 
 ### Alaska crap map
 
