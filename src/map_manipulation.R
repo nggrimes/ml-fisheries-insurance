@@ -306,7 +306,7 @@ start="2020-12-01"
 end="2020-12-31"
 
 wind<-griddap(datasetx=file_id,
-             time=c(as.Date(start),as.Date(end)),
+             time=c(start,end),
              latitude=c(30,49.2),
              longitude=c(-115,-130))$data %>% 
   mutate(time = as.Date(stringr::str_remove(time, "T00:00:00Z"))) %>% 
