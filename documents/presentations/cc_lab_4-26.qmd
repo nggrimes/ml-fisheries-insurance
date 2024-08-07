@@ -1,0 +1,656 @@
+---
+title: "Designing index insurance contracts with Machine Learning"
+subtitle: "Costello Lab Meeting"
+author: "Nathaniel Grimes"
+institute: "Bren School of Environmental Science"
+date: last-modified
+format: 
+  revealjs:
+    chalkboard: true
+    slide-number: true
+    show-slide-number: print
+    theme: [default, ucsb.scss]
+    logo: img/bren-logo.png
+editor: visual
+from: markdown+emoji
+---
+
+## Basis Risk is a key impediement to index insurance
+
+**Basis Risk is the risk that the index does not correlate with the actual loss**
+
+- Demand lowers with higher basis risk [(Clarke, 2016)]{.small-text}
+
+    - Not being covered in truly bad states is particularly bad for risk averse contract holders
+
+
+- Tightly correlated weather indices and yield measure reduce basis risk [(Jensen et al., 2014)]{.small-text}
+
+
+## Basis Risk Demonstration
+
+
+```{r}
+library(copula)
+library(tidyverse)
+  
+  multi_perf<-mvdc(copula = normalCopula(param=1,dim=2),
+                     margins=c("norm","norm"),
+                     paramMargins = list(list(mean=0,sd=1),
+                                         list(mean=0,sd=1)))
+  
+   multi_low<-mvdc(copula = normalCopula(param=0.2,dim=2),
+                     margins=c("norm","norm"),
+                     paramMargins = list(list(mean=0,sd=1),
+                                         list(mean=0,sd=1)))
+   
+    multi_med<-mvdc(copula = normalCopula(param=0.8,dim=2),
+                     margins=c("norm","norm"),
+                     paramMargins = list(list(mean=0,sd=1),
+                                         list(mean=0,sd=1)))
+  n=1000
+  set.seed(123)
+  sim_perf<-as.data.frame(rMvdc(n,multi_perf))
+  
+  sim_low<-as.data.frame(rMvdc(n,multi_low))
+  
+  sim_med<-as.data.frame(rMvdc(n,multi_med))
+  
+  colnames(sim_low)=c("z","w")
+  colnames(sim_perf)=c("z","w")
+  colnames(sim_med)=c("z","w")
+  
+  low_plot<-ggplot(sim_low,aes(x=w,y=z))+
+    geom_point(size=2,color="#003660")+
+    scale_y_continuous(breaks=c(-2,-85,0,2),labels=c("-2","ztrig","0","2"),limits=c(-3,3))+
+    scale_x_continuous(breaks=c(-2,-85,0,2),labels=c("-2","wtrig","0","2"),limits=c(-3,3))+
+    theme_bw()+
+    ggtitle("Correlation = 0.2")+
+    theme(axis.title = element_text(size=20))+
+    theme(axis.text = element_text(size=18))+
+    theme(plot.title = element_text(size=22))+
+    annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=3)+
+    annotate("label",x=1.5,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=3)+
+    annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=3)+
+    annotate("label",x=1.5,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=3)+
+    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    labs(x="Weather Shock",y="Revenue Shock")
+  
+  med_plot<-ggplot(sim_med,aes(x=w,y=z))+
+    geom_point(size=2,color="#003660")+
+    scale_y_continuous(breaks=c(-2,-85,0,2),labels=c("-2","ztrig","0","2"),limits=c(-3,3))+
+    scale_x_continuous(breaks=c(-2,-85,0,2),labels=c("-2","wtrig","0","2"),limits=c(-3,3))+
+    theme_bw()+
+    ggtitle("Correlation = 0.8")+
+    theme(axis.title = element_text(size=20))+
+    theme(axis.text = element_text(size=18))+
+    theme(plot.title = element_text(size=22))+
+    annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=3)+
+    annotate("label",x=1.5,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=3)+
+    annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=3)+
+    annotate("label",x=1.5,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=3)+
+    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    labs(x="Weather Shock",y="Revenue Shock")
+  
+  perf_plt<-ggplot(sim_perf,aes(x=w,y=z))+
+    geom_point(size=2,color="#003660")+
+    scale_y_continuous(breaks=c(-2,-85,0,2),labels=c("-2","ztrig","0","2"),limits=c(-3,3))+
+    scale_x_continuous(breaks=c(-2,-85,0,2),labels=c("-2","wtrig","0","2"),limits=c(-3,3))+
+    theme_bw()+
+    ggtitle("Correlation = 1")+
+    theme(axis.title = element_text(size=20))+
+    theme(axis.text = element_text(size=18))+
+    theme(plot.title = element_text(size=22))+
+    annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=3)+
+    annotate("label",x=1.5,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=3)+
+    annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=3)+
+    annotate("label",x=1.5,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=3)+
+    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    labs(x="Weather Shock",y="Revenue Shock")
+  
+  library(patchwork)
+  low_plot+med_plot+perf_plt+plot_layout(axes = "collect")
+```
+
+
+## IBI Agriculture contracts
+
+Classic Payout design:
+
+$$
+\text{Payout} = \beta\max(0, \text{Trigger} - \text{Index})
+$$
+
+::: columns
+
+::: {.column width="50%"}
+
+$\beta$ how much to pay out per unit of loss
+
+  - [Usually comes from an OLS regression]{.small-text}
+  
+  - [Better designed contracts use Quantile Regression (Conradt et al., 2015)]{.small-text}
+  
+:::
+
+::: {.column width="50%"}
+
+$\text{Trigger}$ is the threshold for the payout
+
+  - [Often modeled as the joint distribution of weather and yield $g(w,y)$]{.small-text}
+  
+  - [Then set at strike levels relative to mean yield
+  ($\text{Index}=g^{-1}(\bar{y})$)
+  ]{.small-text}
+    
+$\text{Index}$ is the realized weather value 
+
+:::
+
+:::
+
+## Basis Risk is prevelant in current contracts
+
+- There is no consensus on how much basis risk is acceptable
+
+  - [0.5 seems to be the minimum goal]{.small-text}
+  
+- Livestock mortality has up to 0.9 correlation with indices [(Jensen et al., 2019)]{.small-text}
+
+- Can be as low as 0.071 in California Rangelands [(Keller and Saitone, 2021)]{.small-text}
+
+## Fisheries more problematic than agriculture
+
+No clearly defined $\beta$ or $g(w,x)$
+
+- Fisheries are highly nonlinear
+
+- Dynamic
+
+- More challenging to observe
+
+**The ultimate goal of fishery managers for a century!**
+
+## Machine Learning seeing greater application in both fields
+
+::: columns
+
+::: {.column width="35%"}
+Agriculture: 
+
+- Yield prediction
+
+- Insurance design
+
+- Potential triggers
+
+:::
+
+::: {.column width="65%"}
+
+Fisheries:  [(Gladju et al., 2022)]{.small-text}
+
+- Fishing activity  [(McDonald et al., 2020)]{.small-text}
+
+- Landings patterns  [(Plaza et al., 2018)]{.small-text}
+
+- HABs prediction   [(Wei et al., 2001)]{.small-text}
+
+
+:::
+
+:::
+
+## Releveant Example
+
+```{r}
+knitr::include_graphics("img/ml-salmon.png")
+
+```
+
+
+## Research Questions
+
+1) Can we use machine learning to design index insurance contracts in fisheries?
+
+2) What variables and procedures are most important to feed into the machine learning models?
+
+## Objective Walkthrough
+
+```{r}
+load(here::here("data","complete_data.rda"))
+
+#filter out the squid catch from california
+squid<-ca_complete |> filter(species_code=="MSQD")
+
+# Plot squid revenue over time and show the average revenue
+squid |> ggplot(aes(x=year,y=value_usd))+
+  geom_point(color="#003660",size=4)+
+  geom_hline(yintercept=mean(squid$value_usd),color="#FEBC11",linetype="dashed",linewidth=2.5)+
+  theme_minimal()+
+  labs(x="",y="Revenue (USD)",title="California Squid Revenue Over Time")
+
+
+```
+
+## Objective Walkthrough
+
+```{r}
+
+squid_lb<-squid |> 
+  mutate(low_bound=rolling_avg_revenue*.75) 
+
+s_p<-squid |> 
+  filter(year!=2021) |> 
+  mutate(low_bound=rolling_avg_revenue*.75) |> 
+  ggplot(aes(x=year,y=value_usd))+
+  geom_point(aes(color=collapse_revenue==1),size=4)+
+  geom_line(aes(x=year,y=rolling_avg_revenue),color="#09847A",linewidth=2.5)+
+  geom_line(aes(x=year,y=low_bound),color="#09847A",linetype="dashed",linewidth=2.5)+
+  theme_minimal()+
+  scale_color_manual(values=c("#003660","#FEBC11"),name="",label=c("Non Collapse","Collapse","NA"))+
+  labs(x="",y="Revenue (USD)",title="California Squid Revenue Over Time with 5 year Rolling Average")+
+  xlim(c(1981,2022))
+
+s_p
+```
+
+## Objective Walkthrough
+
+```{r}
+squid_2021<-squid |> 
+  filter(year==2021) |> 
+  mutate(low_bound=rolling_avg_revenue*.75)
+
+  s_p+
+    annotate("text",x=2021,y=4e7,label="?",size=16)+
+    geom_line(aes(x=year,y=low_bound),data=squid_lb,color="#09847A",linetype="dashed",linewidth=2.5)
+  
+```
+
+
+## Environmental Data
+
+::: columns
+
+::: {.column width="50%"}
+
+Sea Surface Temperature (SST) and Wind Speed
+
+  - Spatial Resolution: 1 Degree (can go finer)
+  
+  - Temporal Resolution: Monthly (can go finer)
+  
+:::
+
+::: {.column width="50%"}
+
+El Nino Southern Oscillation (ENSO) and Pacific Decadal Oscillation (PDO)
+
+- Monthly indices
+
+:::
+:::
+
+*Other environmental variables of interest?*
+
+## Fisheries Catch Data
+
+::: columns
+::: {.column width="50%"}
+Using `wcfish` from Free et al. 2022
+
+- All reported fish catch in CA, OR, and WA from 1981-2020
+
+- Monthly catch data for all states and species
+
+- Annual port-complex data for all states and species
+
+:::
+::: {.column width="50%"}
+![](img/free2022.jpg)
+:::
+:::
+
+## Match weather and catch data
+
+::: columns
+
+::: {.column width="50%"}
+
+Oscillation indices are universal
+
+Temperature, wind, and chlorophyll need to be drawn from the same region as the catch data
+
+Ideal world would have environmental data exactly where the fish was caught
+
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+
+load(here::here("data","sf_borders","sb_sst_sf.Rdata"))
+load(here::here("data","sf_borders","cali_sf.Rdata"))
+load(here::here("data","sf_borders","sb_sf.Rdata"))
+load(here::here("data","sf_borders","ca_sst_sf.Rdata"))
+
+library(pals)
+library(tidyverse)
+
+ca_sst_sf |> filter(time=="2019-01-01") |>drop_na() |>  ggplot()+geom_tile(aes(x=lon,y=lat,fill=sst),width=1,height=1)+theme_minimal()+geom_sf(data=cali_sf,fill=NA,size=4,color='black')+scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  labs(x="",y="",title="California Sea Surface Temperature (2019-01-01)")
+
+```
+
+:::
+:::
+
+## Match weather and catch data
+
+::: columns
+
+::: {.column width="50%"}
+
+Oscillation indices are universal
+
+Temperature, wind, and chlorophyll need to be drawn from the same region as the catch data
+
+Ideal world would have environmental data exactly where the fish was caught
+
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+
+sb_sst_sf |> filter(time=="2019-01-01") |> ggplot()+geom_tile(aes(x=lon,y=lat,fill=sst))+theme_minimal()+geom_sf(data=cali_sf,fill=NA,size=1.5)+geom_sf(data=sb_sf,fill=NA,color='grey')+scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  labs(x="",y="",title="Santa Barbara Sea Surface Temperature (2019-01-01)")
+```
+
+:::
+:::
+
+## Data Summary
+
+```{r}
+
+ca_cor<-ca_complete |> 
+  group_by(species_code) |> 
+  summarize(enso_catch=cor(enso,landings_mt,use="complete.obs"),
+            pdo_catch=cor(pdo,landings_mt,use="complete.obs"),
+            amp_catch=cor(amp_sst,landings_mt,use="complete.obs"),
+            temp_catch=cor(sst,landings_mt,use="complete.obs"),
+            wind_catch=cor(amp_wspd,landings_mt,use="complete.obs"),
+            pdo=cor(pdo,value_usd,use="complete.obs"),
+            enso=cor(enso,value_usd,use="complete.obs"),
+            amp=cor(amp_sst,value_usd,use="complete.obs"),
+            wind=cor(amp_wspd,value_usd,use="complete.obs"),
+            temp=cor(sst,value_usd,use="complete.obs"))|> 
+  pivot_longer(!c(species_code),names_to="var",values_to="correlation")
+
+ca_mgmt<-ca_complete |> 
+  group_by(species_code) |> 
+  summarize(mgmt=unique(mgmt_group)) |> 
+  full_join(ca_cor)
+
+# repeat with washington
+wa_cor<-wa_complete |> 
+  group_by(species_code) |> 
+  summarize(enso_catch=cor(enso,landings_mt,use="complete.obs"),
+            pdo_catch=cor(pdo,landings_mt,use="complete.obs"),
+            amp_catch=cor(amp_sst,landings_mt,use="complete.obs"),
+            temp_catch=cor(sst,landings_mt,use="complete.obs"),
+            wind_catch=cor(amp_wspd,landings_mt,use="complete.obs"),
+            pdo=cor(pdo,value_usd,use="complete.obs"),
+            enso=cor(enso,value_usd,use="complete.obs"),
+            amp=cor(amp_sst,value_usd,use="complete.obs"),
+            wind=cor(amp_wspd,value_usd,use="complete.obs"),
+            temp=cor(sst,value_usd,use="complete.obs"))|> 
+  pivot_longer(!c(species_code),names_to="var",values_to="correlation")
+
+wa_mgmt<-wa_complete |> 
+  group_by(species_code) |> 
+  summarize(mgmt=unique(mgmt_group)) |> 
+  full_join(wa_cor)
+
+# repeat with oregon
+or_cor<-or_complete |> 
+  group_by(species_code) |> 
+  summarize(enso_catch=cor(enso,landings_mt,use="complete.obs"),
+            pdo_catch=cor(pdo,landings_mt,use="complete.obs"),
+            amp_catch=cor(amp_sst,landings_mt,use="complete.obs"),
+            temp_catch=cor(sst,landings_mt,use="complete.obs"),
+            wind_catch=cor(amp_wspd,landings_mt,use="complete.obs"),
+            pdo=cor(pdo,value_usd,use="complete.obs"),
+            enso=cor(enso,value_usd,use="complete.obs"),
+            amp=cor(amp_sst,value_usd,use="complete.obs"),
+            wind=cor(amp_wspd,value_usd,use="complete.obs"),
+            temp=cor(sst,value_usd,use="complete.obs"))|> 
+  pivot_longer(!c(species_code),names_to="var",values_to="correlation")
+
+or_mgmt<-or_complete |> 
+  group_by(species_code) |> 
+  summarize(mgmt=unique(mgmt_group)) |> 
+  full_join(or_cor)
+
+
+# create a bar graph of the correlations for each variable with facet_warp with 2 columns
+# ca_cor |> 
+#   ggplot(aes(x=species_code,y=correlation,fill=correlation>0))+
+#   geom_col(stat="identity")+
+#   facet_wrap(~var)+
+#   theme_minimal()+
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# make a heatmap of the correlations for each species on the y-axis
+ca_heat<-ca_mgmt |> 
+  ggplot(aes(x=var,y=species_code,fill=correlation))+
+  geom_tile()+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  scale_fill_gradient2(low="blue",mid="white",high="red",midpoint=0,limits=c(-0.61,0.61),breaks=seq(-0.6,0.6,by=.2),labels=round(seq(-0.6,0.6,by=.2),1))+
+  facet_wrap(~mgmt,scales="free_y")+
+  theme(axis.text.y=element_blank())+
+  labs(y="",x="Environmental Variable",title="Correlation of Environmental Variables with Catch and Value by Species in California")
+
+ca_heat
+
+
+
+```
+
+## Data Summary
+
+```{r}
+or_heat<-or_mgmt |> 
+  ggplot(aes(x=var,y=species_code,fill=correlation))+
+  geom_tile()+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  scale_fill_gradient2(low="blue",mid="white",high="red",midpoint=0,limits=c(-0.61,0.61),breaks=seq(-0.6,0.6,by=.2),labels=round(seq(-0.6,0.6,by=.2),1))+
+  facet_wrap(~mgmt,scales="free_y")+
+  theme(axis.text.y=element_blank())+
+  labs(y="",x="Environmental Variable",title="Correlation of Environmental Variables with Catch and Value by Species in Oregon")
+
+or_heat
+```
+
+## Data Summary
+
+```{r}
+wa_heat<-wa_mgmt |> 
+  ggplot(aes(x=var,y=species_code,fill=correlation))+
+  geom_tile()+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  scale_fill_gradient2(low="blue",mid="white",high="red",midpoint=0,limits=c(-0.61,0.61),breaks=seq(-0.6,0.6,by=.2),labels=round(seq(-0.6,0.6,by=.2),1))+
+  facet_wrap(~mgmt,scales="free_y")+
+  theme(axis.text.y=element_blank())+
+  labs(y="",x="Environmental Variable",title="Correlation of Environmental Variables with Catch and Value by Species in Washington")
+
+wa_heat
+```
+
+## Data Summary
+
+```{r}
+# make histograms of the correlations for california add vertical lines at -0.5 and 0.5
+ca_cor |> 
+  ggplot(aes(x=correlation))+
+  geom_histogram(binwidth=.1,fill="#003660",color="black")+
+  geom_vline(xintercept=c(-0.5,0.5),color="#FEBC11",linewidth=2)+
+  theme_minimal()+
+  labs(x="Correlation",y="Count",title="Histogram of Environmental Correlations with Catch and Value in California")
+
+
+```
+
+## Data Summary
+
+```{r}
+# make histograms of the correlations for oregon add vertical lines at -0.5 and 0.5
+or_cor |> 
+  ggplot(aes(x=correlation))+
+  geom_histogram(binwidth=.1,fill="#003660",color="black")+
+  geom_vline(xintercept=c(-0.5,0.5),color="#FEBC11",linewidth=2)+
+  theme_minimal()+
+  labs(x="Correlation",y="Count",title="Histogram of Environmental Correlations with Catch and Value in Oregon")
+```
+
+## Data Summary
+
+```{r}
+# make histograms of the correlations for washington add vertical lines at -0.5 and 0.5
+
+wa_cor |> 
+  ggplot(aes(x=correlation))+
+  geom_histogram(binwidth=.1,fill="#003660",color="black")+
+  geom_vline(xintercept=c(-0.5,0.5),color="#FEBC11",linewidth=2)+
+  theme_minimal()+
+  labs(x="Correlation",y="Count",title="Histogram of Environmental Correlations with Catch and Value in Washington")
+
+```
+
+## Modelling Framework
+
+::: {.incremental}
+
+1) Gather Data  :white_check_mark:
+
+2) Process data  :white_check_mark:
+
+3) Select Models 
+
+4) Train Models
+
+5) Evaluate Models
+
+6) Tune Model Parameters
+
+:::
+
+## Model Selection
+
+- Insurance is both a regression and classification problem
+
+  - [Regression: How much to pay out]{.small-text}
+  
+  - [Classification: Whether to pay out]{.small-text}
+  
+- Training classification models is tough with unbalanced data
+
+  - [Can use SMOTE or other techniques to balance the data]{.small-text}
+  
+  - With yearly data I only have 40-50 observations per species
+  
+  - Squid example had exactly 10 events in 40 years
+  
+## Model Selection
+
+1. Build a regression model to predict the revenue with environmental variables
+
+2. Train and Tune models with regression evaluators
+
+  - [e.g. RMSE, MAE, R2]{.small-text}
+
+3. Test models ability to predict insurance events
+
+## Model Selection: LM
+
+- Baseline is a simple linear regression with one environmental variable
+
+  - Simple, easily interpretable, and can be used to compare more complex models
+  
+- Random Forest are popular for regression
+
+  - [Suitable for non-linear relationships]{.small-text}
+  
+  - [Can handle interactions]{.small-text}
+
+- Might consider others like XGBoost or Neural Networks
+
+## Preliminary Results: LM
+
+```{r}
+squid_df<-squid |> 
+  select(value_usd,pdo)
+
+squid_lm<-lm(value_usd~pdo,data=squid_df)
+
+squid$lm_pred<-predict(squid_lm,squid_df)
+
+
+s_p+geom_point(data=squid,aes(x=year,y=lm_pred),color="#EF5645",size=4)
+
+
+```
+
+## Preliminary Results: LM
+
+```{r}
+
+squid$classify<-ifelse(squid$lm_pred<squid$rolling_avg_revenue*.75,1,0)
+
+table(squid$classify,squid$collapse_revenue) |> 
+  knitr::kable(col.names=c("Predicted No Collapse","Predicted Collapse"))
+
+
+```
+
+
+
+## Preliminary Results: RF
+
+```{r}
+library(ranger)
+
+squid_rf<-squid |> 
+  select(value_usd,pdo,sst,enso,sst_t1,wspd) |> 
+  drop_na()
+
+  rf_mod<-ranger(value_usd~pdo+sst+enso+sst_t1+wspd,data=squid_rf)
+```
+
+```{r}
+rf_pred<-predict(rf_mod,squid_rf)$predictions
+
+s_p+geom_point(aes(x=seq(1982,2021),y=rf_pred),color="#EF5645",size=4)
+```
+
+## Preliminary Results: RF
+
+```{r}
+classify_rf<-ifelse(rf_pred<squid$rolling_avg_revenue*.75,1,0)
+
+table(classify_rf,squid$collapse_revenue) |> 
+  knitr::kable(col.names=c("Predicted No Collapse","Predicted Collapse"))
+
+
+```
+

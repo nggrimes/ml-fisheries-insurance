@@ -84,7 +84,8 @@ ca_collapse_75<-ca_clean_roll |>
   group_by(species_code) |> 
   mutate(landings_decline=landings_mt/rolling_avg_landings) |> 
   mutate(revenue_decline=value_usd/rolling_avg_revenue) |> 
-  mutate(collapse=ifelse(landings_decline<collapse,1,0))
+  mutate(collapse_catch=ifelse(landings_decline<collapse,1,0)) |> 
+  mutate(collapse_revenue=ifelse(revenue_decline<collapse,1,0))
 
 wa_clean_roll<-wa_clean %>%
   group_by(species_code) %>%
@@ -98,7 +99,8 @@ wa_collapse_75<-wa_clean_roll |>
   group_by(species_code) |> 
   mutate(landings_decline=landings_mt/rolling_avg_landings) |> 
   mutate(revenue_decline=value_usd/rolling_avg_revenue) |> 
-  mutate(collapse=ifelse(landings_decline<collapse,1,0))
+  mutate(collapse_catch=ifelse(landings_decline<collapse,1,0)) |> 
+  mutate(collapse_revenue=ifelse(revenue_decline<collapse,1,0))
 
 or_clean_roll<-or_clean %>%
   group_by(species_code) %>%
@@ -112,4 +114,7 @@ or_collapse_75<-or_clean_roll |>
   group_by(species_code) |> 
   mutate(landings_decline=landings_mt/rolling_avg_landings) |> 
   mutate(revenue_decline=value_usd/rolling_avg_revenue) |> 
-  mutate(collapse=ifelse(landings_decline<collapse,1,0))
+  mutate(collapse_catch=ifelse(landings_decline<collapse,1,0)) |> 
+  mutate(collapse_revenue=ifelse(revenue_decline<collapse,1,0))
+
+save(ca_collapse_75,wa_collapse_75,or_collapse_75,file="~/ml-fisheries-insurance/data/collapse_75.rda")
