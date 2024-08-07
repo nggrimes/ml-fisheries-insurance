@@ -5,11 +5,11 @@ author:
     email: nggrimes@ucsb.edu
     affiliations:
       - id: ucsb
-      name: University of California, Santa Barbara
-      department: Bren school of Environmental Science and Management
-      address: Street Address
-      city: Santa Barbara
-      state: California
+        name: University of California, Santa Barbara
+        department: Bren school of Environmental Science and Management
+        address: Street Address
+        city: Santa Barbara
+        state: California
     attributes:
       corresponding: true
 abstract: |
@@ -19,7 +19,7 @@ keywords:
    - Fisheries
    - Machine Learning
 date: last-modified
-bibliography:
+bibliography: lib_5_24.bib
 csl: fish-and-fisheries.csl
 toc: true
 number-sections: true
