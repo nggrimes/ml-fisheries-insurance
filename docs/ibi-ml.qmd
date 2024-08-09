@@ -28,7 +28,7 @@ format:
       keep-tex: true
       include-in-header:
         text: |
-         \addtokomafont{dispotition}{\rmfamily}
+         \addtokomafont{disposition}{\rmfamily}
     
 execute:
   echo: false
@@ -36,23 +36,22 @@ execute:
   warning: false
 ---
 
-## Quarto
+## Introduction
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fishing populations [@Lehodey2006], but most stock assessment models use little to no year to year environmental data [@Privitera2020]. Variations in environmental conditions are now the leading cause for fishery closures and disaster relief payouts in the United States [@Bellquist2021]. Disaster declarations are becoming more frequent straining a slow, inequitable system [@Holland2020; @Jardine2020]. Calls for new financial tools to alleviate fisher income shocks have grown [@Mumford2009;@Sethi2010].
 
-## Running Code
+Index insurance has risen as a prime candidate tool to protect fishing communities during disasters [@Watson2023]. Index insurance is a financial product that pays out when an independently verified index, such as rainfall or temperature, falls below a predetermined threshold. The index is chosen to be highly correlated with the asset being insured. Index insurance has been successful in agriculture, but has not been widely adopted in fisheries. The main reason is that suitable indices for fisheries are not well understood. This study aims to identify suitable indices for fisheries index insurance using machine learning.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Effective index insurance policies require clear connections between the index and policyholder assets. Otherwise basis risk is introduced. Basis risk is the probability that policyholders experience a harmful shock to their income, but the index does not trigger. Basis risk lowers demand for index insurance and remains a significant roadblock in setting up new programs [@Clarke2016; @binswanger2012].
 
-```{r}
-1 + 1
-```
+Three strategies are often used to mitigate basis risk and stimulate uptake. First, government subsidies directly mask the ineffectiveness of some triggers. The United States Risk Management Agency's Rainfall index insurance for pasture, rangeland, and forage (RI-PRF) allows farmers to select grids of forage for cattle ranching and protect against low rainfall in 2 month intervals (e.g. Jan-Feb). Subsidies encourage farmers to buy products through reducing the premium paid by up to 60%. In Nebraska and Kansas from 2013 to 2017, the program had negative returns overall, but farmers had net positive income strictly due to the subsidies [@Goodrich2019]. Basis risk in Nebraska and Kansas introduced a 26% probability of insurance not paying out when damages were suffered [@Yu2019]. The same program in California found basis risk reaching up to 46%, which could be driven by weak correlations ($r \in[0.071,0.417]$) between indices and forage production [@Keller2022].
 
-You can add options to executable code like this
+Contract design can mitigate basis risk through providing more options so that individuals can better select policies that protect them. Policyholders choose lower trigger levels when correlations between between index and asset are low [@Lichtenberg2022]. Lower trigger levels correspond to protection against more catastrophic shocks. Increased contract flexibility reduces basis risk by only small amounts. @Yu2019 found that more flexible contracts could account for only 5-9% of basis risk. Farms in Kansas closer to weather stations had better predictive impacts of rain on yield [@Yu2019]. The best way to reduce basis risk is to define accurate correlations of index to loss [@Jensen2019; @Carter2015].
 
-```{r}
-#| echo: false
-2 * 2
-```
+## Data
 
-The `echo: false` option disables the printing of code (only output is displayed).
+This study attempts to cover breadth, not depth in possible indices. Each fishery has unique ecological characteristics that interact with environmental variables in different and non-linear ways. By studying a wide collection of fisheries and environmental variables we can uncover the potential feasibility of index insurance for fisheries. Landings and revenue data comes from the West Coast Fish data package. It is a reconstruction of California Fish and Wildlife Department catch data combined with PacFin receipts for Washington and Oregon.
+
+We select California fisheries with a minimum of 30 years of consecutive catch records at both the state and port-complex level. Unclassified catch records are dropped i.e. "Other Sharks" and similar categories. We spatially refine catch histories using the California CDFW fishing blocks records. 
+
+## Methods
