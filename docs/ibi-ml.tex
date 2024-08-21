@@ -176,7 +176,7 @@
 \title{Finding suitable weather indices for novel fisheries index
 insurance using machine learning}
 \author{Nathaniel Grimes}
-\date{2024-08-08}
+\date{2024-08-12}
 
 \begin{document}
 \maketitle
@@ -187,7 +187,7 @@ that impact fishery productivity. This is the first assessment to
 determine the feasibility of such programs and whether suitable indices
 exist.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, frame hidden, interior hidden, boxrule=0pt, breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, interior hidden, frame hidden, borderline west={3pt}{0pt}{shadecolor}, enhanced, sharp corners]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -256,6 +256,34 @@ weather stations had better predictive impacts of rain on yield (Yu
 \emph{et al.} 2019). The best way to reduce basis risk is to define
 accurate correlations of index to loss (Jensen \emph{et al.} 2019;
 \textbf{Carter2015?}).
+
+\hypertarget{insurance-model}{%
+\section{Insurance Model}\label{insurance-model}}
+
+Utility measures offer the most insightful evaluation of index insurance
+policies (\textbf{Kenduyio2022?}). It captures value added for
+policyholders, not just measurses of payout frequency as other measures
+of basis risk. We will use a isoelastic utility function from the
+constant relative risk aversion class of functions as it allows use of
+consistent risk aversion parameters regardless of earned income across
+various fisheries. Total utility for a fishery's catch history is the
+sum of yearly utility from fishing revenue.
+
+\[
+\begin{aligned}
+U_{b}&=\sum_{t=1981}^{T=2021}\frac{\pi_t^{(1-\rho)}}{(1-\rho)} &\text{No Insurance}
+\end{aligned}
+\]
+
+We will compare the percent change in fisher utility with insurance
+versus without insurance for each prediction method. If fishers are not
+better off with insurance (\(\frac{U_{b}-U_{i}}{U_{i}}<0\)), then the
+program is infeasible.
+
+We examine improvements between prediction models with an additional
+metric. While utility is a useful comparison tool, it not a clearly
+interpreable measurse. We will also calculate the highest feasible
+premium loading factor
 
 \hypertarget{data}{%
 \section{Data}\label{data}}

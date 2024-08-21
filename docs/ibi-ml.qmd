@@ -48,6 +48,36 @@ Three strategies are often used to mitigate basis risk and stimulate uptake. Fir
 
 Contract design can mitigate basis risk through providing more options so that individuals can better select policies that protect them. Policyholders choose lower trigger levels when correlations between between index and asset are low [@Lichtenberg2022]. Lower trigger levels correspond to protection against more catastrophic shocks. Increased contract flexibility reduces basis risk by only small amounts. @Yu2019 found that more flexible contracts could account for only 5-9% of basis risk. Farms in Kansas closer to weather stations had better predictive impacts of rain on yield [@Yu2019]. The best way to reduce basis risk is to define accurate correlations of index to loss [@Jensen2019; @Carter2015].
 
+## Insurance Model
+
+Utility measures offer the most insightful evaluation of index insurance policies [@Kenduyio2022]. It captures value added for policyholders, not just measures of payout frequency as other measures of basis risk. We will use a isoelastic utility function from the constant relative risk aversion class of functions as it  allows use of consistent risk aversion parameters regardless of earned income across various fisheries. Total utility for a fishery's catch history is the sum of yearly utility from fishing revenue. 
+
+$$
+\begin{aligned}
+U_{b}&=\sum_{t=1981}^{T=2021}\frac{\pi_t^{(1-\rho)}}{(1-\rho)} &\text{No Insurance}\\
+
+U_{i}&=\sum_{t=1981}^{T=2021}\frac{(\pi_t+I(w)-P(w))^{(1-\rho)}}{(1-\rho)} &\text{Insurance}\\
+U_{r}&=\frac{U_i-U_b}{U_b}\cdot100 &\text{Percent Change in Utility}\\
+\end{aligned}
+$$
+
+We will compare the percent change in fisher utility with insurance ($U_i$) versus without insurance ($U_{b}$) for each prediction method.
+
+The insurance contract is specified by calculating the payout function ($I(w)$) and the premium ($\mathbb{E}[I(w)]m$) where $m$ is the premium loading factor. We will test two different timings of contracts built on three different prediction models and three levels of coverage. The first timing will be a pre-season contract where the payout occurs before the fishing season based on a measure of the weather index relative to the prior seasons fishing revenue. The second timing will be a post-season contract where the payout occurs after the fishing season based on the weather index relative to the current season fishing revenue. The three prediction models ($k\in\{\text{LR,LA,RF}\}$ are a linear regression ($\text{LR}$), a LASSO regression ($\text{LA}$), and a random forest ($\text{RF}$). The three levels of coverage ($l$) are 50%, 75%, and 100% of the seasons fishing revenue.
+
+$$
+I=\max(0,(\hat\pi_t^k(w) - \bar{\pi}_{x})\cdot l)
+$${#eq-payout}
+
+Where $k$ is the prediction model, $l$ is the level of coverage, $\hat\pi_t^k(w)$ is the predicted fishing revenue from $w$ weather variables, and $\bar{\pi}_{x}$ is the fishing revenue either the current year or last year ($x\in\{t,t_{t-1}\}$). The premium is calculated as the expected value of the payout function times the premium loading factor ($m$).
+
+$$
+P=\mathbb{E}[I(w)]m
+$$ {#eq-premium}
+
+
+We examine improvements between prediction models with an additional metric. While utility is a useful comparison tool, it is not a clearly interpretable measure. We also calculate the highest premium loading factor that makes fishers indifferent between having insurance and not having insurance. This enables insurance companies to better predict feasible prices introducing a supply side analysis missing from current fisheries index insurance studies.
+
 ## Data
 
 This study attempts to cover breadth, not depth in possible indices. Each fishery has unique ecological characteristics that interact with environmental variables in different and non-linear ways. By studying a wide collection of fisheries and environmental variables we can uncover the potential feasibility of index insurance for fisheries. Landings and revenue data comes from the West Coast Fish data package. It is a reconstruction of California Fish and Wildlife Department catch data combined with PacFin receipts for Washington and Oregon.
