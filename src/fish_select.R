@@ -3,6 +3,7 @@
 
 library(wcfish)
 library(tidyverse)
+library(here)
 
 
 consecutive<-function(x){
@@ -58,7 +59,10 @@ cdfw_state_catch<-readxl::read_xlsx(here("data","fisheries","ca-1980-2023.xlsx")
   mutate_at(vars(pounds:value), readr::parse_number)
 
 cdfw_rock<-cdfw_state_catch |> 
-  filter(species_name %in% c("Crab, brown rock","Crab, red rock","Crab, yellow rock", "Crab, rock unspecified")) |> 
+  filter(species_name %in% c("Crab, brown rock",
+                             "Crab, red rock",
+                             "Crab, yellow rock",
+                             "Crab, rock unspecified")) |> 
   filter(year>1980) |> 
   group_by(year) |> 
   summarize(species_name="Rock crab",pounds=sum(pounds),value=sum(value),comm_name="Rock crab")
@@ -164,7 +168,7 @@ cali_port_list<-cali_port_consecutive |>
   group_by(spp_code,port_code) |>
   filter(year>=2010 & year<2019) |>
   summarise(sum_rev=mean(revenues_usd, na.rm=TRUE),name=unique(comm_name)) |> 
-  filter(sum_rev>50000) |> 
+  filter(sum_rev>75000) |> 
   drop_na() |> 
   filter(!grepl("Other",name)) |> 
   filter(!grepl("Misc",name)) |>
@@ -174,7 +178,24 @@ cali_port_list<-cali_port_consecutive |>
 cali_top_port<-pacfin_all5 |> 
   filter(state=="California") |> 
   inner_join(cali_port_list,by=c("spp_code","port_code")) |> 
-  select(spp_code,port_code,year,comm_name,revenues_usd,landings_mt,price_usd_lb)
+  select(spp_code,port_code,year,comm_name,revenues_usd,landings_mt,price_usd_lb) %>% 
+  filter(!(port_code %in% c("CCA","ERA"))) #pull out eurkea to add CCA and ERA together then join
+
+# check eureka, we need to combine era and cca in the pacfin5 for sablefish, dungy, chinook, and albacore
+# Need to add the eureka and cca data for each of those fisheries, pps too confidential
+era_pacfin<-pacfin_all5 %>% 
+  select(!c(port_name,confidential,state,price_usd_lb,sci_name)) %>% 
+  filter(port_code %in% c("ERA","CCA") & spp_code %in% c("SABL","CHNK","DCRB","ALBC")) %>% 
+  group_by(spp_code,year) %>% 
+  pivot_wider(names_from= port_code,
+              values_from=c(landings_mt,revenues_usd)) %>% 
+  mutate(landings_mt=landings_mt_ERA+landings_mt_CCA,
+         revenues_usd=revenues_usd_ERA+revenues_usd_CCA) %>% 
+  select(!c(revenues_usd_ERA,revenues_usd_CCA,landings_mt_ERA,landings_mt_CCA)) %>% 
+  mutate(price_usd_lb=revenues_usd/landings_mt/2204.62,
+         port_code="ERA")
+
+cali_top_port<-rbind(cali_top_port,era_pacfin)
 
 # Port level from cdfw
 port_cdfw<-read_csv(here("data","fisheries","port-1980-2023.csv")) |>
@@ -273,18 +294,23 @@ cdfw_match_port<-port_cdfw |>
   arrange(comm_name)
 
 cdfw_match_port<-rbind(cdfw_match_port,cdfw_rock_port) |> 
-  mutate(join_index=paste0(comm_name,year))
+  mutate(join_index=paste0(comm_name,year,port_code))
 
-# check eureka, we need to combine era and cca in the pacfin5 for sablefish, dungy, chinook, and albacore
-# Need to add the eureka and cca data for each of those fisheries
+
 
 # Join the port cdfw data with the wcfish data
-cali_top_port_join<-cdfw_match_port |>
-  full_join(cali_top_port,by=c("comm_name","year","port_code")) |>
-  arrange(species_code) |>
-  group_by(comm_name) |> 
-  fill(species_code,mgmt_group,.direction="down") |> 
-  arrange(species_code)
+cali_top_port_join<-cali_top_port |>
+  mutate(join_index=paste0(comm_name,year,port_code)) |>
+  full_join(cdfw_match_port,by=c("join_index"))
+
+### try making an index from the original cali_top_port combination of port/species then filtering
+
+# check that it matches original list
+
+check_list <- cali_top_port_join %>%
+  group_by(spp_code, port_code) %>%
+  summarize(total = sum(landings_mt, na.rm = TRUE), .groups = 'drop')
+
 
 # In cali_top_join mutate the value and pounds column to replace the value_usd and landings_lb columns, but only for years 2021,2022, and 2023
 
