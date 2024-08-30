@@ -77,9 +77,36 @@
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-\addtokomafont{dispotition}{\rmfamily}
+\addtokomafont{disposition}{\rmfamily}
 \KOMAoption{captions}{tableheading}
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -116,16 +143,23 @@
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \makeatother
 \makeatletter
-\makeatother
-\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
 \makeatother
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\usepackage{bookmark}
-
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
@@ -142,7 +176,7 @@
 \title{Finding suitable weather indices for novel fisheries index
 insurance using machine learning}
 \author{Nathaniel Grimes}
-\date{2024-08-07}
+\date{2024-08-12}
 
 \begin{document}
 \maketitle
@@ -153,6 +187,7 @@ that impact fishery productivity. This is the first assessment to
 determine the feasibility of such programs and whether suitable indices
 exist.
 \end{abstract}
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, interior hidden, frame hidden, borderline west={3pt}{0pt}{shadecolor}, enhanced, sharp corners]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -160,30 +195,203 @@ exist.
 \setcounter{tocdepth}{3}
 \tableofcontents
 }
-\section{Quarto}\label{quarto}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
 
-Quarto enables you to weave together content and executable code into a
-finished document. To learn more about Quarto see
-\url{https://quarto.org}.
+Predicting fishery output from weather variables is notoriously
+difficult. It is widely established that climate and weather affect
+fishing populations (Lehodey \emph{et al.} 2006), but most stock
+assessment models use little to no year to year environmental data
+(Privitera-Johnson and Punt 2020). Variations in environmental
+conditions are now the leading cause for fishery closures and disaster
+relief payouts in the United States (Bellquist \emph{et al.} 2021).
+Disaster declarations are becoming more frequent straining a slow,
+inequitable system (Holland and Leonard 2020; Jardine \emph{et al.}
+2020). Calls for new financial tools to alleviate fisher income shocks
+have grown (Mumford \emph{et al.} 2009; Sethi 2010).
 
-\section{Running Code}\label{running-code}
+Index insurance has risen as a prime candidate tool to protect fishing
+communities during disasters (\textbf{Watson2023?}). Index insurance is
+a financial product that pays out when an independently verified index,
+such as rainfall or temperature, falls below a predetermined threshold.
+The index is chosen to be highly correlated with the asset being
+insured. Index insurance has been successful in agriculture, but has not
+been widely adopted in fisheries. The main reason is that suitable
+indices for fisheries are not well understood. This study aims to
+identify suitable indices for fisheries index insurance using machine
+learning.
 
-When you click the \textbf{Render} button a document will be generated
-that includes both content and the output of embedded code. You can
-embed code like this:
+Effective index insurance policies require clear connections between the
+index and policyholder assets. Otherwise basis risk is introduced. Basis
+risk is the probability that policyholders experience a harmful shock to
+their income, but the index does not trigger. Basis risk lowers demand
+for index insurance and remains a significant roadblock in setting up
+new programs (Binswanger-Mkhize 2012; Clarke 2016).
 
-\begin{verbatim}
-[1] 2
-\end{verbatim}
+Three strategies are often used to mitigate basis risk and stimulate
+uptake. First, government subsidies directly mask the ineffectiveness of
+some triggers. The United States Risk Management Agency's Rainfall index
+insurance for pasture, rangeland, and forage (RI-PRF) allows farmers to
+select grids of forage for cattle ranching and protect against low
+rainfall in 2 month intervals (e.g.~Jan-Feb). Subsidies encourage
+farmers to buy products through reducing the premium paid by up to 60\%.
+In Nebraska and Kansas from 2013 to 2017, the program had negative
+returns overall, but farmers had net positive income strictly due to the
+subsidies (Goodrich \emph{et al.} 2019). Basis risk in Nebraska and
+Kansas introduced a 26\% probability of insurance not paying out when
+damages were suffered (Yu \emph{et al.} 2019). The same program in
+California found basis risk reaching up to 46\%, which could be driven
+by weak correlations (\(r \in[0.071,0.417]\)) between indices and forage
+production (Keller and Saitone 2022).
 
-You can add options to executable code like this
+Contract design can mitigate basis risk through providing more options
+so that individuals can better select policies that protect them.
+Policyholders choose lower trigger levels when correlations between
+between index and asset are low (Lichtenberg and Iglesias 2022). Lower
+trigger levels correspond to protection against more catastrophic
+shocks. Increased contract flexibility reduces basis risk by only small
+amounts. Yu \emph{et al.} (2019) found that more flexible contracts
+could account for only 5-9\% of basis risk. Farms in Kansas closer to
+weather stations had better predictive impacts of rain on yield (Yu
+\emph{et al.} 2019). The best way to reduce basis risk is to define
+accurate correlations of index to loss (Jensen \emph{et al.} 2019;
+\textbf{Carter2015?}).
 
-\begin{verbatim}
-[1] 4
-\end{verbatim}
+\hypertarget{insurance-model}{%
+\section{Insurance Model}\label{insurance-model}}
 
-The \texttt{echo:\ false} option disables the printing of code (only
-output is displayed).
+Utility measures offer the most insightful evaluation of index insurance
+policies (\textbf{Kenduyio2022?}). It captures value added for
+policyholders, not just measurses of payout frequency as other measures
+of basis risk. We will use a isoelastic utility function from the
+constant relative risk aversion class of functions as it allows use of
+consistent risk aversion parameters regardless of earned income across
+various fisheries. Total utility for a fishery's catch history is the
+sum of yearly utility from fishing revenue.
+
+\[
+\begin{aligned}
+U_{b}&=\sum_{t=1981}^{T=2021}\frac{\pi_t^{(1-\rho)}}{(1-\rho)} &\text{No Insurance}
+\end{aligned}
+\]
+
+We will compare the percent change in fisher utility with insurance
+versus without insurance for each prediction method. If fishers are not
+better off with insurance (\(\frac{U_{b}-U_{i}}{U_{i}}<0\)), then the
+program is infeasible.
+
+We examine improvements between prediction models with an additional
+metric. While utility is a useful comparison tool, it not a clearly
+interpreable measurse. We will also calculate the highest feasible
+premium loading factor
+
+\hypertarget{data}{%
+\section{Data}\label{data}}
+
+This study attempts to cover breadth, not depth in possible indices.
+Each fishery has unique ecological characteristics that interact with
+environmental variables in different and non-linear ways. By studying a
+wide collection of fisheries and environmental variables we can uncover
+the potential feasibility of index insurance for fisheries. Landings and
+revenue data comes from the West Coast Fish data package. It is a
+reconstruction of California Fish and Wildlife Department catch data
+combined with PacFin receipts for Washington and Oregon.
+
+We select California fisheries with a minimum of 30 years of consecutive
+catch records at both the state and port-complex level. Unclassified
+catch records are dropped i.e.~``Other Sharks'' and similar categories.
+We spatially refine catch histories using the California CDFW fishing
+blocks records.
+
+\hypertarget{methods}{%
+\section*{Methods}\label{methods}}
+\addcontentsline{toc}{section}{Methods}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-Bellquist2021}{}}%
+Bellquist, L., Saccomanno, V., Semmens, B.X., Gleason, M. and Wilson, J.
+(2021) \href{https://doi.org/10.7717/peerj.11186}{The rise in climate
+change-induced federal fishery disasters in the united states}.
+\emph{PeerJ} \textbf{9}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-binswanger2012}{}}%
+Binswanger-Mkhize, H.P. (2012)
+\href{https://doi.org/10.1080/00220388.2011.625411}{Is there too much
+hype about index-based agricultural insurance?} \emph{Journal of
+Development Studies} \textbf{48}, 187--200.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Clarke2016}{}}%
+Clarke, D.J. (2016) \href{https://doi.org/10.1257/mic.20140103}{A theory
+of rational demand for index insurance}. \emph{Journal: Microeconomics}
+\textbf{8}, 283--306.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Goodrich2019}{}}%
+Goodrich, B., Yu, J. and Vandeveer, M. (2019)
+\href{https://doi.org/10.1057/s41288-019-00149-3}{Participation patterns
+of the rainfall index insurance for pasture, rangeland and forage
+programme}. \emph{The Geneva Papers on Risk and Insurance - Issues and
+Practice} \textbf{45}, 29--51.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Holland2020}{}}%
+Holland, D.S. and Leonard, J. (2020)
+\href{https://doi.org/10.1016/j.hal.2020.101904}{Is a delay a disaster?
+Economic impacts of the delay of the california dungeness crab fishery
+due to a harmful algal bloom}. \emph{Harmful Algae} \textbf{98}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Jardine2020}{}}%
+Jardine, S.L., Fisher, M.C., Moore, S.K. and Samhouri, J.F. (2020)
+\href{https://doi.org/10.1016/j.ecolecon.2020.106691}{Inequality in the
+economic impacts from climate shocks in fisheries: The case of harmful
+algal blooms}. \emph{Ecological Economics} \textbf{176}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Jensen2019}{}}%
+Jensen, N., Stoeffler, Q., Fava, F., et al. (2019)
+\href{https://doi.org/10.1016/J.ECOLECON.2019.04.014}{Does the design
+matter? Comparing satellite-based indices for insuring pastoralists
+against drought}. \emph{Ecological Economics} \textbf{162}, 59--73.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Keller2022}{}}%
+Keller, J.B. and Saitone, T.L. (2022)
+\href{https://doi.org/10.1111/ajae.12282}{Basis risk in the pasture,
+rangeland, and forage insurance program: Evidence from california}.
+\emph{Amer. J. Agr. Econ} \textbf{104}, 1203--1223.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Lehodey2006}{}}%
+Lehodey, P., Alheit, J., Barange, M., et al. (2006) Climate variability,
+fish, and fisheries.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Lichtenberg2022}{}}%
+Lichtenberg, E. and Iglesias, E. (2022)
+\href{https://doi.org/10.1016/j.jdeveco.2022.102883}{Index insurance and
+basis risk: A reconsideration}. \emph{Journal of Development Economics}
+\textbf{158}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Mumford2009}{}}%
+Mumford, J.D., Leach, A.W., Levontin, P. and Kell, L.T. (2009)
+\href{https://doi.org/10.1093/icesjms/fsp100}{Insurance mechanisms to
+mediate economic risks in marine fisheries}. \emph{ICES Journal of
+Marine Science} \textbf{66}, 950--959.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Privitera2020}{}}%
+Privitera-Johnson, K.M. and Punt, A.E. (2020)
+\href{https://doi.org/10.1016/j.fishres.2020.105503}{A review of
+approaches to quantifying uncertainty in fisheries stock assessments}.
+\emph{Fisheries Research} \textbf{226}, 105503.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Sethi2010}{}}%
+Sethi, S.A. (2010)
+\href{https://doi.org/10.1111/j.1467-2979.2010.00363.x}{Risk management
+for fisheries}. \emph{Fish and Fisheries} \textbf{11}, 341--365.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Yu2019}{}}%
+Yu, J., Vandeveer, M., Volesky, J.D. and Harmoney, K. (2019)
+\href{https://doi.org/10.22004/ag.econ.281319}{Estimating the basis risk
+of rainfall index insurance for pasture, rangeland, and forage}.
+\emph{Journal of Agricultural and Resource Economics} \textbf{44},
+179--193.
+
+\end{CSLReferences}
 
 
 

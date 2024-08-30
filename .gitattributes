@@ -1,1 +1,5 @@
 *.rda filter=lfs diff=lfs merge=lfs -text
+<<<<<<< HEAD
+=======
+data/environmental/sst_cali_sf.rda filter=lfs diff=lfs merge=lfs -text
+>>>>>>> 2c4d98b77b49dbef34dcc2726293bc8bd5fbd180
