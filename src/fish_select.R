@@ -129,7 +129,6 @@ cdfw_match<-rbind(cdfw_match,cdfw_rock) |>
 cali_top_join<-cdfw_match |>
   full_join(cali_top,by=c("comm_name","year")) |>
   arrange(species_code) |>
-  mutate(pct_land=(pounds-landings_lb)/landings_lb*100,pct_value=(value-value_usd)/value_usd*100) |>
   group_by(comm_name) |> 
   fill(species_code,mgmt_group,.direction="down") |> 
   arrange(species_code)
@@ -143,7 +142,7 @@ cali_top_join<-cali_top_join |>
                                TRUE~landings_lb)) |>
   mutate(price_usd_lb=value_usd/landings_lb) |> 
   mutate(landings_mt=landings_lb/2204.62) |> 
-  select(-c(pct_land,pct_value,value,pounds,join_index.x,join_index.y)) |> 
+  select(-c(value,pounds,join_index.x,join_index.y)) |> 
   rename(cdfw_name=species_name)
 
 
@@ -168,7 +167,7 @@ cali_port_list<-cali_port_consecutive |>
   group_by(spp_code,port_code) |>
   filter(year>=2010 & year<2019) |>
   summarise(sum_rev=mean(revenues_usd, na.rm=TRUE),name=unique(comm_name)) |> 
-  filter(sum_rev>75000) |> 
+  filter(sum_rev>100000) |> 
   drop_na() |> 
   filter(!grepl("Other",name)) |> 
   filter(!grepl("Misc",name)) |>
@@ -179,6 +178,7 @@ cali_top_port<-pacfin_all5 |>
   filter(state=="California") |> 
   inner_join(cali_port_list,by=c("spp_code","port_code")) |> 
   select(spp_code,port_code,year,comm_name,revenues_usd,landings_mt,price_usd_lb) %>% 
+  mutate(port_spp_id=paste0(comm_name,port_code)) %>% 
   filter(!(port_code %in% c("CCA","ERA"))) #pull out eurkea to add CCA and ERA together then join
 
 # check eureka, we need to combine era and cca in the pacfin5 for sablefish, dungy, chinook, and albacore
@@ -193,7 +193,8 @@ era_pacfin<-pacfin_all5 %>%
          revenues_usd=revenues_usd_ERA+revenues_usd_CCA) %>% 
   select(!c(revenues_usd_ERA,revenues_usd_CCA,landings_mt_ERA,landings_mt_CCA)) %>% 
   mutate(price_usd_lb=revenues_usd/landings_mt/2204.62,
-         port_code="ERA")
+         port_code="ERA",
+         port_spp_id=paste0(comm_name,port_code))
 
 cali_top_port<-rbind(cali_top_port,era_pacfin)
 
@@ -218,7 +219,9 @@ cdfw_rock_port<-port_cdfw |>
     port_area=="SANTA BARBARA"~"SBA",
     port_area=="MORRO BAY"~"MRA",
     port_area=="FORT BRAGG"~"BGA",
-    port_area=="BODEGA BAY"~"BDA"))
+    port_area=="BODEGA BAY"~"BDA"),
+    port_spp_id=paste0(comm_name,port_code)) %>% 
+  filter(port_spp_id %in% unique(cali_top_port$port_spp_id))
 
 cdfw_match_port<-port_cdfw |> 
   filter(year>1980) |> 
@@ -291,35 +294,43 @@ cdfw_match_port<-port_cdfw |>
     port_area=="MORRO BAY"~"MRA",
     port_area=="FORT BRAGG"~"BGA",
     port_area=="BODEGA BAY"~"BDA")) |> 
-  arrange(comm_name)
+  arrange(comm_name) %>% 
+  mutate(port_spp_id=paste0(comm_name,port_code)) %>% 
+  filter(port_spp_id %in% unique(cali_top_port$port_spp_id))
 
-cdfw_match_port<-rbind(cdfw_match_port,cdfw_rock_port) |> 
-  mutate(join_index=paste0(comm_name,year,port_code))
+cdfw_match_port<-rbind(cdfw_match_port,cdfw_rock_port) 
 
 
 
 # Join the port cdfw data with the wcfish data
 cali_top_port_join<-cali_top_port |>
-  mutate(join_index=paste0(comm_name,year,port_code)) |>
-  full_join(cdfw_match_port,by=c("join_index"))
+  full_join(cdfw_match_port,by=c("port_spp_id","year"))
 
-### try making an index from the original cali_top_port combination of port/species then filtering
-
-# check that it matches original list
-
-check_list <- cali_top_port_join %>%
-  group_by(spp_code, port_code) %>%
-  summarize(total = sum(landings_mt, na.rm = TRUE), .groups = 'drop')
+### try making an index from the original cali_top_port combination of port/species then filte
 
 
 # In cali_top_join mutate the value and pounds column to replace the value_usd and landings_lb columns, but only for years 2021,2022, and 2023
 
-cali_top_join<-cali_top_join |>
-  mutate(value_usd=case_when(year>2020~value,
-                             TRUE~value_usd),
-         landings_lb=case_when(year>2020~pounds,
+cali_port_catch<-cali_top_port_join |>
+  mutate(landings_lb=landings_mt*2204.62) %>% 
+  mutate(revenues_usd=case_when(year>2019~value,
+                             TRUE~revenues_usd),
+         landings_lb=case_when(year>2019~pounds,
                                TRUE~landings_lb)) |>
-  mutate(price_usd_lb=value_usd/landings_lb) |> 
+
   mutate(landings_mt=landings_lb/2204.62) |> 
-  select(-c(pct_land,pct_value,value,pounds,join_index.x,join_index.y)) |> 
-  rename(cdfw_name=species_name)
+  mutate(price_usd_lb=revenues_usd/landings_lb) |> 
+  select(-c(value,pounds,comm_name.x,port_code.x)) |> 
+  rename(cdfw_name=species_name,
+         port_code=port_code.y,
+         comm_name=comm_name.y)  %>% 
+  group_by(port_spp_id) |> 
+  fill(spp_code,cdfw_name,port_area,comm_name,port_code,.direction="down") |> 
+  arrange(spp_code,year)
+
+
+## save files
+save(cali_port_catch,file=here("data","fisheries","cali_port.rda"))
+
+cali_catch<-cali_top_join
+save(cali_catch,file=here("data","fisheries","cali_catch.rda"))
