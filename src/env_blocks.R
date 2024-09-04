@@ -29,6 +29,13 @@ block_data_sf<-catch_data %>%
 
 load(here::here("data","environmental","sst_cali_sf.rda"))
 
+one_year<-sst_cali_sf %>% 
+  filter(t=="1986-01-16" & mask==0)
 
+# Make weather summarized for the whole year to reduce data load
 
+merge<-st_join(one_year,blocks)
 
+a<-merge %>% drop_na(block_id)
+
+plot(a)
