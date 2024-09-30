@@ -39,13 +39,13 @@ state_sf<-state_sf[,c(9,84)]
 ## SST Data  All envirodata comes from erddap
 file_id<-rerddap::info(datasetid = "NOAA_DHW_monthly", url = "https://coastwatch.pfeg.noaa.gov/erddap/")
 
-start="1986-01-01"
+start="2021-01-01"
 
-end="2020-12-31"
+end="2023-12-31"
 
 sst<-griddap(datasetx=file_id,
-             time=c(as.Date(start),as.Date(end)),
-             latitude=c(30,49.2),
+             time=c(start,end),
+             latitude=c(30,42),
              longitude=c(-115,-130))$data %>% 
              mutate(time = as.Date(stringr::str_remove(time, "T00:00:00Z"))) %>% 
              rename(t=time,temp=sea_surface_temperature)
