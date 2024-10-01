@@ -12,12 +12,12 @@ library(tsibble)
 
 file_id<-rerddap::info(datasetid = "esrlIcoads1ge_LonPM180", url = "https://coastwatch.pfeg.noaa.gov/erddap/")
 
-start="1981-01-01"
+start="1985-01-01"
 
-end="2021-12-31"
+end="2023-12-31"
 wind<-griddap(datasetx=file_id,
               time=c(start,end),
-              latitude=c(30,49.2),
+              latitude=c(30,42),
               longitude=c(-115,-130))$data %>% 
   mutate(time = as.Date(stringr::str_remove(time, "T00:00:00Z"))) %>% 
   select(time,longitude,latitude,sst,wspd) %>%
