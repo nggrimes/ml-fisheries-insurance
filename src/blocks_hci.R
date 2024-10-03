@@ -64,4 +64,5 @@ c<-blocks %>%
 
 block_hci<-c %>% 
   full_join(hci,by="region") %>% 
-  select(year,region,chci,block_id)
+  select(year,chci,block_id) %>% 
+  pivot_longer(c(chci),values_to = "value",names_to = "var")
