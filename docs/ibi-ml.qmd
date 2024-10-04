@@ -38,7 +38,7 @@ execute:
 
 ## Introduction
 
-Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fishing populations [@Lehodey2006], but most stock assessment models use little to no year to year environmental data [@Privitera2020]. Variations in environmental conditions are now the leading cause for fishery closures and disaster relief payouts in the United States [@Bellquist2021]. Disaster declarations are becoming more frequent straining a slow, inequitable system [@Holland2020; @Jardine2020]. Calls for new financial tools to alleviate fisher income shocks have grown [@Mumford2009;@Sethi2010].
+Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fishing populations [@Lehodey2006], but most stock assessment models use little to no year to year environmental data [@Privitera2020]. Variations in environmental conditions are now the leading cause of fishery closures and disaster relief payouts in the United States [@Bellquist2021]. Disaster declarations are becoming more frequent straining a slow, inequitable system [@Holland2020; @Jardine2020]. Calls for new financial tools to alleviate fisher income shocks have grown [@Mumford2009;@Sethi2010].
 
 Index insurance has risen as a prime candidate tool to protect fishing communities during disasters [@Watson2023]. Index insurance is a financial product that pays out when an independently verified index, such as rainfall or temperature, falls below a predetermined threshold. The index is chosen to be highly correlated with the asset being insured. Index insurance has been successful in agriculture, but has not been widely adopted in fisheries. The main reason is that suitable indices for fisheries are not well understood. This study aims to identify suitable indices for fisheries index insurance using machine learning.
 
@@ -80,8 +80,14 @@ We examine improvements between prediction models with an additional metric. Whi
 
 ## Data
 
-This study attempts to cover breadth, not depth in possible indices. Each fishery has unique ecological characteristics that interact with environmental variables in different and non-linear ways. By studying a wide collection of fisheries and environmental variables we can uncover the potential feasibility of index insurance for fisheries. Landings and revenue data comes from the West Coast Fish data package. It is a reconstruction of California Fish and Wildlife Department catch data combined with PacFin receipts for Washington and Oregon.
+This study attempts to cover breadth, not depth in possible indices. Each fishery has unique ecological characteristics that interact with environmental variables in different and non-linear ways. By studying a wide collection of fisheries and environmental variables we can uncover the potential feasibility of index insurance for fisheries. Landings and revenue data comes from the West Coast Fish data package. It is a reconstruction of California Fish and Wildlife Department catch data combined with PacFin receipts for Washington and Oregon. The last three years of data are updated from the CDFW Marine Fisheries Data Explorer (MFDE). Names are matched to each species within the West Coast Fish data package.
 
-We select California fisheries with a minimum of 30 years of consecutive catch records at both the state and port-complex level. Unclassified catch records are dropped i.e. "Other Sharks" and similar categories. We spatially refine catch histories using the California CDFW fishing blocks records. 
+We select California fisheries with a minimum of 30 years of consecutive catch records at both the state and port-complex level. Unclassified catch records are dropped i.e. "Other Sharks" and similar categories. Fisheries with an average revenue greater than $100,000 at the state and port-complex level are analyzed. Twenty six fisheries at the state level and 73 fisheries at the port complex level meet these criteria.
+
+We spatially refine catch histories using the California CDFW fishing blocks records from the MFDE Data Explorer. Summarized catch histories of all landed fish within each block provide an average representation of effort for a given fishery. Spatial catch history is measured at both the state and port-complex level. The spatial location refines the location of environmental variables. Local weather is are more likely to affect fishery productivity and catch than regional measures. 
+
+Sea surface temperature and anomaly data comes from the NOAA DHW data set that provides 5-km resolution of monthly temperature from 1985 to 2023. The 5-km grids are averaged within the nearest California fishing block to provide a time series of temperature for each fishery.
+
+Upwelling data
 
 ## Methods

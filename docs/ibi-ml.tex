@@ -176,7 +176,7 @@
 \title{Finding suitable weather indices for novel fisheries index
 insurance using machine learning}
 \author{Nathaniel Grimes}
-\date{2024-08-12}
+\date{2024-09-30}
 
 \begin{document}
 \maketitle
@@ -187,7 +187,7 @@ that impact fishery productivity. This is the first assessment to
 determine the feasibility of such programs and whether suitable indices
 exist.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, interior hidden, frame hidden, borderline west={3pt}{0pt}{shadecolor}, enhanced, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, frame hidden, enhanced, interior hidden, breakable, sharp corners, boxrule=0pt]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -203,7 +203,7 @@ difficult. It is widely established that climate and weather affect
 fishing populations (Lehodey \emph{et al.} 2006), but most stock
 assessment models use little to no year to year environmental data
 (Privitera-Johnson and Punt 2020). Variations in environmental
-conditions are now the leading cause for fishery closures and disaster
+conditions are now the leading cause of fishery closures and disaster
 relief payouts in the United States (Bellquist \emph{et al.} 2021).
 Disaster declarations are becoming more frequent straining a slow,
 inequitable system (Holland and Leonard 2020; Jardine \emph{et al.}
@@ -262,28 +262,64 @@ accurate correlations of index to loss (Jensen \emph{et al.} 2019;
 
 Utility measures offer the most insightful evaluation of index insurance
 policies (\textbf{Kenduyio2022?}). It captures value added for
-policyholders, not just measurses of payout frequency as other measures
+policyholders, not just measures of payout frequency as other measures
 of basis risk. We will use a isoelastic utility function from the
 constant relative risk aversion class of functions as it allows use of
 consistent risk aversion parameters regardless of earned income across
 various fisheries. Total utility for a fishery's catch history is the
 sum of yearly utility from fishing revenue.
 
-\[
+\$\$
+
 \begin{aligned}
-U_{b}&=\sum_{t=1981}^{T=2021}\frac{\pi_t^{(1-\rho)}}{(1-\rho)} &\text{No Insurance}
+U_{b}&=\sum_{t=1981}^{T=2021}\frac{\pi_t^{(1-\rho)}}{(1-\rho)} &\text{No Insurance}\\
+
+U_{i}&=\sum_{t=1981}^{T=2021}\frac{(\pi_t+I(w)-P(w))^{(1-\rho)}}{(1-\rho)} &\text{Insurance}\\
+U_{r}&=\frac{U_i-U_b}{U_b}\cdot100 &\text{Percent Change in Utility}\\
 \end{aligned}
-\]
+
+\$\$
 
 We will compare the percent change in fisher utility with insurance
-versus without insurance for each prediction method. If fishers are not
-better off with insurance (\(\frac{U_{b}-U_{i}}{U_{i}}<0\)), then the
-program is infeasible.
+(\(U_i\)) versus without insurance (\(U_{b}\)) for each prediction
+method.
+
+The insurance contract is specified by calculating the payout function
+(\(I(w)\)) and the premium (\(\mathbb{E}[I(w)]m\)) where \(m\) is the
+premium loading factor. We will test two different timings of contracts
+built on three different prediction models and three levels of coverage.
+The first timing will be a pre-season contract where the payout occurs
+before the fishing season based on a measure of the weather index
+relative to the prior seasons fishing revenue. The second timing will be
+a post-season contract where the payout occurs after the fishing season
+based on the weather index relative to the current season fishing
+revenue. The three prediction models (\(k\in\{\text{LR,LA,RF}\}\) are a
+linear regression (\(\text{LR}\)), a LASSO regression (\(\text{LA}\)),
+and a random forest (\(\text{RF}\)). The three levels of coverage
+(\(l\)) are 50\%, 75\%, and 100\% of the seasons fishing revenue.
+
+\begin{equation}\protect\hypertarget{eq-payout}{}{
+I=\max(0,(\hat\pi_t^k(w) - \bar{\pi}_{x})\cdot l)
+}\label{eq-payout}\end{equation}
+
+Where \(k\) is the prediction model, \(l\) is the level of coverage,
+\(\hat\pi_t^k(w)\) is the predicted fishing revenue from \(w\) weather
+variables, and \(\bar{\pi}_{x}\) is the fishing revenue either the
+current year or last year (\(x\in\{t,t_{t-1}\}\)). The premium is
+calculated as the expected value of the payout function times the
+premium loading factor (\(m\)).
+
+\begin{equation}\protect\hypertarget{eq-premium}{}{
+P=\mathbb{E}[I(w)]m
+}\label{eq-premium}\end{equation}
 
 We examine improvements between prediction models with an additional
-metric. While utility is a useful comparison tool, it not a clearly
-interpreable measurse. We will also calculate the highest feasible
-premium loading factor
+metric. While utility is a useful comparison tool, it is not a clearly
+interpretable measure. We also calculate the highest premium loading
+factor that makes fishers indifferent between having insurance and not
+having insurance. This enables insurance companies to better predict
+feasible prices introducing a supply side analysis missing from current
+fisheries index insurance studies.
 
 \hypertarget{data}{%
 \section{Data}\label{data}}
@@ -295,13 +331,32 @@ wide collection of fisheries and environmental variables we can uncover
 the potential feasibility of index insurance for fisheries. Landings and
 revenue data comes from the West Coast Fish data package. It is a
 reconstruction of California Fish and Wildlife Department catch data
-combined with PacFin receipts for Washington and Oregon.
+combined with PacFin receipts for Washington and Oregon. The last three
+years of data are updated from the CDFW Marine Fisheries Data Explorer
+(MFDE). Names are matched to each species within the West Coast Fish
+data package.
 
 We select California fisheries with a minimum of 30 years of consecutive
 catch records at both the state and port-complex level. Unclassified
 catch records are dropped i.e.~``Other Sharks'' and similar categories.
+Fisheries with an average revenue greater than \$100,000 at the state
+and port-complex level are analyzed. Twenty six fisheries at the state
+level and 73 fisheries at the port complex level meet these criteria.
+
 We spatially refine catch histories using the California CDFW fishing
-blocks records.
+blocks records from the MFDE Data Explorer. Summarized catch histories
+of all landed fish within each block provide an average representation
+of effort for a given fishery. Spatial catch history is measured at both
+the state and port-complex level. The spatial location refines the
+location of environmental variables. Local weather is are more likely to
+affect fishery productivity and catch than regional measures.
+
+Sea surface temperature and anomaly data comes from the NOAA DHW data
+set that provides 5-km resolution of monthly temperature from 1985 to
+2023. The 5-km grids are averaged within the nearest California fishing
+block to provide a time series of temperature for each fishery.
+
+Upwelling data
 
 \hypertarget{methods}{%
 \section*{Methods}\label{methods}}
