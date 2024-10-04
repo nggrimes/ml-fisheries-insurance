@@ -21,7 +21,7 @@ purr_con<-function(df){
  #### State Level ####
 
 cali_consecutive<-pacfin_all1 %>%
-  filter(state=="California") %>%
+  filter(state=="California") %>% 
   group_by(species_code) %>% 
   drop_na(landings_mt) %>%
   nest() %>%
@@ -33,7 +33,7 @@ cali_consecutive<-pacfin_all1 %>%
 
 cali_top_list<-cali_consecutive |> 
   full_join(pacfin_all1, by="species_code") |> 
-  filter(n>25) |> 
+  filter(n>25 & state=="California") |> 
   group_by(species_code) |> 
   filter(year>=2010) |> 
   summarise(sum_rev=mean(value_usd, na.rm=TRUE),name=unique(comm_name)) |> 
@@ -150,7 +150,7 @@ cali_top_join<-cali_top_join |>
 
 # find a list of ports with consecutive years of data
 cali_port_consecutive<-pacfin_all5 %>%
-  filter(state=="California") %>%
+  filter(state=="California" & confidential != "*") %>%
   group_by(spp_code,port_code) %>%
   drop_na(landings_mt) %>%
   nest() %>%
@@ -167,7 +167,7 @@ cali_port_list<-cali_port_consecutive |>
   group_by(spp_code,port_code) |>
   filter(year>=2010 & year<2019) |>
   summarise(sum_rev=mean(revenues_usd, na.rm=TRUE),name=unique(comm_name)) |> 
-  filter(sum_rev>100000) |> 
+  filter(sum_rev>75000) |> 
   drop_na() |> 
   filter(!grepl("Other",name)) |> 
   filter(!grepl("Misc",name)) |>
