@@ -85,7 +85,6 @@ cdfw_match<-cdfw_state_catch |>
                              "Squid, market",
                              "Swordfish",
                              "Tuna, albacore",
-                             "Whiting, Pacific",
                              "Prawn, spot",
                              "Tuna, bluefin",
                              "Tuna, yellowfin",
@@ -110,7 +109,6 @@ cdfw_match<-cdfw_state_catch |>
     species_name=="Squid, market"~"Market squid",
     species_name=="Swordfish"~"Swordfish",
     species_name=="Tuna, albacore"~"Albacore",
-    species_name=="Whiting, Pacific"~"Pacific whiting",
     species_name=="Prawn, spot"~"Spotted prawn",
     species_name=="Tuna, bluefin"~"Bluefin tuna",
     species_name=="Tuna, yellowfin"~"Yellowfin tuna",
@@ -144,7 +142,6 @@ cali_top_join<-cali_top_join |>
   mutate(landings_mt=landings_lb/2204.62) |> 
   select(-c(value,pounds,join_index.x,join_index.y)) |> 
   rename(cdfw_name=species_name)
-
 
 #### Port level ####
 
@@ -320,17 +317,83 @@ cali_port_catch<-cali_top_port_join |>
 
   mutate(landings_mt=landings_lb/2204.62) |> 
   mutate(price_usd_lb=revenues_usd/landings_lb) |> 
-  select(-c(value,pounds,comm_name.x,port_code.x)) |> 
+  select(-c(value,pounds,comm_name.x,port_code.y)) |> 
   rename(cdfw_name=species_name,
-         port_code=port_code.y,
+         port_code=port_code.x,
          comm_name=comm_name.y)  %>% 
   group_by(port_spp_id) |> 
   fill(spp_code,cdfw_name,port_area,comm_name,port_code,.direction="down") |> 
   arrange(spp_code,year)
 
+### N fisher participitation
 
+n_fcn<-function(spp,data){
+name<-tolower(spp)
+n_data<-readxl::read_xlsx(here::here("data","fisheries","participation",paste0(name,".xlsx"))) %>% 
+  janitor::clean_names() %>% 
+  drop_na(landings_lbs) %>% 
+  filter(landings_lbs>0) %>% 
+  filter(year!="Total") %>% 
+  rename(n_fisher="participation") %>% 
+  mutate(year=as.numeric(year),
+         n_fisher=case_when(n_fisher=="Confidential"~0,
+                            .default = as.numeric(n_fisher)),
+         n_fisher=as.numeric(n_fisher)) %>% 
+  select(year,n_fisher)
+
+out<-data %>% 
+  inner_join(n_data,by="year")
+
+return(out)
+}
+
+n_port_fcn<-function(spp,port,data){
+  p1<-tolower(spp)
+  p2<-tolower(port)
+  name<-paste0(p1,"_",p2,sep="")
+  
+  n_data<-readxl::read_xlsx(here::here("data","fisheries","participation",paste0(name,".xlsx"))) %>% 
+    janitor::clean_names() %>% 
+    drop_na(landings_lbs) %>% 
+    filter(landings_lbs>0) %>% 
+    filter(year!="Total") %>% 
+    rename(n_fisher="participation") %>% 
+    mutate(year=as.numeric(year),
+           n_fisher=case_when(n_fisher=="Confidential"~0,
+                              .default = as.numeric(n_fisher)),
+           n_fisher=as.numeric(n_fisher)) %>% 
+    select(year,n_fisher)
+  
+  out<-data %>% 
+    inner_join(n_data,by="year")
+  
+  return(out)
+}
+
+a<-cali_port_catch %>% 
+  group_by(spp_code,port_code) %>% 
+  nest() %>% 
+  mutate(n_fish=pmap(list(spp=spp_code,port=port_code,data=data),n_port_fcn)) %>% 
+  select(spp_code,port_code,n_fish) %>% 
+  unnest(n_fish) %>% 
+  mutate(rev_per_fisher=revenues_usd/n_fisher,
+         mt_per_fisher=landings_mt/n_fisher,
+         lb_per_fisher=landings_lb/n_fisher)
+
+cali_port_catch<-a
 ## save files
 save(cali_port_catch,file=here("data","fisheries","cali_port.rda"))
 
 cali_catch<-cali_top_join
+
+cali_catch<-cali_catch %>% 
+  group_by(species_code) %>% 
+  nest() %>% 
+  mutate(n_fish=map2(.x=species_code,.y=data,~n_fcn(.x,.y))) %>% 
+  select(species_code,n_fish) %>% 
+  unnest(n_fish) %>% 
+  mutate(rev_per_fisher=value_usd/n_fisher,
+         mt_per_fisher=landings_mt/n_fisher,
+         lb_per_fisher=landings_lb/n_fisher)
+
 save(cali_catch,file=here("data","fisheries","cali_catch.rda"))

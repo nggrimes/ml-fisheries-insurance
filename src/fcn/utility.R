@@ -1,7 +1,7 @@
 ## utility models
 
-utility_ins<-function(data,payouts,premium,model="isoelastic",par=3){
-  profit<-(data$value_usd+payouts-premium)/1000000
+utility_ins<-function(data,payouts,premium,model="isoelastic",par=3,val){
+  profit<-(data[[val]]+payouts-premium)
   
   profit[which(profit<=0)]<-0.00001
   
@@ -19,9 +19,9 @@ utility_ins<-function(data,payouts,premium,model="isoelastic",par=3){
   return(ut)
 }
 
-utility<-function(data,model="isoelastic",par=3){
+utility<-function(data,model="isoelastic",par=3,val){
   #browser()
-  profit<-data$value_usd/1000000
+  profit<-data[[val]]
   
   profit[which(profit<=0)]<-0.00001
   

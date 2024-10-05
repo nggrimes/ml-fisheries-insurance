@@ -63,7 +63,7 @@ env<-rbind(join_sst,join_beuti,join_cuti,join_hci,join_enso,join_pdo)
 
 hold<-data %>% 
   ungroup() %>% 
-  select(year,landings_mt,value_usd) %>%
+  select(year,landings_mt,value_usd,rev_per_fisher,mt_per_fisher) %>%
   pivot_longer(-year,names_to="fish_var",values_to="fish_value") %>%
   right_join(env,by="year") %>%
   drop_na(fish_var)
