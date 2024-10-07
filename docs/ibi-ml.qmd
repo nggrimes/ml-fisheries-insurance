@@ -19,7 +19,7 @@ keywords:
    - Fisheries
    - Machine Learning
 date: last-modified
-bibliography: lib_5_24.bib
+bibliography: library.bib
 csl: fish-and-fisheries.csl
 toc: true
 number-sections: true
@@ -40,54 +40,82 @@ execute:
 
 Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fishing populations [@Lehodey2006], but most stock assessment models use little to no year to year environmental data [@Privitera2020]. Variations in environmental conditions are now the leading cause of fishery closures and disaster relief payouts in the United States [@Bellquist2021]. Disaster declarations are becoming more frequent straining a slow, inequitable system [@Holland2020; @Jardine2020]. Calls for new financial tools to alleviate fisher income shocks have grown [@Mumford2009;@Sethi2010].
 
-Index insurance has risen as a prime candidate tool to protect fishing communities during disasters [@Watson2023]. Index insurance is a financial product that pays out when an independently verified index, such as rainfall or temperature, falls below a predetermined threshold. The index is chosen to be highly correlated with the asset being insured. Index insurance has been successful in agriculture, but has not been widely adopted in fisheries. The main reason is that suitable indices for fisheries are not well understood. This study aims to identify suitable indices for fisheries index insurance using machine learning.
+Index insurance has risen as a prime candidate tool to protect fishing communities during disasters [@Watson2023]. Index insurance is a financial product that pays out when an independently verified index, such as rainfall or temperature, falls below a predetermined threshold. The index is chosen to be highly correlated with the asset being insured. However, fisheries are notoriously difficult to establish clear, concise weather impacts on productivity. Fisheries are dynamic systems where weather shocks can leave residual impacts years after the initial shock [@Hilborn2003]. Individual fisheries can cover enormous areas in ocean basins. The expansive spatial coverage of fisheries makes it unclear where and how much specific weather variables have on biological abundance. In addition, if weather impacts have been observed, they are most likely highly non-linear adding further complexity. The greatest impediment to the development of fishery insurance policies is reconciling these challenges to find suitable indices that can predict fishery productivity [@Watson2023]. 
 
-Effective index insurance policies require clear connections between the index and policyholder assets. Otherwise basis risk is introduced. Basis risk is the probability that policyholders experience a harmful shock to their income, but the index does not trigger. Basis risk lowers demand for index insurance and remains a significant roadblock in setting up new programs [@Clarke2016; @binswanger2012].
+Recent expansions in oceanic remote sensing has led to a wealth of new environmental indices that could be used to predict fishery productivity. Fishery data collection continues to improve with better reporting systems with longer and more detailed catch histories. This study aims to leverage these improved data sources to create suitable indices for fisheries index insurance using machine learning.
+
+The difficulty in modelling fishery productivity with environmental indices leads to basis risk. Formally, basis risk is the probability that policyholders experience a harmful shock to their income, but the index does not trigger. Basis risk lowers demand for index insurance and remains a significant roadblock in setting up new programs [@Clarke2016; @binswanger2012]. Designing indices with stronger correlations to fishery losses is the most effective way to reduce basis risk [@Jensen2019].
+
+It is impossible to completely eliminate basis risk. In agriculture, every policy possess some level of basis risk. Well designed policies that capture up to 90% of the income variation in K
 
 Three strategies are often used to mitigate basis risk and stimulate uptake. First, government subsidies directly mask the ineffectiveness of some triggers. The United States Risk Management Agency's Rainfall index insurance for pasture, rangeland, and forage (RI-PRF) allows farmers to select grids of forage for cattle ranching and protect against low rainfall in 2 month intervals (e.g. Jan-Feb). Subsidies encourage farmers to buy products through reducing the premium paid by up to 60%. In Nebraska and Kansas from 2013 to 2017, the program had negative returns overall, but farmers had net positive income strictly due to the subsidies [@Goodrich2019]. Basis risk in Nebraska and Kansas introduced a 26% probability of insurance not paying out when damages were suffered [@Yu2019]. The same program in California found basis risk reaching up to 46%, which could be driven by weak correlations ($r \in[0.071,0.417]$) between indices and forage production [@Keller2022].
 
-Contract design can mitigate basis risk through providing more options so that individuals can better select policies that protect them. Policyholders choose lower trigger levels when correlations between between index and asset are low [@Lichtenberg2022]. Lower trigger levels correspond to protection against more catastrophic shocks. Increased contract flexibility reduces basis risk by only small amounts. @Yu2019 found that more flexible contracts could account for only 5-9% of basis risk. Farms in Kansas closer to weather stations had better predictive impacts of rain on yield [@Yu2019]. The best way to reduce basis risk is to define accurate correlations of index to loss [@Jensen2019; @Carter2015].
+Contract design can mitigate basis risk through providing more options so that individuals can better select policies that protect them. Policyholders choose lower trigger levels when correlations between between index and asset are low [@Lichtenberg2022]. Lower trigger levels correspond to protection against more catastrophic shocks. Increased contract flexibility reduces basis risk by only small amounts. @Yu2019 found that more flexible contracts could account for only 5-9% of basis risk. Farms in Kansas closer to weather stations had better predictive impacts of rain on yield [@Yu2019].
 
-## Insurance Model
+Machine learning has exploded as a new tool to define new and better indices in agriculture index insurance [@Cesarini2021;@Feng2019;@Chen2024@Schmidt2022]. Machine learning models excel in index insurance because indemnity contracts only need predictive relationships. Fishery stock assessments build complex models with biological foundations to accurately inform management of future fish stocks. Index insurance can look retroactively at data to uncover relationships and test out of sample predictive quality. The application of machine learning is growing in fisheries to answer a variety of data needs. Ensemble models built through combinations of random forests, boosted trees, and dynamic linear models improved Bristol Bay sockeye salmon forecasts by 15% compared to a standard lagged regression model [@Ovando2022]. Environmental variables of importance to groundfish populations in Alaska were uncovered using single index varying coefficient models regularized with LASSO [@Correia2018]. Random Forests models better predict fish catch in Indonesia than traditional linear models [@Rahman2022]. The expected non-linear interactions of weather and fishery productivity merit.
 
-Utility measures offer the most insightful evaluation of index insurance policies [@Kenduyio2022]. It captures value added for policyholders, not just measures of payout frequency as other measures of basis risk. We will use a isoelastic utility function from the constant relative risk aversion class of functions as it  allows use of consistent risk aversion parameters regardless of earned income across various fisheries. Total utility for a fishery's catch history is the sum of yearly utility from fishing revenue. 
+This study will provide the first comprehensive examination of the necessary features of weather indices for fisheries index insurance. 
+
+We will use machine learning to uncover the most important weather variables for predicting fishery productivity. We will then use these variables to create a novel index insurance model for fisheries. We will test the model on a wide array of fisheries in California to determine the feasibility of index insurance for fisheries.
+
+## Insurance Model {#sec-model}
+
+Insurance contracts are specified by calculating payout functions ($I(\omega)$) based on independently measured weather variables. Neural networks have been used to provide non-linear payoff schedules that better reduce basis risk [@Chen2024]. While it has been shown that linear payoff functions inherently lead to basis risk and therefore lower demand [@Clarke2016;@Jensen2016], we maintain their use to preserve measures of interpretability that are clearer for a first analysis of fishery index insurance.
+
+Payouts will be issued when prediction models predict negative deviations from long run average value. The three prediction models ($k\in\{\text{LR,LA,RF}\}$ are a linear regression ($\text{LR}$), a LASSO regression ($\text{LA}$), and a random forest ($\text{RF}$). 
+
+$$
+I(\omega)=\max(0,(\bar{\pi}-\hat\pi_t^k(\omega)) \cdot l)
+$${#eq-payout}
+
+Where $k$ is the prediction model, $l$ is the level of coverage, $\hat\pi_t^k(w)$ is the predicted fishing variable from $\omega$ weather variables, and $\bar{\pi}_{x}$ the long run average of the fishing variable. The premium is calculated as the expected value of the payout function times the premium loading factor ($m$).
+
+$$
+\rho(\omega)=\mathbb{E}[I(\omega)]m
+$$ {#eq-premium}
+
+Utility measures offer the most insightful evaluation of index insurance policies [@Kenduiywo2021]. It captures value added for policyholders, not just measures of payout frequency as other measures of basis risk. Constant absolute risk aversion allows more consistent comparison for different levels of wealth. Expected utility for a given fishery is the average utility over all years in the sample for any variable of interest $\pi_t$. Fishers are allowed to choose insurance coverage levels $l$ to ensure feasible contracts.
 
 $$
 \begin{aligned}
-U_{b}&=\sum_{t=1981}^{T=2021}\frac{\pi_t^{(1-\rho)}}{(1-\rho)} &\text{No Insurance}\\
-
-U_{i}&=\sum_{t=1981}^{T=2021}\frac{(\pi_t+I(w)-P(w))^{(1-\rho)}}{(1-\rho)} &\text{Insurance}\\
-U_{r}&=\frac{U_i-U_b}{U_b}\cdot100 &\text{Percent Change in Utility}\\
+\mathbb{E}[U_{b}]&=\frac{1}{n}\sum_{t}^{T}\frac{1-e^{-a\pi_t}}{a} &\text{No Insurance}\\
+\mathbb{E}[U_{i}]&=\max_{l}\frac{1}{n}\sum_{t}^{T}\frac{1-e^{(-a(\pi_t+I(\omega,l)-\rho(w))}}{a} &\text{Insurance}\\
+U_{r}&=\frac{\mathbb{E}[U_i]-\mathbb{E}[U_b]}{\mathbb{E}[U_b]}\cdot100 &\text{Percent Change in Utility}\\
 \end{aligned}
 $$
 
-We will compare the percent change in fisher utility with insurance ($U_i$) versus without insurance ($U_{b}$) for each prediction method.
 
-The insurance contract is specified by calculating the payout function ($I(w)$) and the premium ($\mathbb{E}[I(w)]m$) where $m$ is the premium loading factor. We will test two different timings of contracts built on three different prediction models and three levels of coverage. The first timing will be a pre-season contract where the payout occurs before the fishing season based on a measure of the weather index relative to the prior seasons fishing revenue. The second timing will be a post-season contract where the payout occurs after the fishing season based on the weather index relative to the current season fishing revenue. The three prediction models ($k\in\{\text{LR,LA,RF}\}$ are a linear regression ($\text{LR}$), a LASSO regression ($\text{LA}$), and a random forest ($\text{RF}$). The three levels of coverage ($l$) are 50%, 75%, and 100% of the seasons fishing revenue.
+We will compare the percent change in fisher utility with insurance ($U_i$) versus without insurance ($U_{b}$) for each prediction method. The variable of interest $\pi_t$, will be fishing revenue, landings, and catch per fisher to test what measures of fishery productivity are most suitable for index insurance.
 
-$$
-I=\max(0,(\hat\pi_t^k(w) - \bar{\pi}_{x})\cdot l)
-$${#eq-payout}
+No data on fishery insurance suppliers exists to create a market equilibrium. We iteratively vary the premium loading $m\in[1,2]$ to create a range of coverage values fishers will be willing to pay for a given $m$. Then, the amount of coverage purchased times the premium loading factor approximately equals the expected revenue an insurance company would receive. Insurance companies could then examine their own administrative and legal costs to determine whether the feasible contract is profitable. 
 
-Where $k$ is the prediction model, $l$ is the level of coverage, $\hat\pi_t^k(w)$ is the predicted fishing revenue from $w$ weather variables, and $\bar{\pi}_{x}$ is the fishing revenue either the current year or last year ($x\in\{t,t_{t-1}\}$). The premium is calculated as the expected value of the payout function times the premium loading factor ($m$).
+## Data {#sec-data}
 
-$$
-P=\mathbb{E}[I(w)]m
-$$ {#eq-premium}
+This study attempts to cover breadth, not depth in possible indices. Each fishery has unique ecological characteristics that interact with environmental variables in different and non-linear ways. By studying a wide collection of fisheries and environmental variables we can uncover the potential feasibility of index insurance for fisheries holistically, and then further refine measures with ecologically sound models in the future. 
+
+### Fishery Data
+
+Landings revenue, and participation data comes from the West Coast Fish data package [@Free2022]. It is a reconstruction of California Fish and Wildlife Department catch data combined with PacFin receipts for Washington and Oregon. The last three years of data are updated from the CDFW Marine Fisheries Data Explorer (MFDE). Names are matched to each species within the West Coast Fish data package.
+
+We select California fisheries with a minimum of 30 years of consecutive, non-confidential catch records at both the state and port-complex level. Unclassified catch records are dropped i.e. "Other Sharks" and similar categories. Fisheries with an average revenue greater than \$100,000 at the state and \$75,000 at port-complex level are analyzed. Twenty four fisheries at the state level and 49 fisheries at the port complex level meet these criteria. These fisheries contain the most economically important fisheries in California and their mean values are shown in @tbl-fish-sum.
 
 
-We examine improvements between prediction models with an additional metric. While utility is a useful comparison tool, it is not a clearly interpretable measure. We also calculate the highest premium loading factor that makes fishers indifferent between having insurance and not having insurance. This enables insurance companies to better predict feasible prices introducing a supply side analysis missing from current fisheries index insurance studies.
+Fisheries have complex spatial dynamics. Agriculture has clear, quantifiable impacts of weather in grids that are well suited for index insurance. Drought on a single farm directly leads to crop loss for that farm. Whether there is sufficient spatial coverage to identify impacts down to an individual farm remains a challenge in agriculture [@Leppert2021;@Dalhaus2016;@Stigler2024]. Fish and fishers can move thousand of miles in a given year, thus more consideration must be given to the location of weather impacts in fisheries. We spatially refine catch histories using the California CDFW fishing blocks records from the MFDE Data Explorer. Summarized catch histories of all landed fish within each block provide an average representation of effort for a given fishery. Spatial catch history is measured at both the state and port-complex level. The spatial location refines the location of environmental variables. Local weather is more likely to affect fishery productivity and catch than observations thousands of miles away. 
 
-## Data
+### Environmental Data
 
-This study attempts to cover breadth, not depth in possible indices. Each fishery has unique ecological characteristics that interact with environmental variables in different and non-linear ways. By studying a wide collection of fisheries and environmental variables we can uncover the potential feasibility of index insurance for fisheries. Landings and revenue data comes from the West Coast Fish data package. It is a reconstruction of California Fish and Wildlife Department catch data combined with PacFin receipts for Washington and Oregon. The last three years of data are updated from the CDFW Marine Fisheries Data Explorer (MFDE). Names are matched to each species within the West Coast Fish data package.
+Fisheries are highly sensitive to marine heatwaves and water temperature. Sea surface temperature is a natural variable to first consider in fisheries index insurance. Sea surface temperature data comes from the NOAA DHW data set that provides 5-km resolution of monthly temperature from 1985 to 2023. The 5-km grids are averaged within the nearest California fishing block to provide an annual time series of temperature for each fishery. Temperature is lagged from 1 to 3 years prior to account for residual impacts that carry over due to fishery biological dynamics.
 
-We select California fisheries with a minimum of 30 years of consecutive catch records at both the state and port-complex level. Unclassified catch records are dropped i.e. "Other Sharks" and similar categories. Fisheries with an average revenue greater than $100,000 at the state and port-complex level are analyzed. Twenty six fisheries at the state level and 73 fisheries at the port complex level meet these criteria.
+Upwelling provides vital nutrients to stimulate primary productivity. The coast of California is a highly productive ecosystem due to its patterns of upwelling [@Huyer1983;@Chelton1982]. We capture upwelling through monthly observations of Coastal Upwelling Transport Index (CUTI) and Biological Effective Upwelling Transport Idnex (BEUTI). Both indices create measures of vertical movement in the mixed layer at 1 degree latitude intervals extending 75 km along the entire US West Coast [@Jacox2018]. The closest layer to the surface was used in this analysis as the correlation between surface index values and deeper index values are high. CUTI examines the physical measures of wind, ekman transport, and cross-shore geostrophic transport to indicate the strength of upwelling in a given month. BEUTI adds nitrate concentration in its calculation to capture more biological effects of upwelling. Fishing blocks are matched to the nearest 1 degree latitude interval to provide a monthly time series of upwelling for each fishery. Seasonal strengths of upwelling are captured by averaging CUTI and BEUTI within each quarter of the year. Spring upwelling in early March and April are espeically important to a wide array of fish species. Yearly average and amplitude values (the difference between minimum observed upwelling and maximum) are also calculated. These indices are the most temporally limited datasets in this analysis, only extending from 1988 to 2023.
 
-We spatially refine catch histories using the California CDFW fishing blocks records from the MFDE Data Explorer. Summarized catch histories of all landed fish within each block provide an average representation of effort for a given fishery. Spatial catch history is measured at both the state and port-complex level. The spatial location refines the location of environmental variables. Local weather is are more likely to affect fishery productivity and catch than regional measures. 
+The Habitat Compression Index measures the area extent of water below average temperatures thresholds along the US West Coast [@Schroeder2022]. Habitat compression is a measure of the spatial extent of cold water habitats that are important for fish species. The index is broken down into four distinct oceangraphic regions ranging from 3.5 degrees to 5.5 degrees lattitude in size with coverage out to 150 km offshore. We use the cumulative habitat compression index that sums the index value in each month to provide a yearly time series of habitat compression for each fishery. The cumulative index showed stronger correlations with biological productivity measures than monthly measures [@Schroeder2022]
 
-Sea surface temperature and anomaly data comes from the NOAA DHW data set that provides 5-km resolution of monthly temperature from 1985 to 2023. The 5-km grids are averaged within the nearest California fishing block to provide a time series of temperature for each fishery.
+The final environmental variables are the Pacific Decadal Oscillation (PDO) and the El Nino Southern Oscillation (ENSO). Both indices are well known to affect marine ecosystems and fisheries. Both indices are averaged over a given year. PDO data is taken from the PDO ERSST V5, and ENSO data is taken from the multivariate ENSO Index Version 2 (MEI.v2).
 
-Upwelling data
+Summary statistics for the environmental data are presented in @tbl-env-sum. In total, 73 fisheries with 35 years of catch data are matched to 20 spatial matched environmental variables with annual coverage from 1988 to 2023.
 
-## Methods
+## Methods {#sec-methods}
+
+## Results {#sec-results}
+
+## Discussion {#sec-discussion}
