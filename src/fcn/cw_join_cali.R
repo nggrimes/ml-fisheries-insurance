@@ -65,7 +65,7 @@ hold<-data %>%
   ungroup() %>% 
   select(year,landings_mt,value_usd,rev_per_fisher,mt_per_fisher) %>%
   pivot_longer(-year,names_to="fish_var",values_to="fish_value") %>%
-  right_join(env,by="year") %>%
+  right_join(env,by="year",relationship='many-to-many') %>%
   drop_na(fish_var)
 
 return(hold)
