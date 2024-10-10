@@ -1,5 +1,6 @@
 ---
 title: Finding suitable weather indices for novel fisheries index insurance using machine learning
+subtitle: Working Paper not for Distribution
 author: 
   - name: Nathaniel Grimes
     email: nggrimes@ucsb.edu
@@ -40,23 +41,23 @@ execute:
 
 Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fishing populations [@Lehodey2006], but most stock assessment models use little to no year to year environmental data [@Privitera2020]. Variations in environmental conditions are now the leading cause of fishery closures and disaster relief payouts in the United States [@Bellquist2021]. Disaster declarations are becoming more frequent straining a slow, inequitable system [@Holland2020; @Jardine2020]. Calls for new financial tools to alleviate fisher income shocks have grown [@Mumford2009;@Sethi2010].
 
-Index insurance has risen as a prime candidate tool to protect fishing communities during disasters [@Watson2023]. Index insurance is a financial product that pays out when an independently verified index, such as rainfall or temperature, falls below a predetermined threshold. The index is chosen to be highly correlated with the asset being insured. However, fisheries are notoriously difficult to establish clear, concise weather impacts on productivity. Fisheries are dynamic systems where weather shocks can leave residual impacts years after the initial shock [@Hilborn2003]. Individual fisheries can cover enormous areas in ocean basins. The expansive spatial coverage of fisheries makes it unclear where and how much specific weather variables have on biological abundance. In addition, if weather impacts have been observed, they are most likely highly non-linear adding further complexity. The greatest impediment to the development of fishery insurance policies is reconciling these challenges to find suitable indices that can predict fishery productivity [@Watson2023]. 
+Index insurance has risen as a prime candidate tool to protect fishing communities during disasters [@Watson2023]. Index insurance is a financial product that pays out when an independently verified index, such as rainfall or temperature, falls below a predetermined threshold. The index is chosen to be highly correlated with the asset being insured. However, it is difficult to establish clear, concise weather impacts on fishery productivity. The biological dynamics of the system can lead to lower stock health persisting for years after a negative shock [@Hilborn2003]. Individual fisheries can cover enormous areas in ocean basins. The expansive spatial coverage of fisheries makes it unclear where and how much specific weather variables impact biological abundance. In addition, if weather impacts have been observed, they are most likely highly non-linear adding further complexity. The greatest impediment to the development of fishery insurance policies is reconciling these challenges to find suitable indices that can predict fishery productivity [@Watson2023]. 
 
 Recent expansions in oceanic remote sensing has led to a wealth of new environmental indices that could be used to predict fishery productivity. Fishery data collection continues to improve with better reporting systems with longer and more detailed catch histories. This study aims to leverage these improved data sources to create suitable indices for fisheries index insurance using machine learning.
 
-The difficulty in modelling fishery productivity with environmental indices leads to basis risk. Formally, basis risk is the probability that policyholders experience a harmful shock to their income, but the index does not trigger. Basis risk lowers demand for index insurance and remains a significant roadblock in setting up new programs [@Clarke2016; @binswanger2012]. Designing indices with stronger correlations to fishery losses is the most effective way to reduce basis risk [@Jensen2019].
+The difficulty in modelling fishery productivity with environmental indices leads to basis risk. Formally, basis risk is the probability that policyholders experience a harmful shock to their income, but the index does not trigger. Basis risk lowers demand for index insurance and remains a significant roadblock in setting up new programs [@Clarke2016; @binswanger2012;@Clement2018]. Designing indices with stronger correlations to fishery losses is the most effective way to reduce basis risk [@Jensen2019].
 
-It is impossible to completely eliminate basis risk. In agriculture, every policy possess some level of basis risk. Well designed policies that capture up to 90% of the income variation in K
-
-Three strategies are often used to mitigate basis risk and stimulate uptake. First, government subsidies directly mask the ineffectiveness of some triggers. The United States Risk Management Agency's Rainfall index insurance for pasture, rangeland, and forage (RI-PRF) allows farmers to select grids of forage for cattle ranching and protect against low rainfall in 2 month intervals (e.g. Jan-Feb). Subsidies encourage farmers to buy products through reducing the premium paid by up to 60%. In Nebraska and Kansas from 2013 to 2017, the program had negative returns overall, but farmers had net positive income strictly due to the subsidies [@Goodrich2019]. Basis risk in Nebraska and Kansas introduced a 26% probability of insurance not paying out when damages were suffered [@Yu2019]. The same program in California found basis risk reaching up to 46%, which could be driven by weak correlations ($r \in[0.071,0.417]$) between indices and forage production [@Keller2022].
+It is impossible to completely eliminate basis risk, and there exists a wide range in deployed agriculture products. Well designed policies can capture up to 90% of the income variation as shown in Kenyan pasture grazing indices [@Jensen2019]. Abysmal correlations are prevalent in the United States, where the Rainfall Index Insurance for Pasture, Rangeland, and Forage (RI-PRF) program has correlations as low as 0.071 in California leading to 46% additional basis risk [@Keller2022]. The program has a 26% probability of not paying out when damages are suffered in Nebraska and Kansas [@Yu2019]. Subsidies covering up to 60% of ranchers paid premiums are need to stimulate demand in the RI-PRF program [@Goodrich2019].
 
 Contract design can mitigate basis risk through providing more options so that individuals can better select policies that protect them. Policyholders choose lower trigger levels when correlations between between index and asset are low [@Lichtenberg2022]. Lower trigger levels correspond to protection against more catastrophic shocks. Increased contract flexibility reduces basis risk by only small amounts. @Yu2019 found that more flexible contracts could account for only 5-9% of basis risk. Farms in Kansas closer to weather stations had better predictive impacts of rain on yield [@Yu2019].
 
-Machine learning has exploded as a new tool to define new and better indices in agriculture index insurance [@Cesarini2021;@Feng2019;@Chen2024@Schmidt2022]. Machine learning models excel in index insurance because indemnity contracts only need predictive relationships. Fishery stock assessments build complex models with biological foundations to accurately inform management of future fish stocks. Index insurance can look retroactively at data to uncover relationships and test out of sample predictive quality. The application of machine learning is growing in fisheries to answer a variety of data needs. Ensemble models built through combinations of random forests, boosted trees, and dynamic linear models improved Bristol Bay sockeye salmon forecasts by 15% compared to a standard lagged regression model [@Ovando2022]. Environmental variables of importance to groundfish populations in Alaska were uncovered using single index varying coefficient models regularized with LASSO [@Correia2018]. Random Forests models better predict fish catch in Indonesia than traditional linear models [@Rahman2022]. The expected non-linear interactions of weather and fishery productivity merit.
+Machine learning has exploded as a new tool to define new and better indices in agriculture index insurance [@Cesarini2021;@Feng2019;@Chen2024;@Schmidt2022]. Machine learning models excel in index insurance because indemnity contracts only need predictive relationships. Whereas, fishery stock assessments build complex models with biological foundations to accurately inform management of future fish stocks, index insurance can look retroactively at data to uncover relationships and test out of sample predictive quality. Machine learning may be necessary in fisheries index insurance to uncover any valuable relationships between weather and productivity.
 
-This study will provide the first comprehensive examination of the necessary features of weather indices for fisheries index insurance. 
+The application of machine learning is growing in fisheries as researchers explore data questions beyond formal stock assessments. Ensemble models built through combinations of random forests, boosted trees, and dynamic linear models improved Bristol Bay sockeye salmon forecasts by 15% compared to a standard lagged regression model [@Ovando2022]. Environmental variables of importance to groundfish populations in Alaska were uncovered using single index varying coefficient models regularized with LASSO [@Correia2021]. Random Forests models better predict fish catch in Indonesia than traditional linear models [@Rahman2022]. The expected non-linear interactions of weather and fishery productivity merit the use of machine learning in fisheries.
 
-We will use machine learning to uncover the most important weather variables for predicting fishery productivity. We will then use these variables to create a novel index insurance model for fisheries. We will test the model on a wide array of fisheries in California to determine the feasibility of index insurance for fisheries.
+This study will provide the first comprehensive examination of the necessary features of weather indices for fisheries index insurance. We contribute to the growing ocean adaption and blue finance literature.
+
+The rest of the paper is structured as follows. @sec-model describes the insurance model tested in this study. @sec-data describes the data used in this study. @sec-methods describes the methods used to predict fishery productivity and evaluate the utility of index insurance. @sec-results presents the results of the study. @sec-discussion discusses the results and implications for the future of fisheries index insurance.
 
 ## Insurance Model {#sec-model}
 
@@ -82,7 +83,7 @@ $$
 \mathbb{E}[U_{i}]&=\max_{l}\frac{1}{n}\sum_{t}^{T}\frac{1-e^{(-a(\pi_t+I(\omega,l)-\rho(w))}}{a} &\text{Insurance}\\
 U_{r}&=\frac{\mathbb{E}[U_i]-\mathbb{E}[U_b]}{\mathbb{E}[U_b]}\cdot100 &\text{Percent Change in Utility}\\
 \end{aligned}
-$$
+$$ {#eq-utility}
 
 
 We will compare the percent change in fisher utility with insurance ($U_i$) versus without insurance ($U_{b}$) for each prediction method. The variable of interest $\pi_t$, will be fishing revenue, landings, and catch per fisher to test what measures of fishery productivity are most suitable for index insurance.
@@ -97,10 +98,12 @@ This study attempts to cover breadth, not depth in possible indices. Each fisher
 
 Landings revenue, and participation data comes from the West Coast Fish data package [@Free2022]. It is a reconstruction of California Fish and Wildlife Department catch data combined with PacFin receipts for Washington and Oregon. The last three years of data are updated from the CDFW Marine Fisheries Data Explorer (MFDE). Names are matched to each species within the West Coast Fish data package.
 
-We select California fisheries with a minimum of 30 years of consecutive, non-confidential catch records at both the state and port-complex level. Unclassified catch records are dropped i.e. "Other Sharks" and similar categories. Fisheries with an average revenue greater than \$100,000 at the state and \$75,000 at port-complex level are analyzed. Twenty four fisheries at the state level and 49 fisheries at the port complex level meet these criteria. These fisheries contain the most economically important fisheries in California and their mean values are shown in @tbl-fish-sum.
+We select California fisheries with a minimum of 30 years of consecutive, non-confidential catch records at both the state and port-complex level. Unclassified catch records are dropped i.e. "Other Sharks" and similar categories. Fisheries with an average revenue greater than \$100,000 at the state and \$75,000 at port-complex level are analyzed. Twenty four fisheries at the state level and 49 fisheries at the port complex level meet these criteria. These fisheries contain the most economically important fisheries in California and their mean values are shown in @tbl-fish-sum and at the port complex in @tbl-fish-port-sum.
 
 
-Fisheries have complex spatial dynamics. Agriculture has clear, quantifiable impacts of weather in grids that are well suited for index insurance. Drought on a single farm directly leads to crop loss for that farm. Whether there is sufficient spatial coverage to identify impacts down to an individual farm remains a challenge in agriculture [@Leppert2021;@Dalhaus2016;@Stigler2024]. Fish and fishers can move thousand of miles in a given year, thus more consideration must be given to the location of weather impacts in fisheries. We spatially refine catch histories using the California CDFW fishing blocks records from the MFDE Data Explorer. Summarized catch histories of all landed fish within each block provide an average representation of effort for a given fishery. Spatial catch history is measured at both the state and port-complex level. The spatial location refines the location of environmental variables. Local weather is more likely to affect fishery productivity and catch than observations thousands of miles away. 
+Fisheries have complex spatial dynamics. Agriculture has clear, quantifiable impacts of weather in grids that are well suited for index insurance. Drought on a single farm directly leads to crop loss for that farm. Whether there is sufficient spatial coverage to identify impacts down to an individual farm remains a challenge in agriculture [@Leppert2021;@Dalhaus2016;@Stigler2024]. Fish and fishers can move thousand of miles in a given year, thus more consideration must be given to the location of weather impacts in fisheries. We spatially refine catch histories using the California CDFW fishing blocks records from the MFDE Data Explorer. Summarized catch histories of all landed fish within each block provide an average representation of effort for a given fishery. Spatial catch history is measured at both the state and port-complex level. The spatial location refines the location of environmental variables. Local weather is more likely to affect fishery productivity and catch than observations thousands of miles away.
+
+
 
 ### Environmental Data
 
@@ -114,8 +117,167 @@ The final environmental variables are the Pacific Decadal Oscillation (PDO) and 
 
 Summary statistics for the environmental data are presented in @tbl-env-sum. In total, 73 fisheries with 35 years of catch data are matched to 20 spatial matched environmental variables with annual coverage from 1988 to 2023.
 
+```{r}
+library(tidyverse)
+#load weather data
+load(here::here("data","environmental","block_beuti.rda"))
+load(here::here("data","environmental","block_cuti.rda"))
+load(here::here("data","environmental","block_hci.rda"))
+load(here::here("data","environmental","block_sst.rda"))
+load(here::here("data","environmental","enso_pdo.rda"))
+
+#load designed fucntions
+source(here::here("src","fcn","cw_join_cali.R"))
+```
+
+
 ## Methods {#sec-methods}
+
+We use three models to predict yearly fishing revenue, landings, and catch per fisher at state and port-complex levels. Linear models are used as the base model given its ubiquitous use in index insurance policies. We compare utility improvements with the adoption of more robust LASSO regression and random forest models.
+
+In all class of models, the final utility maximization choice of coverage leverage is found through a box constrained quasi-Newton Method using the optim function in R. Choices are constrained between zero and the fishing variable's average value. Premium schedules are found by the model output below the trigger values in @eq-payout and then averaged over the time period.
+
+### Linear Models
+
+Perfect regression coefficients mimic the optimal choice of scale in index insurance contracts [@Mahul1999]. Combined with the ease of implementation, linear models on single weather indices are the most common design choice for index insurance policies. They offer a basic starting place to consider the viability of fishery index insurance. 
+
+Yearly aggregated fishing variables are regressed on each spatially matched to catch environmental variable. We perform a 10 fold cross validation method to determine the best individual weather variable based on root mean square error (RMSE). To preserve the time series element of the data, we used a rolling split to partition the training and testing data. For example, the first fold contains the first 70% of data as training (1988-2011), and the last 30% as testing (2013-2023). The final date of the training set is extended in each fold until the year 2020 to create 10 folds. Models with the lowest average RMSE are selected and trained on the full set before being passed to the utility optimization procedure in @eq-utility. 
+
+
+### LASSO Regression
+
+Least Absolute Shrinkage and Selection Operator (LASSO) regression is a popular regularization technique to assist model selection. It attempts to minimize the residual sum of squared errors through Ordinary Least Squares (OLS), but adds a penalty constraint on the absolute sum of selected coefficient values (@eq-lasso).
+
+$$
+\hat{\beta}^{lasso}=\arg\min_{\beta}\left\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\omega_{ij}\beta_j)^2+\lambda\sum_{j=1}^{p}|\beta_j|\right\}
+$$ {#eq-lasso}
+
+Where, $y_i$ is our fishing variable, $\beta$ the regression coefficients, $n$, the number of observations, $p$ the number of predictors, and $\omega$ the total collection of weather variables. The $\lambda$ is the penalty term that controls the amount of shrinkage. The LASSO regression model is trained on the same 10 fold cross validation method as the linear models. The optimal $\lambda$ is selected through a grid search method that selects the RMSE one standard error away from the minimum. This choice is to ensure the most parsimonious model that still captures the most important weather variables. LASSO is particularly well suited for this research design as the absolute value of the penalty term shrinks coefficients to zero. Overfitting is a concern with so few observations in the initial training set; the shrinkage towards zero will help minimize this bias.
+
+
+### Random Forests
+
+While LASSO offers us the ability to simultaneously explore a wide collection of weather variables including lagged effects, it remains linear in its predictions. Random Forests are tree-based ensemble models that capture non-linear interactions through recursive partitioning. The are less sensitive to over fitting through the aggregation of many trees.  
+
+We tune three hyperparameters to create the best performing random forest for each fishery. The number of trees in the forest, the number of variables to consider at each split, and the minimum number of observations in a leaf node. We use a grid search method to find the best hyperparameters based on RMSE. The final model is trained on the full dataset and passed to the utility optimization procedure in @eq-utility.
 
 ## Results {#sec-results}
 
 ## Discussion {#sec-discussion}
+
+## Appendix {#sec-appendix}
+
+```{r}
+library(tidyverse)
+
+load(here::here("data","fisheries","cali_catch.rda"))
+load(here::here("data","fisheries","cali_port.rda"))
+```
+
+```{r}
+#| label: tbl-fish-sum
+#| tbl-cap: Summary statistics of catch from 1988-2023 for California fisheries.
+
+library(kableExtra)
+
+# Make a table of summary statistics for the cali_catch data
+
+# sum_tbl<-cali_catch %>% 
+#   mutate(mt_per_fisher=case_when(mt_per_fisher==Inf~0,
+#                               .default=as.numeric(mt_per_fisher)),
+#          lb_per_fisher=case_when(lb_per_fisher==Inf~0,
+#                                  .default=as.numeric(lb_per_fisher))) |> 
+#   group_by(comm_name) %>% 
+#   summarize(mean_landings_mt=sprintf("%1.2f",mean(landings_mt)),
+#             sd_landings=sprintf("(%1.2f)",sd(landings_mt)),
+#             mean_value_usd=sprintf("%1.2f",mean(value_usd)),
+#             sd_value=sprintf("(%1.2f)",sd(value_usd)),
+#             mean_mt_per_fisher=sprintf("%1.2f",mean(mt_per_fisher)),
+#             sd_per=sprintf("(%1.2f)",sd(mt_per_fisher,na.rm=TRUE)),
+#             n=sprintf("%1.2f",round(mean(n_fisher),1)),
+#             n_sd=sprintf("(%1.2f)",sd(n_fisher))) %>% 
+#   pivot_longer(cols=-comm_name,names_to="var") %>%
+#   pivot_wider(names_from=comm_name,values_from=value)
+
+sum_tbl<-cali_catch %>% 
+  mutate(mt_per_fisher=case_when(mt_per_fisher==Inf~0,
+                              .default=as.numeric(mt_per_fisher)),
+         lb_per_fisher=case_when(lb_per_fisher==Inf~0,
+                                 .default=as.numeric(lb_per_fisher))) |> 
+  group_by(comm_name) %>% 
+  summarize(mean_landings_mt=mean(landings_mt),
+            sd_landings=sd(landings_mt),
+            mean_value_usd=mean(value_usd),
+            sd_value=sd(value_usd),
+            mean_mt_per_fisher=mean(mt_per_fisher),
+            sd_per=sd(mt_per_fisher,na.rm=TRUE),
+            n=mean(n_fisher),
+            n_sd=sd(n_fisher)) %>% 
+  mutate(across(where(is.numeric),round,1)) |> 
+  mutate(mean_value_usd=scales::dollar(mean_value_usd))
+
+
+# test<-sum_tbl |> 
+#   group_by(comm_name) |> 
+#   mutate(group=rep(c("landings","rev","per","n"),each=2),
+#          stat_group=rep(c("mean","sd"),times=4)) |>
+#   pivot_wider(names_from=group,values_from=value)
+# 
+# # fill in the missing values with data from the other columns of test
+# b<-test|> 
+#   group_by(comm_name) |> 
+#   mutate(rev=case_when(is.na(rev) & var=="mean_landings_mt"~unique(rev)[2]),
+#          rev=case_when(is.na(per) & var=="sd_landings_mt"~unique(rev)[3]))
+
+
+
+sum_tbl |> 
+  kable(col.names = c("Species","Average","Standard\nDeviation","Average","Standard\nDeviation","Average","Standard\nDevation","Average","Standard\nDeviation")) |> 
+  kable_classic() |> 
+  kable_styling(font_size = 7) |> 
+  add_header_above(c(" ","Landings (mt)"=2,"Revenue (USD)"=2,"MT per Fisher"=2,"Number of Fishers"=2))
+
+
+```
+
+
+```{r}
+#| label: tbl-fish-port-sum
+#| tbl-cap: Summary statistics of catch from 1988-2023 for California fisheries split between species and port complex
+# Make a summary table of the port complex fish data
+library(kableExtra)
+
+sum_tbl_port<-cali_port_catch %>% 
+  mutate(mt_per_fisher=case_when(mt_per_fisher==Inf~0,
+                              .default=as.numeric(mt_per_fisher)),
+         lb_per_fisher=case_when(lb_per_fisher==Inf~0,
+                                 .default=as.numeric(lb_per_fisher))) |> 
+  group_by(spp_code,port_area) %>% 
+  summarize(comm_name=unique(comm_name),
+    mean_landings_mt=mean(landings_mt),
+            sd_landings=sd(landings_mt),
+            mean_value_usd=mean(revenues_usd),
+            sd_value=sd(revenues_usd),
+            mean_mt_per_fisher=mean(mt_per_fisher),
+            sd_per=sd(mt_per_fisher,na.rm=TRUE),
+            n=mean(n_fisher),
+            n_sd=sd(n_fisher)) %>% 
+  mutate(across(where(is.numeric),round,1)) |> 
+  mutate(mean_value_usd=scales::dollar(mean_value_usd)) |> 
+  drop_na(comm_name) |> 
+  mutate(port_area=stringr::str_to_title(port_area)) |> 
+  ungroup() |> 
+  select(comm_name,port_area,everything()) |> 
+  select(-spp_code)
+  
+sum_tbl_port |> 
+  kable(col.names = c("Species","Port","Average","Standard Deviation","Average","Standard Deviation","Average","Standard Devation","Average","Standard Deviation")) |> 
+  kable_classic_2() |> 
+  kable_styling(latex_options = "scale_down") |> 
+  add_header_above(c(" "=2,"Landings (mt)"=2,"Revenue (USD)"=2,"MT per Fisher"=2,"Number of Fishers"=2)) |> 
+  collapse_rows(columns=1:2,valign="top")
+
+```
+
+
+## References

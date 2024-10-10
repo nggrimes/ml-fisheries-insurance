@@ -101,6 +101,20 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \addtokomafont{disposition}{\rmfamily}
 \KOMAoption{captions}{tableheading}
 \makeatletter
@@ -175,8 +189,15 @@
 
 \title{Finding suitable weather indices for novel fisheries index
 insurance using machine learning}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Working Paper not for Distribution}
 \author{Nathaniel Grimes}
-\date{2024-10-07}
+\date{2024-10-08}
 
 \begin{document}
 \maketitle
@@ -187,7 +208,7 @@ that impact fishery productivity. This is the first assessment to
 determine the feasibility of such programs and whether suitable indices
 exist.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced, interior hidden, frame hidden, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, interior hidden, sharp corners, breakable, borderline west={3pt}{0pt}{shadecolor}, enhanced]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -215,16 +236,16 @@ communities during disasters (Watson \emph{et al.} 2023). Index
 insurance is a financial product that pays out when an independently
 verified index, such as rainfall or temperature, falls below a
 predetermined threshold. The index is chosen to be highly correlated
-with the asset being insured. However, fisheries are notoriously
-difficult to establish clear, concise weather impacts on productivity.
-Fisheries are dynamic systems where weather shocks can leave residual
-impacts years after the initial shock (\textbf{Hilborn2003?}).
-Individual fisheries can cover enormous areas in ocean basins. The
-expansive spatial coverage of fisheries makes it unclear where and how
-much specific weather variables have on biological abundance. In
-addition, if weather impacts have been observed, they are most likely
-highly non-linear adding further complexity. The greatest impediment to
-the development of fishery insurance policies is reconciling these
+with the asset being insured. However, it is difficult to establish
+clear, concise weather impacts on fishery productivity. The biological
+dynamics of the system can lead to lower stock health persisting for
+years after a negative shock (\textbf{Hilborn2003?}). Individual
+fisheries can cover enormous areas in ocean basins. The expansive
+spatial coverage of fisheries makes it unclear where and how much
+specific weather variables impact biological abundance. In addition, if
+weather impacts have been observed, they are most likely highly
+non-linear adding further complexity. The greatest impediment to the
+development of fishery insurance policies is reconciling these
 challenges to find suitable indices that can predict fishery
 productivity (Watson \emph{et al.} 2023).
 
@@ -240,29 +261,21 @@ indices leads to basis risk. Formally, basis risk is the probability
 that policyholders experience a harmful shock to their income, but the
 index does not trigger. Basis risk lowers demand for index insurance and
 remains a significant roadblock in setting up new programs
-(Binswanger-Mkhize 2012; Clarke 2016). Designing indices with stronger
-correlations to fishery losses is the most effective way to reduce basis
-risk (Jensen \emph{et al.} 2019).
+(Binswanger-Mkhize 2012; Clarke 2016; Clement \emph{et al.} 2018).
+Designing indices with stronger correlations to fishery losses is the
+most effective way to reduce basis risk (Jensen \emph{et al.} 2019).
 
-It is impossible to completely eliminate basis risk. In agriculture,
-every policy possess some level of basis risk. Well designed policies
-that capture up to 90\% of the income variation in K
-
-Three strategies are often used to mitigate basis risk and stimulate
-uptake. First, government subsidies directly mask the ineffectiveness of
-some triggers. The United States Risk Management Agency's Rainfall index
-insurance for pasture, rangeland, and forage (RI-PRF) allows farmers to
-select grids of forage for cattle ranching and protect against low
-rainfall in 2 month intervals (e.g.~Jan-Feb). Subsidies encourage
-farmers to buy products through reducing the premium paid by up to 60\%.
-In Nebraska and Kansas from 2013 to 2017, the program had negative
-returns overall, but farmers had net positive income strictly due to the
-subsidies (Goodrich \emph{et al.} 2019). Basis risk in Nebraska and
-Kansas introduced a 26\% probability of insurance not paying out when
-damages were suffered (Yu \emph{et al.} 2019). The same program in
-California found basis risk reaching up to 46\%, which could be driven
-by weak correlations (\(r \in[0.071,0.417]\)) between indices and forage
-production (Keller and Saitone 2022).
+It is impossible to completely eliminate basis risk, and there exists a
+wide range in deployed agriculture products. Well designed policies can
+capture up to 90\% of the income variation as shown in Kenyan pasture
+grazing indices (Jensen \emph{et al.} 2019). Abysmal correlations are
+prevalent in the United States, where the Rainfall Index Insurance for
+Pasture, Rangeland, and Forage (RI-PRF) program has correlations as low
+as 0.071 in California leading to 46\% additional basis risk (Keller and
+Saitone 2022). The program has a 26\% probability of not paying out when
+damages are suffered in Nebraska and Kansas (Yu \emph{et al.} 2019).
+Subsidies covering up to 60\% of ranchers paid premiums are need to
+stimulate demand in the RI-PRF program (Goodrich \emph{et al.} 2019).
 
 Contract design can mitigate basis risk through providing more options
 so that individuals can better select policies that protect them.
@@ -276,32 +289,42 @@ weather stations had better predictive impacts of rain on yield (Yu
 \emph{et al.} 2019).
 
 Machine learning has exploded as a new tool to define new and better
-indices in agriculture index insurance Schmidt \emph{et al.} (2022).
-Machine learning models excel in index insurance because indemnity
-contracts only need predictive relationships. Fishery stock assessments
-build complex models with biological foundations to accurately inform
-management of future fish stocks. Index insurance can look retroactively
-at data to uncover relationships and test out of sample predictive
-quality. The application of machine learning is growing in fisheries to
-answer a variety of data needs. Ensemble models built through
-combinations of random forests, boosted trees, and dynamic linear models
-improved Bristol Bay sockeye salmon forecasts by 15\% compared to a
-standard lagged regression model (Ovando \emph{et al.} 2022).
-Environmental variables of importance to groundfish populations in
-Alaska were uncovered using single index varying coefficient models
-regularized with LASSO (\textbf{Correia2018?}). Random Forests models
-better predict fish catch in Indonesia than traditional linear models
-(Rahman \emph{et al.} 2022). The expected non-linear interactions of
-weather and fishery productivity merit.
+indices in agriculture index insurance (Feng \emph{et al.} 2019;
+Cesarini \emph{et al.} 2021; Schmidt \emph{et al.} 2022; Chen \emph{et
+al.} 2024). Machine learning models excel in index insurance because
+indemnity contracts only need predictive relationships. Whereas, fishery
+stock assessments build complex models with biological foundations to
+accurately inform management of future fish stocks, index insurance can
+look retroactively at data to uncover relationships and test out of
+sample predictive quality. Machine learning may be necessary in
+fisheries index insurance to uncover any valuable relationships between
+weather and productivity.
+
+The application of machine learning is growing in fisheries as
+researchers explore data questions beyond formal stock assessments.
+Ensemble models built through combinations of random forests, boosted
+trees, and dynamic linear models improved Bristol Bay sockeye salmon
+forecasts by 15\% compared to a standard lagged regression model (Ovando
+\emph{et al.} 2022). Environmental variables of importance to groundfish
+populations in Alaska were uncovered using single index varying
+coefficient models regularized with LASSO (Correia 2021). Random Forests
+models better predict fish catch in Indonesia than traditional linear
+models (Rahman \emph{et al.} 2022). The expected non-linear interactions
+of weather and fishery productivity merit the use of machine learning in
+fisheries.
 
 This study will provide the first comprehensive examination of the
-necessary features of weather indices for fisheries index insurance.
+necessary features of weather indices for fisheries index insurance. We
+contribute to the growing ocean adaption and blue finance literature.
 
-We will use machine learning to uncover the most important weather
-variables for predicting fishery productivity. We will then use these
-variables to create a novel index insurance model for fisheries. We will
-test the model on a wide array of fisheries in California to determine
-the feasibility of index insurance for fisheries.
+The rest of the paper is structured as follows. Section~\ref{sec-model}
+describes the insurance model tested in this study.
+Section~\ref{sec-data} describes the data used in this study.
+Section~\ref{sec-methods} describes the methods used to predict fishery
+productivity and evaluate the utility of index insurance.
+Section~\ref{sec-results} presents the results of the study.
+Section~\ref{sec-discussion} discusses the results and implications for
+the future of fisheries index insurance.
 
 \hypertarget{sec-model}{%
 \section{Insurance Model}\label{sec-model}}
@@ -343,13 +366,13 @@ fishery is the average utility over all years in the sample for any
 variable of interest \(\pi_t\). Fishers are allowed to choose insurance
 coverage levels \(l\) to ensure feasible contracts.
 
-\[
+\begin{equation}\protect\hypertarget{eq-utility}{}{
 \begin{aligned}
 \mathbb{E}[U_{b}]&=\frac{1}{n}\sum_{t}^{T}\frac{1-e^{-a\pi_t}}{a} &\text{No Insurance}\\
 \mathbb{E}[U_{i}]&=\max_{l}\frac{1}{n}\sum_{t}^{T}\frac{1-e^{(-a(\pi_t+I(\omega,l)-\rho(w))}}{a} &\text{Insurance}\\
 U_{r}&=\frac{\mathbb{E}[U_i]-\mathbb{E}[U_b]}{\mathbb{E}[U_b]}\cdot100 &\text{Percent Change in Utility}\\
 \end{aligned}
-\]
+}\label{eq-utility}\end{equation}
 
 We will compare the percent change in fisher utility with insurance
 (\(U_i\)) versus without insurance (\(U_{b}\)) for each prediction
@@ -395,7 +418,8 @@ greater than \$100,000 at the state and \$75,000 at port-complex level
 are analyzed. Twenty four fisheries at the state level and 49 fisheries
 at the port complex level meet these criteria. These fisheries contain
 the most economically important fisheries in California and their mean
-values are shown in \textbf{?@tbl-fish-sum}.
+values are shown in Table~\ref{tbl-fish-sum} and at the port complex in
+Table~\ref{tbl-fish-port-sum}.
 
 Fisheries have complex spatial dynamics. Agriculture has clear,
 quantifiable impacts of weather in grids that are well suited for index
@@ -476,12 +500,258 @@ annual coverage from 1988 to 2023.
 \hypertarget{sec-methods}{%
 \section{Methods}\label{sec-methods}}
 
+We use three models to predict yearly fishing revenue, landings, and
+catch per fisher at state and port-complex levels. Linear models are
+used as the base model given its ubiquitous use in index insurance
+policies. We compare utility improvements with the adoption of more
+robust LASSO regression and random forest models.
+
+In all class of models, the final utility maximization choice of
+coverage leverage is found through a box constrained quasi-Newton Method
+using the optim function in R. Choices are constrained between zero and
+the fishing variable's average value. Premium schedules are found by the
+model output below the trigger values in Equation~\ref{eq-payout} and
+then averaged over the time period.
+
+\hypertarget{linear-models}{%
+\subsection{Linear Models}\label{linear-models}}
+
+Perfect regression coefficients mimic the optimal choice of scale in
+index insurance contracts (\textbf{Mahul1999?}). Combined with the ease
+of implementation, linear models on single weather indices are the most
+common design choice for index insurance policies. They offer a basic
+starting place to consider the viability of fishery index insurance.
+
+Yearly aggregated fishing variables are regressed on each spatially
+matched to catch environmental variable. We perform a 10 fold cross
+validation method to determine the best individual weather variable
+based on root mean square error (RMSE). To preserve the time series
+element of the data, we used a rolling split to partition the training
+and testing data. For example, the first fold contains the first 70\% of
+data as training (1988-2011), and the last 30\% as testing (2013-2023).
+The final date of the training set is extended in each fold until the
+year 2020 to create 10 folds. Models with the lowest average RMSE are
+selected and trained on the full set before being passed to the utility
+optimization procedure in Equation~\ref{eq-utility}.
+
+\hypertarget{lasso-regression}{%
+\subsection{LASSO Regression}\label{lasso-regression}}
+
+Least Absolute Shrinkage and Selection Operator (LASSO) regression is a
+popular regularization technique to assist model selection. It attempts
+to minimize the residual sum of squared errors through Ordinary Least
+Squares (OLS), but adds a penalty constraint on the absolute sum of
+selected coefficient values (Equation~\ref{eq-lasso}).
+
+\begin{equation}\protect\hypertarget{eq-lasso}{}{
+\hat{\beta}^{lasso}=\arg\min_{\beta}\left\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\omega_{ij}\beta_j)^2+\lambda\sum_{j=1}^{p}|\beta_j|\right\}
+}\label{eq-lasso}\end{equation}
+
+Where, \(y_i\) is our fishing variable, \(\beta\) the regression
+coefficients, \(n\), the number of observations, \(p\) the number of
+predictors, and \(\omega\) the total collection of weather variables.
+The \(\lambda\) is the penalty term that controls the amount of
+shrinkage. The LASSO regression model is trained on the same 10 fold
+cross validation method as the linear models. The optimal \(\lambda\) is
+selected through a grid search method that selects the RMSE one standard
+error away from the minimum. This choice is to ensure the most
+parsimonious model that still captures the most important weather
+variables. LASSO is particularly well suited for this research design as
+the absolute value of the penalty term shrinks coefficients to zero.
+Overfitting is a concern with so few observations in the initial
+training set; the shrinkage towards zero will help minimize this bias.
+
+\hypertarget{random-forests}{%
+\subsection{Random Forests}\label{random-forests}}
+
+While LASSO offers us the ability to simultaneously explore a wide
+collection of weather variables including lagged effects, it remains
+linear in its predictions. Random Forests are tree-based ensemble models
+that capture non-linear interactions through recursive partitioning. The
+are less sensitive to over fitting through the aggregation of many
+trees.
+
+We tune three hyperparameters to create the best performing random
+forest for each fishery. The number of trees in the forest, the number
+of variables to consider at each split, and the minimum number of
+observations in a leaf node. We use a grid search method to find the
+best hyperparameters based on RMSE. The final model is trained on the
+full dataset and passed to the utility optimization procedure in
+Equation~\ref{eq-utility}.
+
 \hypertarget{sec-results}{%
 \section{Results}\label{sec-results}}
 
 \hypertarget{sec-discussion}{%
-\section*{Discussion}\label{sec-discussion}}
-\addcontentsline{toc}{section}{Discussion}
+\section{Discussion}\label{sec-discussion}}
+
+\hypertarget{sec-appendix}{%
+\section{Appendix}\label{sec-appendix}}
+
+\begingroup\fontsize{7}{9}\selectfont
+
+\hypertarget{tbl-fish-sum}{}
+\begin{longtable}[t]{lrrlrrrrr}
+\caption{\label{tbl-fish-sum}Summary statistics of catch from 1988-2023 for California fisheries. }\tabularnewline
+
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Landings (mt)} & \multicolumn{2}{c}{Revenue (USD)} & \multicolumn{2}{c}{MT per Fisher} & \multicolumn{2}{c}{Number of Fishers} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5} \cmidrule(l{3pt}r{3pt}){6-7} \cmidrule(l{3pt}r{3pt}){8-9}
+Species & Average & Standard
+Deviation & Average & Standard
+Deviation & Average & Standard
+Devation & Average & Standard
+Deviation\\
+\midrule
+Albacore & 2055.4 & 2646.5 & \$3,574,984 & 4051538.3 & 5.3 & 3.1 & 305.5 & 307.7\\
+Bluefin tuna & 760.5 & 1131.1 & \$1,118,896 & 1137192.5 & 9.3 & 12.1 & 76.3 & 46.1\\
+California spiny lobster & 314.6 & 69.6 & \$7,752,729 & 5402314.5 & 1.7 & 0.6 & 202.0 & 39.8\\
+Chinook salmon & 1576.1 & 1291.7 & \$10,383,616 & 7643140.9 & 1.5 & 1.1 & 1146.6 & 1022.2\\
+Chub mackerel & 11304.3 & 10208.0 & \$1,944,342 & 1709450.2 & 80.2 & 59.5 & 133.9 & 78.6\\
+\addlinespace
+Dungeness crab & 5712.8 & 3334.7 & \$29,115,960 & 23070113.4 & 11.6 & 7.9 & 534.5 & 121.7\\
+Market squid & 51363.6 & 34634.6 & \$27,517,541 & 24057582.4 & 462.1 & 289.5 & 109.4 & 23.4\\
+Nom. Cabezon & 35.3 & 38.7 & \$306,669 & 321874.4 & 0.2 & 0.1 & 199.0 & 115.1\\
+Nom. Calif halibut & 374.6 & 140.9 & \$2,605,362 & 873979.0 & 0.9 & 0.3 & 427.1 & 87.8\\
+Nom. California sheephead & 46.7 & 38.8 & \$342,986 & 231782.3 & 0.4 & 0.2 & 134.1 & 88.5\\
+\addlinespace
+Nom. Lingcod & 359.0 & 421.0 & \$388,778 & 276453.1 & 0.4 & 0.3 & 675.4 & 374.0\\
+Nom. Shortspine thornyhead & 56.4 & 70.0 & \$432,850 & 465662.0 & 0.5 & 0.6 & 116.2 & 35.6\\
+Northern anchovy & 7696.1 & 10157.9 & \$860,871 & 643585.4 & 230.8 & 246.9 & 32.7 & 9.8\\
+Opah & 102.4 & 100.0 & \$198,182 & 257248.5 & 2.5 & 3.6 & 71.0 & 46.8\\
+Pacific bonito & 1090.7 & 1694.6 & \$544,835 & 886379.0 & 8.7 & 10.3 & 108.2 & 168.6\\
+\addlinespace
+Pacific sardine & 20665.4 & 22757.5 & \$2,574,205 & 2614838.8 & 309.1 & 325.9 & 53.3 & 21.0\\
+Red sea urchin & 7947.2 & 6067.5 & \$11,443,321 & 7684762.0 & 32.7 & 12.7 & 231.1 & 139.5\\
+Ridgeback prawn & 172.8 & 146.5 & \$634,305 & 473336.8 & 7.7 & 5.7 & 26.1 & 12.6\\
+Rock crab & 620.2 & 146.3 & \$1,750,541 & 597289.3 & 3.6 & 1.2 & 180.7 & 47.4\\
+Sablefish & 2753.2 & 1823.2 & \$5,759,976 & 2768043.7 & 10.4 & 6.9 & 269.6 & 70.3\\
+\addlinespace
+Spotted prawn & 153.1 & 76.1 & \$3,206,726 & 1989792.4 & 3.7 & 2.3 & 52.6 & 31.1\\
+Swordfish & 808.3 & 554.7 & \$5,671,198 & 3401866.3 & 6.7 & 3.2 & 129.3 & 84.3\\
+White seabass & 109.2 & 76.4 & \$635,876 & 429179.6 & 0.8 & 0.7 & 150.3 & 45.1\\
+Yellowfin tuna & 8853.7 & 17403.5 & \$10,230,193 & 20959459.4 & 67.4 & 89.0 & 74.0 & 73.9\\
+\bottomrule
+\end{longtable}
+\endgroup{}
+
+\hypertarget{tbl-fish-port-sum}{}
+\begin{longtable}[t]{llrrlrrrrr}
+\caption{\label{tbl-fish-port-sum}Summary statistics of catch from 1988-2023 for California fisheries
+split between species and port complex }\tabularnewline
+
+\toprule
+\multicolumn{2}{c}{ } & \multicolumn{2}{c}{Landings (mt)} & \multicolumn{2}{c}{Revenue (USD)} & \multicolumn{2}{c}{MT per Fisher} & \multicolumn{2}{c}{Number of Fishers} \\
+\cmidrule(l{3pt}r{3pt}){3-4} \cmidrule(l{3pt}r{3pt}){5-6} \cmidrule(l{3pt}r{3pt}){7-8} \cmidrule(l{3pt}r{3pt}){9-10}
+Species & Port & Average & Standard Deviation & Average & Standard Deviation & Average & Standard Devation & Average & Standard Deviation\\
+\midrule
+ & Eureka & 355.0 & 377.4 & \$672,866 & 634894.5 & 5.4 & 3.4 & 62.2 & 58.9\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-2}{*}[1\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Albacore} & San Francisco & 175.8 & 368.5 & \$322,734 & 639778.0 & 2.6 & 2.2 & 50.1 & 70.0\\
+\cmidrule{1-10}\pagebreak[0]
+Bluefin tuna & San Diego & 25.2 & 38.5 & \$163,167 & 334643.0 & 0.8 & 1.7 & 29.2 & 20.9\\
+\cmidrule{1-10}\pagebreak[0]
+ & Los Angeles & 47.2 & 36.2 & \$303,840 & 172626.8 & 0.7 & 0.3 & 64.0 & 25.9\\
+\cmidrule{2-10}\nopagebreak
+ & San Diego & 17.9 & 12.3 & \$117,380 & 51099.8 & 0.6 & 0.3 & 27.5 & 10.3\\
+\cmidrule{2-10}\nopagebreak
+ & San Francisco & 140.4 & 64.0 & \$1,053,595 & 721430.4 & 1.3 & 0.6 & 109.7 & 28.0\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-4}{*}[3\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Nom. Calif halibut} & Santa Barbara & 97.9 & 44.4 & \$705,370 & 187398.0 & 1.1 & 0.3 & 87.1 & 22.3\\
+\cmidrule{1-10}\pagebreak[0]
+ & Bodega Bay & 329.6 & 309.3 & \$2,258,504 & 1989960.2 & 1.0 & 0.6 & 357.0 & 263.0\\
+\cmidrule{2-10}\nopagebreak
+ & Eureka & 103.6 & 178.4 & \$649,797 & 1000836.3 & 0.4 & 0.4 & 227.5 & 363.7\\
+\cmidrule{2-10}\nopagebreak
+ & Fort Bragg & 343.9 & 404.8 & \$2,320,248 & 2367832.3 & 1.1 & 1.4 & 357.0 & 263.0\\
+\cmidrule{2-10}\nopagebreak
+ & Monterey & 313.7 & 272.7 & \$1,896,626 & 1161527.4 & 0.9 & 0.6 & 354.0 & 201.8\\
+\cmidrule{2-10}\nopagebreak
+ & Morro Bay & 72.9 & 81.4 & \$493,105 & 515982.2 & 0.6 & 0.5 & 107.3 & 72.5\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-6}{*}[5\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Chinook salmon} & San Francisco & 493.7 & 348.0 & \$3,339,479 & 2075261.9 & 1.2 & 0.8 & 434.7 & 265.1\\
+\cmidrule{1-10}\pagebreak[0]
+Chub mackerel & Los Angeles & 10320.4 & 9344.1 & \$1,782,814 & 1561212.8 & 150.3 & 110.6 & 60.5 & 27.4\\
+\cmidrule{1-10}\pagebreak[0]
+ & Bodega Bay & 572.9 & 554.1 & \$3,390,721 & 3510592.1 & 6.7 & 6.2 & 94.1 & 30.3\\
+\cmidrule{2-10}\nopagebreak
+ & Eureka & 3571.6 & 2232.7 & \$16,072,727 & 12672636.9 & 13.9 & 10.7 & 286.2 & 106.0\\
+\cmidrule{2-10}\nopagebreak
+ & Fort Bragg & 247.3 & 191.4 & \$1,376,466 & 1437305.5 & 5.6 & 3.9 & 42.5 & 8.0\\
+\cmidrule{2-10}\nopagebreak
+ & Monterey & 91.7 & 104.4 & \$692,846 & 868788.1 & 3.0 & 2.8 & 27.8 & 7.7\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-5}{*}[4\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Dungeness crab} & San Francisco & 1174.3 & 1276.2 & \$7,090,167 & 8035652.0 & 7.2 & 6.3 & 144.1 & 39.2\\
+\cmidrule{1-10}\pagebreak[0]
+ & Los Angeles & 98.3 & 21.3 & \$2,326,853 & 1471851.3 & 1.3 & 0.5 & 78.0 & 16.5\\
+\cmidrule{2-10}\nopagebreak
+ & San Diego & 99.0 & 22.5 & \$2,179,454 & 1244460.4 & 1.5 & 0.6 & 72.0 & 21.4\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-3}{*}[2\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash California spiny lobster} & Santa Barbara & 116.8 & 49.4 & \$3,239,108 & 2893952.5 & 2.0 & 0.9 & 61.2 & 11.8\\
+\cmidrule{1-10}\pagebreak[0]
+ & Los Angeles & 16986.5 & 14774.8 & \$8,750,561 & 8927983.2 & 278.8 & 175.1 & 52.6 & 21.5\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-2}{*}[1\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Market squid} & Santa Barbara & 24534.0 & 20112.5 & \$12,790,364 & 13303266.4 & 412.4 & 269.4 & 53.5 & 21.0\\
+\cmidrule{1-10}\pagebreak[0]
+Opah & San Diego & 58.6 & 66.2 & \$121,629 & 182250.9 & 2.5 & 3.6 & 36.4 & 20.5\\
+\cmidrule{1-10}\pagebreak[0]
+ & Los Angeles & 101.5 & 105.4 & \$259,159 & 196512.5 & 2.3 & 1.7 & 41.2 & 13.6\\
+\cmidrule{2-10}\nopagebreak
+ & Morro Bay & 75.9 & 65.7 & \$183,343 & 124726.4 & 3.5 & 2.4 & 22.0 & 15.0\\
+\cmidrule{2-10}\nopagebreak
+ & San Diego & 67.1 & 35.0 & \$163,988 & 79313.9 & 2.3 & 0.9 & 30.1 & 13.0\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-4}{*}[3\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Rock crab} &  & 344.2 & 173.1 & \$1,036,433 & 641375.7 & 5.3 & 3.0 & 71.0 & 16.4\\
+\cmidrule{1-1}
+\cmidrule{3-10}\nopagebreak
+Ridgeback prawn & \multirow[t]{-2}{*}[1\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Santa Barbara} & 155.5 & 139.5 & \$562,758 & 453595.2 & 7.9 & 5.6 & 19.7 & 7.6\\
+\cmidrule{1-10}\pagebreak[0]
+ & Los Angeles & 1229.8 & 1020.2 & \$1,890,768 & 1362341.7 & 18.0 & 4.8 & 63.6 & 41.9\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-2}{*}[1\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Red sea urchin} & Santa Barbara & 3971.6 & 2451.7 & \$6,081,764 & 3987202.8 & 32.0 & 14.5 & 130.3 & 83.3\\
+\cmidrule{1-10}\pagebreak[0]
+ & Bodega Bay & 90.7 & 90.1 & \$186,193 & 166543.1 & 4.1 & 2.7 & 17.9 & 9.1\\
+\cmidrule{2-10}\nopagebreak
+ & Eureka & 886.0 & 607.5 & \$1,634,560 & 691917.3 & 12.9 & 5.4 & 68.2 & 30.9\\
+\cmidrule{2-10}\nopagebreak
+ & Fort Bragg & 574.5 & 368.0 & \$1,221,487 & 633518.2 & 13.5 & 13.6 & 45.7 & 20.8\\
+\cmidrule{2-10}\nopagebreak
+ & Los Angeles & 227.5 & 552.3 & \$321,915 & 461035.2 & 13.6 & 50.7 & 18.1 & 9.5\\
+\cmidrule{2-10}\nopagebreak
+ & Monterey & 316.0 & 204.2 & \$642,984 & 415849.4 & 7.2 & 6.1 & 48.7 & 21.7\\
+\cmidrule{2-10}\nopagebreak
+ & Morro Bay & 229.8 & 185.6 & \$679,713 & 939824.4 & 8.1 & 5.4 & 31.5 & 16.4\\
+\cmidrule{2-10}\nopagebreak
+ & San Diego & 25.9 & 22.7 & \$137,336 & 144319.5 & 2.1 & 2.3 & 15.1 & 6.5\\
+\cmidrule{2-10}\nopagebreak
+ & San Francisco & 336.2 & 320.6 & \$559,985 & 268977.2 & 6.8 & 4.6 & 45.0 & 19.5\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-9}{*}[8\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Sablefish} & Santa Barbara & 63.3 & 74.2 & \$352,529 & 476423.6 & 3.0 & 2.9 & 17.3 & 6.7\\
+\cmidrule{1-10}\pagebreak[0]
+ & San Diego & 13.9 & 11.3 & \$119,436 & 84159.3 & 0.7 & 0.5 & 23.4 & 13.9\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-2}{*}[1\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Nom. California sheephead} &  & 20.9 & 22.7 & \$134,335 & 125858.2 & 0.4 & 0.4 & 48.1 & 30.8\\
+\cmidrule{1-1}
+\cmidrule{3-10}\nopagebreak
+Spotted prawn & \multirow[t]{-2}{*}[1\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Santa Barbara} & 53.4 & 29.2 & \$1,116,708 & 873801.1 & 3.5 & 2.4 & 18.7 & 9.5\\
+\cmidrule{1-10}\pagebreak[0]
+ & Los Angeles & 315.9 & 360.1 & \$2,072,740 & 1972406.2 & 5.8 & 5.2 & 60.9 & 49.1\\
+\cmidrule{2-10}\nopagebreak
+ & San Diego & 178.4 & 131.0 & \$1,416,146 & 905587.3 & 3.0 & 1.3 & 57.3 & 31.6\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-3}{*}[2\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash Swordfish} & Santa Barbara & 66.1 & 91.5 & \$466,637 & 585529.3 & 2.3 & 1.9 & 25.8 & 26.4\\
+\cmidrule{1-10}\pagebreak[0]
+ & Los Angeles & 31.5 & 30.9 & \$146,996 & 111988.1 & 1.2 & 1.0 & 31.9 & 16.6\\
+\cmidrule{2-10}\nopagebreak
+ & San Diego & 13.1 & 26.4 & \$73,176 & 87486.8 & 0.6 & 0.7 & 19.8 & 9.4\\
+\cmidrule{2-10}\nopagebreak
+\multirow[t]{-3}{*}[2\dimexpr\aboverulesep+\belowrulesep+\cmidrulewidth]{\raggedright\arraybackslash White seabass} & Santa Barbara & 54.3 & 43.1 & \$331,544 & 269526.5 & 1.1 & 1.0 & 51.4 & 14.1\\
+\bottomrule
+\end{longtable}
+
+\hypertarget{references}{%
+\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
@@ -518,6 +788,20 @@ a neural network-based index insurance}. \emph{Management Science}
 Clarke, D.J. (2016) \href{https://doi.org/10.1257/mic.20140103}{A theory
 of rational demand for index insurance}. \emph{Journal: Microeconomics}
 \textbf{8}, 283--306.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Clement2018}{}}%
+Clement, K.Y., Botzen, W.J.W., Brouwer, R. and Aerts, J.C.J.H. (2018)
+\href{https://doi.org/10.1016/j.ijdrr.2018.01.001}{A global review of
+the impact of basis risk on the functioning of and demand for index
+insurance}. \emph{International Journal of Disaster Risk Reduction}
+\textbf{28}, 845--853.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Correia2021}{}}%
+Correia, H.E. (2021)
+\href{https://doi.org/10.1038/s41598-021-89398-8}{Semiparametric model
+selection for identification of environmental covariates related to
+adult groundfish catches and weights}. \emph{Scientific Reports}
+\textbf{11}, 1--14.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Dalhaus2016}{}}%
 Dalhaus, T. and Finger, R. (2016)

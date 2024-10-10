@@ -1,3 +1,5 @@
+### Run the linear model assessment on port data
+
 library(tidyverse)
 library(readxl)
 library(wcfish)
@@ -7,7 +9,7 @@ library(zoo)
 
 #load catch data
 
-load(here::here("data","fisheries","cali_catch.rda"))
+load(here::here("data","fisheries","cali_port.rda"))
 
 #load weather data
 load(here::here("data","environmental","block_beuti.rda"))
@@ -17,48 +19,35 @@ load(here::here("data","environmental","block_sst.rda"))
 load(here::here("data","environmental","enso_pdo.rda"))
 
 #load designed fucntions
-source(here::here("src","fcn","cw_join_cali.R"))
+source(here::here("src","fcn","port_join_cali.R"))
 source(here::here("src","fcn","lm_mod_fcn.R"))
 source(here::here("src","fcn","pred_fcn.R"))
 source(here::here("src","fcn","ins.R"))
 source(here::here("src","fcn","utility.R"))
 
-cali_cw<-cali_catch %>% 
-  group_by(species_code) %>%
+port_cw<-cali_port_catch %>% 
+  group_by(spp_code,port_code) %>%
   mutate(mt_per_fisher=case_when(mt_per_fisher==Inf~0,
-                              .default=as.numeric(mt_per_fisher)),
+                                 .default=as.numeric(mt_per_fisher)),
          lb_per_fisher=case_when(lb_per_fisher==Inf~0,
                                  .default=as.numeric(lb_per_fisher))) %>% 
-  mutate(roll_value_usd=rollmean(value_usd,3,fill=NA,align="right",na.rm=TRUE),
+  mutate(roll_value_usd=rollmean(revenues_usd,3,fill=NA,align="right",na.rm=TRUE),
          roll_landings=rollmean(landings_mt,3,fill=NA,align='right',na.rm=TRUE),
          roll_n_rev=rollmean(rev_per_fisher,3,fill=NA,align='right',na.rm=TRUE),
          roll_n_mt=rollmean(mt_per_fisher,3,fill=NA,align='right',na.rm=TRUE)) %>%
   filter(year>=1988) |> 
   nest() %>% 
-  mutate(cw_data=map2(.x=species_code,.y=data,~cw_join_cali(.x,.y)))
+  mutate(cw_data=pmap(list(spp=spp_code,port=port_code,data=data),cw_join_port))
 
-cali_mt_lm<-cali_cw %>% 
+
+port_mt_lm<-port_cw %>% 
   mutate(lm_mod_mt=map2(.x=cw_data,.y="landings_mt",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
   hoist(lm_mod_mt,"u_rr","coverage")
-  
-cali_rev_lm<-cali_cw %>% 
-  mutate(lm_mod_rev=map2(.x=cw_data,.y="value_usd",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
+
+port_rev_lm<-port_cw %>% 
+  mutate(lm_mod_rev=map2(.x=cw_data,.y="revenues_usd",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
   hoist(lm_mod_rev,"u_rr","coverage")
 
-cali_per_lm<-cali_cw %>% 
+cali_per_lm<-port_cw %>% 
   mutate(lm_mod_per=map2(.x=cw_data,.y="rev_per_fisher",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
   hoist(lm_mod_per,"u_rr","coverage")
-
-
-gg_fcn<-function(data,pred,y_ax){
-  data<-data[[1]]
-  
-  pred_df<-data.frame(year=seq(1988,2023),pred=pred[[1]])
-  data |> 
-    ggplot()+
-    geom_line(aes(x=year,y=rev_per_fisher,color="Landings"))+
-    geom_line(data=pred_df,aes(x=year,y=pred,color="Predicted"))+
-    geom_line(aes(x=year,y=roll_value_usd,color="Rolling Mean"))+
-    scale_color_manual(values=c("Landings"="black","Predicted"="red","Rolling Mean"="blue"))+
-    theme_minimal()
-}
