@@ -1,8 +1,13 @@
+#### Random Forest Implementation
+
 library(tidyverse)
+library(glmnet)
+
 library(readxl)
 library(wcfish)
 library(sf)
 library(zoo)
+library(tidymodels)
 
 
 #load catch data
@@ -18,13 +23,13 @@ load(here::here("data","environmental","enso_pdo.rda"))
 
 #load designed fucntions
 source(here::here("src","fcn","cw_join_cali.R"))
-source(here::here("src","fcn","lm_mod_fcn.R"))
+source(here::here("src","fcn","rf_fcn_tm.R"))
 source(here::here("src","fcn","utility_test.R"))
 
 cali_cw<-cali_catch %>% 
   group_by(species_code) %>%
   mutate(mt_per_fisher=case_when(mt_per_fisher==Inf~0,
-                              .default=as.numeric(mt_per_fisher)),
+                                 .default=as.numeric(mt_per_fisher)),
          lb_per_fisher=case_when(lb_per_fisher==Inf~0,
                                  .default=as.numeric(lb_per_fisher))) %>% 
   mutate(roll_value_usd=rollmean(value_usd,3,fill=NA,align="right",na.rm=TRUE),
@@ -35,18 +40,8 @@ cali_cw<-cali_catch %>%
   nest() %>% 
   mutate(cw_data=map2(.x=species_code,.y=data,~cw_join_cali(.x,.y)))
 
-cali_mt_lm<-cali_cw %>% 
-  mutate(lm_mod_mt=map2(.x=cw_data,.y="landings_mt",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_mt,"u_rr","coverage")
-  
-cali_rev_lm<-cali_cw %>% 
-  mutate(lm_mod_rev=map2(.x=cw_data,.y="value_usd",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_rev,"u_rr","coverage")
-
-cali_per_lm<-cali_cw %>% 
-  mutate(lm_mod_per=map2(.x=cw_data,.y="rev_per_fisher",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_per,"u_rr","coverage")
 
 
-# save output
-save(cali_mt_lm,cali_rev_lm,cali_per_lm,file=here::here("data","output","cali_lm_output.rda"))
+cali_mt_rf<-cali_cw %>% 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="landings_mt",~rf_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","coverage")

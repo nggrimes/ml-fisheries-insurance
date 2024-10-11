@@ -1,10 +1,13 @@
-### Run the linear model assessment on port data
+### Script to run lasso regression on cali state wide data
 
 library(tidyverse)
+library(glmnet)
+
 library(readxl)
 library(wcfish)
 library(sf)
 library(zoo)
+library(tidymodels)
 
 
 #load catch data
@@ -20,9 +23,7 @@ load(here::here("data","environmental","enso_pdo.rda"))
 
 #load designed fucntions
 source(here::here("src","fcn","port_cw_join.R"))
-source(here::here("src","fcn","lm_mod_fcn.R"))
-source(here::here("src","fcn","pred_fcn.R"))
-source(here::here("src","fcn","ins.R"))
+source(here::here("src","fcn","lasso_fcn_tm.R"))
 source(here::here("src","fcn","utility_test.R"))
 
 port_cw<-cali_port_catch %>% 
@@ -40,17 +41,17 @@ port_cw<-cali_port_catch %>%
   mutate(cw_data=pmap(list(spp=spp_code,port=port_code,data=data),cw_join_port))
 
 
-port_mt_lm<-port_cw %>% 
-  mutate(lm_mod_mt=map2(.x=cw_data,.y="landings_mt",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_mt,"u_rr","coverage")
+port_mt_lasso<-port_cw %>% 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="landings_mt",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","coverage")
 
-port_rev_lm<-port_cw %>% 
-  mutate(lm_mod_rev=map2(.x=cw_data,.y="revenues_usd",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_rev,"u_rr","coverage")
+port_rev_lasso<-port_cw %>% 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="revenues_usd",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","coverage")
 
-port_per_lm<-port_cw %>% 
-  mutate(lm_mod_per=map2(.x=cw_data,.y="rev_per_fisher",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_per,"u_rr","coverage")
+port_per_fisher_lasso<-port_cw %>% 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="rev_per_fisher",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","coverage")
 
-save(port_mt_lm,port_rev_lm,port_per_lm,file=here::here("data","output","port_lm_output.rda"))
+save(port_mt_lasso,port_rev_lasso,port_per_fisher_lasso,file=here::here("data","output","port_lasso_output.rda"))
 

@@ -23,10 +23,8 @@ load(here::here("data","environmental","enso_pdo.rda"))
 
 #load designed fucntions
 source(here::here("src","fcn","cw_join_cali.R"))
-source(here::here("src","fcn","lm_mod_fcn.R"))
-source(here::here("src","fcn","pred_fcn.R"))
-source(here::here("src","fcn","ins.R"))
-source(here::here("src","fcn","utility.R"))
+source(here::here("src","fcn","lasso_fcn_tm.R"))
+source(here::here("src","fcn","utility_test.R"))
 
 cali_cw<-cali_catch %>% 
   group_by(species_code) %>%
@@ -42,100 +40,19 @@ cali_cw<-cali_catch %>%
   nest() %>% 
   mutate(cw_data=map2(.x=species_code,.y=data,~cw_join_cali(.x,.y)))
 
-### Use tidymodels to build a function that continas a lasso workflow to apply to each data set
 
-lasso_fcn<-function(data,var_list,dep_var){
-  
-  if(var_list=='all'){
-    filter_data<-data %>% 
-      filter(fish_var==dep_var) |> 
-      pivot_wider(
-        names_from=var,
-        values_from=value
-      ) |> 
-      drop_na() |> 
-      select(-year,-fish_var)
-  }else{
-    filter_data<-data %>% 
-      filter(var %in% var_list & fish_var==dep_var)
-    pivot_wider(
-      names_from=var,
-      values_from=value
-    ) |> 
-      drop_na() |> 
-      select(-year,-fish_var)
-  }
-  
-  
-  
-  # split data (may have to do manually later)
-  set.seed(123)
-  data_split<-initial_split(filter_data)
-  data_train<-training(data_split)
-  data_test<-testing(data_split)
-  
-  # create receipe
-  rec<-recipe(fish_value~.,data=data_train) %>%
-    step_normalize(all_predictors()) %>%
-    step_zv(all_predictors()) 
-  
-  # prep receipe
-  
-  rec_prep<-rec |> 
-    prep()
-  
-  # create model
-  
-  # lasso<-linear_reg(mode="regression",penalty=0.1, mixture=1) %>%
-  #   set_engine("glmnet")
-  
-  # create workflow
-  wf<-workflow()%>%
-    add_recipe(rec)
-  
-  data_boot<-bootstraps(data_train)
-  
-  tune_spec<-linear_reg(penalty=tune(),mixture=1)%>%
-    set_engine("glmnet")
-  
-  lambda_grid<-grid_regular(penalty(),levels=50)
-  
-  lasso_grid<-tune_grid(
-    wf |> add_model(tune_spec),
-    resamples=data_boot,
-    grid=lambda_grid
-  )
-  
-  lowest_rmse<-lasso_grid |> 
-    select_best('rmse')
-  
-  final_lasso<-finalize_workflow(
-    wf |> add_model(tune_spec),
-    lowest_rmse
-  )
-  
-  last_fit(final_lasso,
-           data_split) |> collect_metrics()
-  
-  lasso_fit<-wf |> 
-    add_model(lasso) |> 
-    fit(data=data_train)
-  
-  
-  library(vip)
-  
-  final_lasso %>%
-    fit(data_train) %>%
-    pull_workflow_fit() %>%
-    vi(lambda = lowest_rmse$penalty) %>%
-    mutate(
-      Importance = abs(Importance),
-      Variable = fct_reorder(Variable, Importance)
-    ) %>%
-    ggplot(aes(x = Importance, y = Variable, fill = Sign)) +
-    geom_col() +
-    scale_x_continuous(expand = c(0, 0)) +
-    labs(y = NULL)
-  
-  
-}
+
+cali_mt_lasso<-cali_cw %>% 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="landings_mt",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","coverage")
+
+cali_rev_lasso<-cali_cw %>% 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="value_usd",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","coverage")
+
+cali_per_fisher_lasso<-cali_cw %>% 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="rev_per_fisher",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","coverage")
+
+save(cali_mt_lasso,cali_rev_lasso,cali_per_fisher_lasso,file=here::here("data","output","cali_lasso_output.rda"))
+
