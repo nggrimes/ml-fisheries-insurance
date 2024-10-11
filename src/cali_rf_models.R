@@ -1,7 +1,7 @@
 #### Random Forest Implementation
 
 library(tidyverse)
-library(glmnet)
+library(ranger)
 
 library(readxl)
 library(wcfish)
@@ -23,7 +23,7 @@ load(here::here("data","environmental","enso_pdo.rda"))
 
 #load designed fucntions
 source(here::here("src","fcn","cw_join_cali.R"))
-source(here::here("src","fcn","rf_fcn_tm.R"))
+source(here::here("src","fcn","rf_fcn.R"))
 source(here::here("src","fcn","utility_test.R"))
 
 cali_cw<-cali_catch %>% 
@@ -43,5 +43,15 @@ cali_cw<-cali_catch %>%
 
 
 cali_mt_rf<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="landings_mt",~rf_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="landings_mt",~rf_fcn(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
   hoist(lasso_mod_mt,"u_rr","coverage")
+
+cali_rev_rf<-cali_cw %>% 
+  mutate(lasso_mod_lb=map2(.x=cw_data,.y="value_usd",~rf_fcn(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_lb,"u_rr","coverage")
+
+cali_per_rf<-cali_cw %>% 
+  mutate(lasso_mod_n=map2(.x=cw_data,.y="rev_per_fisher",~rf_fcn(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_n,"u_rr","coverage")
+
+save(cali_mt_rf,cali_rev_rf,cali_per_rf,file=here::here("data","output","cali_rf_output.rda"))

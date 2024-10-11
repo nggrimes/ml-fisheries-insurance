@@ -20,28 +20,7 @@ rf_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log'){
       select(-year,-fish_var)
   }
   
-  if(var_list=='all'){
-    filter_data<-data %>% 
-      filter(fish_var==dep_var) |> 
-      pivot_wider(
-        names_from=var,
-        values_from=value
-      ) |> 
-      drop_na() |> 
-      select(-year,-fish_var)
-  }else{
-    filter_data<-data %>% 
-      filter(var %in% var_list & fish_var==dep_var)
-    pivot_wider(
-      names_from=var,
-      values_from=value
-    ) |> 
-      drop_na() |> 
-      select(-year,-fish_var)
-  }
-  
-  
-  #browser()
+  browser()
   # split data (may have to do manually later)
   set.seed(123)
   data_split<-initial_time_split(filter_data)
@@ -72,7 +51,7 @@ rf_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log'){
   
   # Set up parallel processing
   
-  doParallel::registerDoParallel()
+  #doParallel::registerDoParallel()
   
   
   rf_grid<-tune_grid(
