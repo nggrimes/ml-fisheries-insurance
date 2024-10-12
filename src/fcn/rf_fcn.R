@@ -30,7 +30,7 @@ rf_fcn<-function(data,var_list='all',dep_var,ra=1,ut_mod='log'){
   }
   
   # create grid of possible hyperparameter combinations
-  par_grid<-expand_grid(m=seq(2,20,by=2),
+  par_grid<-expand_grid(m=seq(2,16,by=2),
                n=seq(2,8)) |> 
     mutate(rmse=NA)
   

@@ -73,7 +73,7 @@ lasso_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log'){
   )
   
   
-  pred<-predict(final_lasso |> fit(data_train),filter_data) |> 
+  pred<-predict(final_lasso |> fit(filter_data),filter_data) |> 
     rename(pred=1)
   
   fit_data=filter_data |> 
