@@ -1,4 +1,4 @@
-lasso_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log'){
+lasso_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log',m=1){
   #Uses a tidymodels workflow to calculate the best lasso model for a fishery
   # Better performance with the boostraps then cv.glmnet
   # output is a list of the final workflow that needs to be fitted with data before use
@@ -91,7 +91,7 @@ lasso_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log'){
   
 
   #browser()
-  opt_out<-optim(par=.1,utility_test,lower=0,method="L-BFGS-B",data=pay_data,a=ra,ut_mod=ut_mod)
+  opt_out<-optim(par=.1,utility_test,lower=0,method="L-BFGS-B",data=pay_data,a=ra,ut_mod=ut_mod,m=m)
   u_i=-opt_out$value
   u_noi=-utility_test(0,pay_data,a=ra,ut_mod=ut_mod)
   

@@ -197,7 +197,7 @@ insurance using machine learning}
 \makeatother
 \subtitle{Working Paper not for Distribution}
 \author{Nathaniel Grimes}
-\date{2024-10-08}
+\date{2024-10-13}
 
 \begin{document}
 \maketitle
@@ -206,9 +206,18 @@ Index insurance is a financial tool gaining traction for application in
 fisheries. It will cover fishers losses under extreme weather events
 that impact fishery productivity. This is the first assessment to
 determine the feasibility of such programs and whether suitable indices
-exist.
+exist. Catch and revenue data from 74 California fisheries are matched
+to 20 environmental variables using three prediction models: linear
+regression, LASSO regression, and random forests. The models are used to
+calculate the utility improvements of index insurance for fishers.
+Random forests provide the most significant improvements in utility,
+increasing fisher welfare by 14\%. The results suggest that index
+insurance can improve fisher welfare, but the extent of success is not
+consistent across all fisheries. Specifically tailored insurance
+contracts must be created for each fishery using the best available data
+and models
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, interior hidden, sharp corners, breakable, borderline west={3pt}{0pt}{shadecolor}, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, frame hidden, sharp corners, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, enhanced, breakable]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -231,7 +240,7 @@ inequitable system (Holland and Leonard 2020; Jardine \emph{et al.}
 2020). Calls for new financial tools to alleviate fisher income shocks
 have grown (Mumford \emph{et al.} 2009; Sethi 2010).
 
-Index insurance has risen as a prime candidate tool to protect fishing
+Index insurance has risen as a prime candidate to protect fishing
 communities during disasters (Watson \emph{et al.} 2023). Index
 insurance is a financial product that pays out when an independently
 verified index, such as rainfall or temperature, falls below a
@@ -249,7 +258,7 @@ development of fishery insurance policies is reconciling these
 challenges to find suitable indices that can predict fishery
 productivity (Watson \emph{et al.} 2023).
 
-Recent expansions in oceanic remote sensing has led to a wealth of new
+Recent expansions in oceanic remote sensing has led to a plethora of new
 environmental indices that could be used to predict fishery
 productivity. Fishery data collection continues to improve with better
 reporting systems with longer and more detailed catch histories. This
@@ -262,20 +271,19 @@ that policyholders experience a harmful shock to their income, but the
 index does not trigger. Basis risk lowers demand for index insurance and
 remains a significant roadblock in setting up new programs
 (Binswanger-Mkhize 2012; Clarke 2016; Clement \emph{et al.} 2018).
-Designing indices with stronger correlations to fishery losses is the
-most effective way to reduce basis risk (Jensen \emph{et al.} 2019).
 
 It is impossible to completely eliminate basis risk, and there exists a
-wide range in deployed agriculture products. Well designed policies can
+wide range in exisiting agriculture products. Well designed policies can
 capture up to 90\% of the income variation as shown in Kenyan pasture
 grazing indices (Jensen \emph{et al.} 2019). Abysmal correlations are
-prevalent in the United States, where the Rainfall Index Insurance for
-Pasture, Rangeland, and Forage (RI-PRF) program has correlations as low
-as 0.071 in California leading to 46\% additional basis risk (Keller and
-Saitone 2022). The program has a 26\% probability of not paying out when
-damages are suffered in Nebraska and Kansas (Yu \emph{et al.} 2019).
-Subsidies covering up to 60\% of ranchers paid premiums are need to
-stimulate demand in the RI-PRF program (Goodrich \emph{et al.} 2019).
+prevalent in the Rainfall Index Insurance for Pasture, Rangeland, and
+Forage (RI-PRF) program where correlations as low as 0.071 exist in
+California, which leads to 46\% additional points of basis risk (Keller
+and Saitone 2022). The program has a 26\% probability of not paying out
+when damages are suffered in Nebraska and Kansas (Yu \emph{et al.}
+2019). Subsidies covering up to 60\% of ranchers paid premiums are
+needed to stimulate demand in the RI-PRF program (Goodrich \emph{et al.}
+2019).
 
 Contract design can mitigate basis risk through providing more options
 so that individuals can better select policies that protect them.
@@ -288,10 +296,21 @@ could account for only 5-9\% of basis risk. Farms in Kansas closer to
 weather stations had better predictive impacts of rain on yield (Yu
 \emph{et al.} 2019).
 
-Machine learning has exploded as a new tool to define new and better
-indices in agriculture index insurance (Feng \emph{et al.} 2019;
-Cesarini \emph{et al.} 2021; Schmidt \emph{et al.} 2022; Chen \emph{et
-al.} 2024). Machine learning models excel in index insurance because
+Designing indices with stronger correlations to fishery losses is the
+most effective way to reduce basis risk (Jensen \emph{et al.} 2019).
+Agricultural researchers continually seek new methods and data sources
+to improve the correlation between loss and weather variables. Quantile
+regressions improve Kazak wheat farmers utility between 0.1-22\% over
+linear models depending on the underlying measure of utility (Conradt
+\emph{et al.} 2015). Remote sensing variables leveraging the latest
+satellite data on vegetative cover and rainfall provide better coverage
+than county wide averages (Dalhaus and Finger 2016; Valverde-Arias
+\emph{et al.} 2020).
+
+Machine learning has exploded as a new method to define better indices
+in agriculture index insurance (Feng \emph{et al.} 2019; Cesarini
+\emph{et al.} 2021; Schmidt \emph{et al.} 2022; Chen \emph{et al.}
+2024). Machine learning models excel in index insurance because
 indemnity contracts only need predictive relationships. Whereas, fishery
 stock assessments build complex models with biological foundations to
 accurately inform management of future fish stocks, index insurance can
@@ -316,15 +335,22 @@ fisheries.
 This study will provide the first comprehensive examination of the
 necessary features of weather indices for fisheries index insurance. We
 contribute to the growing ocean adaption and blue finance literature.
+While our intent is to improve fisher welfare with a new financial
+program, we also expand the assessment of which weather variables have
+predictive performance in highly productive upwelling ecosystems.
 
 The rest of the paper is structured as follows. Section~\ref{sec-model}
 describes the insurance model tested in this study.
-Section~\ref{sec-data} describes the data used in this study.
-Section~\ref{sec-methods} describes the methods used to predict fishery
-productivity and evaluate the utility of index insurance.
-Section~\ref{sec-results} presents the results of the study.
-Section~\ref{sec-discussion} discusses the results and implications for
-the future of fisheries index insurance.
+Section~\ref{sec-data} describes the data collection, transformations,
+and sources. Fisheries data comes from newly open-access sources
+provided by the California Department of Fish and Wildlife.
+Section~\ref{sec-methods} describes the algorithms used to predict
+fishery productivity and evaluate the utility of index insurance.
+Section~\ref{sec-results} presents the welfare results as well as
+extracting which variables contribute to the prediction models to infer
+more interpretable results for fishers. Section~\ref{sec-discussion}
+discusses the results and implications for the future of fisheries index
+insurance.
 
 \hypertarget{sec-model}{%
 \section{Insurance Model}\label{sec-model}}
@@ -339,7 +365,7 @@ maintain their use to preserve measures of interpretability that are
 clearer for a first analysis of fishery index insurance.
 
 Payouts will be issued when prediction models predict negative
-deviations from long run average value. The three prediction models
+deviations from the long run average. The three prediction models
 (\(k\in\{\text{LR,LA,RF}\}\) are a linear regression (\(\text{LR}\)), a
 LASSO regression (\(\text{LA}\)), and a random forest (\(\text{RF}\)).
 
@@ -349,9 +375,10 @@ I(\omega)=\max(0,(\bar{\pi}-\hat\pi_t^k(\omega)) \cdot l)
 
 Where \(k\) is the prediction model, \(l\) is the level of coverage,
 \(\hat\pi_t^k(w)\) is the predicted fishing variable from \(\omega\)
-weather variables, and \(\bar{\pi}_{x}\) the long run average of the
-fishing variable. The premium is calculated as the expected value of the
-payout function times the premium loading factor (\(m\)).
+weather variables, and \(\bar{\pi}\) the long run average of the fishing
+variable. The premium \(\rho\) is calculated as the expected value of
+the payout function times the premium loading factor \(m\)
+(Equation~\ref{eq-premium}).
 
 \begin{equation}\protect\hypertarget{eq-premium}{}{
 \rho(\omega)=\mathbb{E}[I(\omega)]m
@@ -361,10 +388,13 @@ Utility measures offer the most insightful evaluation of index insurance
 policies (Kenduiywo \emph{et al.} 2021). It captures value added for
 policyholders, not just measures of payout frequency as other measures
 of basis risk. Constant absolute risk aversion allows more consistent
-comparison for different levels of wealth. Expected utility for a given
-fishery is the average utility over all years in the sample for any
-variable of interest \(\pi_t\). Fishers are allowed to choose insurance
-coverage levels \(l\) to ensure feasible contracts.
+comparison for different levels of wealth. Fishing variables may vary
+extensively from fishery to fishery. We normalize utility by dividing
+all measured payouts and fishing variables by the maximum observed
+value. Expected utility for a given fishery is the average utility over
+all years in the sample for any variable of interest \(\pi_t\). Fishers
+are allowed to choose insurance coverage levels \(l\) to ensure feasible
+contracts.
 
 \begin{equation}\protect\hypertarget{eq-utility}{}{
 \begin{aligned}
@@ -377,7 +407,7 @@ U_{r}&=\frac{\mathbb{E}[U_i]-\mathbb{E}[U_b]}{\mathbb{E}[U_b]}\cdot100 &\text{Pe
 We will compare the percent change in fisher utility with insurance
 (\(U_i\)) versus without insurance (\(U_{b}\)) for each prediction
 method. The variable of interest \(\pi_t\), will be fishing revenue,
-landings, and catch per fisher to test what measures of fishery
+landings, and revenue per fisher to test what measures of fishery
 productivity are most suitable for index insurance.
 
 No data on fishery insurance suppliers exists to create a market
@@ -397,8 +427,8 @@ Each fishery has unique ecological characteristics that interact with
 environmental variables in different and non-linear ways. By studying a
 wide collection of fisheries and environmental variables we can uncover
 the potential feasibility of index insurance for fisheries holistically,
-and then further refine measures with ecologically sound models in the
-future.
+and then further refine measures with ecologically sound models in
+future applications.
 
 \hypertarget{fishery-data}{%
 \subsection{Fishery Data}\label{fishery-data}}
@@ -413,13 +443,13 @@ matched to each species within the West Coast Fish data package.
 We select California fisheries with a minimum of 30 years of
 consecutive, non-confidential catch records at both the state and
 port-complex level. Unclassified catch records are dropped i.e.~``Other
-Sharks'' and similar categories. Fisheries with an average revenue
-greater than \$100,000 at the state and \$75,000 at port-complex level
-are analyzed. Twenty four fisheries at the state level and 49 fisheries
-at the port complex level meet these criteria. These fisheries contain
-the most economically important fisheries in California and their mean
-values are shown in Table~\ref{tbl-fish-sum} and at the port complex in
-Table~\ref{tbl-fish-port-sum}.
+Sharks'' and similar categories. Fisheries with an average revenue from
+2010-2019 greater than \$100,000 at the state and \$75,000 at
+port-complex level are analyzed. Twenty four fisheries at the state
+level and 50 fisheries at the port complex level meet these criteria.
+These fisheries contain the most economically important fisheries in
+California and their mean values are shown in Table~\ref{tbl-fish-sum}
+and at the port complex in Table~\ref{tbl-fish-port-sum}.
 
 Fisheries have complex spatial dynamics. Agriculture has clear,
 quantifiable impacts of weather in grids that are well suited for index
@@ -468,7 +498,7 @@ effects of upwelling. Fishing blocks are matched to the nearest 1 degree
 latitude interval to provide a monthly time series of upwelling for each
 fishery. Seasonal strengths of upwelling are captured by averaging CUTI
 and BEUTI within each quarter of the year. Spring upwelling in early
-March and April are espeically important to a wide array of fish
+March and April are especially important to a wide array of fish
 species. Yearly average and amplitude values (the difference between
 minimum observed upwelling and maximum) are also calculated. These
 indices are the most temporally limited datasets in this analysis, only
@@ -493,9 +523,9 @@ averaged over a given year. PDO data is taken from the PDO ERSST V5, and
 ENSO data is taken from the multivariate ENSO Index Version 2 (MEI.v2).
 
 Summary statistics for the environmental data are presented in
-\textbf{?@tbl-env-sum}. In total, 73 fisheries with 35 years of catch
-data are matched to 20 spatial matched environmental variables with
-annual coverage from 1988 to 2023.
+Table~\ref{tbl-env-sum}. In total, 74 fisheries with 35 years of catch
+data and 20 weather variables are spatially matched with annual coverage
+from 1988 to 2023.
 
 \hypertarget{sec-methods}{%
 \section{Methods}\label{sec-methods}}
@@ -508,10 +538,10 @@ robust LASSO regression and random forest models.
 
 In all class of models, the final utility maximization choice of
 coverage leverage is found through a box constrained quasi-Newton Method
-using the optim function in R. Choices are constrained between zero and
-the fishing variable's average value. Premium schedules are found by the
-model output below the trigger values in Equation~\ref{eq-payout} and
-then averaged over the time period.
+using the optim function in R. Choices are constrained to be
+non-negative. Premium schedules are found by the model output below the
+trigger values in Equation~\ref{eq-payout} and then averaged over the
+total fishery data.
 
 \hypertarget{linear-models}{%
 \subsection{Linear Models}\label{linear-models}}
@@ -522,17 +552,18 @@ of implementation, linear models on single weather indices are the most
 common design choice for index insurance policies. They offer a basic
 starting place to consider the viability of fishery index insurance.
 
-Yearly aggregated fishing variables are regressed on each spatially
-matched to catch environmental variable. We perform a 10 fold cross
-validation method to determine the best individual weather variable
-based on root mean square error (RMSE). To preserve the time series
-element of the data, we used a rolling split to partition the training
-and testing data. For example, the first fold contains the first 70\% of
-data as training (1988-2011), and the last 30\% as testing (2013-2023).
-The final date of the training set is extended in each fold until the
-year 2020 to create 10 folds. Models with the lowest average RMSE are
-selected and trained on the full set before being passed to the utility
-optimization procedure in Equation~\ref{eq-utility}.
+Yearly aggregated fishing variables are regressed on each environmental
+variable individually. Weather variables are spatially matched to the
+location of catch. We perform a 10 fold cross validation method to
+determine the best individual weather variable based on root mean square
+error (RMSE). To preserve the time series element of the data, we used a
+rolling split to partition the training and testing data. For example,
+the first fold contains the first 70\% of data as training (1988-2011),
+and the last 30\% as testing (2013-2023). The final date of the training
+set is extended in each fold until the year 2020 to create 10 folds.
+Models with the lowest average RMSE are selected and trained on the full
+set before being passed to the utility optimization procedure in
+Equation~\ref{eq-utility}.
 
 \hypertarget{lasso-regression}{%
 \subsection{LASSO Regression}\label{lasso-regression}}
@@ -551,10 +582,10 @@ Where, \(y_i\) is our fishing variable, \(\beta\) the regression
 coefficients, \(n\), the number of observations, \(p\) the number of
 predictors, and \(\omega\) the total collection of weather variables.
 The \(\lambda\) is the penalty term that controls the amount of
-shrinkage. The LASSO regression model is trained on the same 10 fold
-cross validation method as the linear models. The optimal \(\lambda\) is
-selected through a grid search method that selects the RMSE one standard
-error away from the minimum. This choice is to ensure the most
+shrinkage. Models are trained using the \texttt{glmnet} package in R.
+The LASSO regression model is trained on 200 bootstrapped samples of the
+training data. The optimal \(\lambda\) is selected through a grid search
+method that selects the minimum RMSE. This choice is to ensure the most
 parsimonious model that still captures the most important weather
 variables. LASSO is particularly well suited for this research design as
 the absolute value of the penalty term shrinks coefficients to zero.
@@ -567,41 +598,165 @@ training set; the shrinkage towards zero will help minimize this bias.
 While LASSO offers us the ability to simultaneously explore a wide
 collection of weather variables including lagged effects, it remains
 linear in its predictions. Random Forests are tree-based ensemble models
-that capture non-linear interactions through recursive partitioning. The
-are less sensitive to over fitting through the aggregation of many
+that capture non-linear interactions through recursive partitioning.
+They are less sensitive to over fitting through the aggregation of many
 trees.
 
-We tune three hyperparameters to create the best performing random
-forest for each fishery. The number of trees in the forest, the number
-of variables to consider at each split, and the minimum number of
-observations in a leaf node. We use a grid search method to find the
-best hyperparameters based on RMSE. The final model is trained on the
-full dataset and passed to the utility optimization procedure in
-Equation~\ref{eq-utility}.
+We tune two hyperparameters to create the best performing random forest
+for each fishery: The number of variables to consider at each split and
+the minimum number of observations in a leaf node. We use a grid search
+method to find the best hyperparameters based on RMSE through the year
+based cross validation method presented in the linear models. The final
+model is trained on the full dataset and passed to the utility
+optimization procedure in Equation~\ref{eq-utility}.
+
+\hypertarget{weather-variables-of-importance}{%
+\subsection{Weather variables of
+importance}\label{weather-variables-of-importance}}
+
+Machine learning algorithms are inherently ``black boxes'' that
+sacrifice interpreability for predictive accuracy. Fishers will be less
+likely to purchase complicated products that do not correspond to their
+experiences. Extracting the relative contribution of weather variables
+will assist translating products to fishers. Additionally, it can help
+ground-truth the chosen variables with previous bioloigcal modelling.
+
+The cross-validation in the linear models provides a simple weather
+variable comparison. We calculate the frequency a given weather variable
+is chosen as the best performing linear model.
+
+We use \texttt{vip} package in R to extract importance measures for both
+the LASSO and random forests \footnote{Nathan note: I need to read more
+  exactly how this package will extract between permutations or variance
+  measures}. Feature extraction will occur for each fishery product, but
+the importance of each will be normalized then aggregated in order to
+compare all features.
 
 \hypertarget{sec-results}{%
 \section{Results}\label{sec-results}}
 
+Index insurance can improve fisher utility even with univariate linear
+models, but the extent of success is not consistent across all
+fisheries. At actuarially fair premiums, \(m=1\), the average utility
+improvement for fishers with linear models is approximately 2\% at the
+state level of all fishing dependent variables
+(Table~\ref{tbl-utility-state}). LASSO increases the utility gains of
+index insurance through better performing indices. The improvements
+slightly depend on the fishery dependent variable. Targeting fishing
+revenues provides more than 1\% additional gains in utility over
+landings. Revenues may be more difficult to predict as they incorporate
+external market factors such as price and demand, but revenues more
+closely match the financial interests of fishers.
+
+Random forests provide the most significant improvements in utility. The
+ability to capture the non-linear interactions of weather variables with
+fishery productivity provides much more accurate trigger states that
+more closely align with lost value. All three fishery dependent trigger
+variables with random forest models improved fisher utility by 14\%.
+
+\hypertarget{tbl-utility-state}{}
+\begin{table}
+\caption{\label{tbl-utility-state}Average relative percent improvement in utility for 24 fisheries at the
+state level. Standard deviations in utilty are included in parathesis.
+Fishers }\tabularnewline
+
+\centering
+\begin{tabular}{llll}
+\toprule
+ & Landings & Revenue & Revenue per Fisher\\
+\midrule
+Linear & 2.4\%
+(2.7) & 2.1\%
+(2.8) & 2.4\%
+(2.7)\\
+LASSO & 6.3\%
+(6.4) & 7.3\%
+(8.3) & 8\%
+(6.2)\\
+Random Forest & 13.9\%
+(10.8) & 14.7\%
+(10) & 14\%
+(8.6)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Results are consistent when looking at the port-complex level, though
+LASSO and random forest have 2\% less utility improvements than at the
+state level (Table~\ref{tbl-utility-port}). Large discrepncies can exist
+between port-complexes for the same insurance policies. For example, an
+insurance contract for Chinook Salmon based on metric tons at the
+California state level improved utility by 21\%. However, different port
+complexes choose different levels of coverage (\textbf{?@tbl-chnk}).
+Eureka was the most extreme difference by opting for no insurance. The
+weather variability was not captured sufficiently by the LASSO model in
+Eureka and could not provide enough smoothing to incentivize fishers to
+purchase insurance. This observation emphasizes the benefit of creating
+policies at the port-complex level as the local variations capture basis
+risk exposure to each unique community \footnote{Nathan note: Should
+  compare the eureka port-complex data with the cali lasso model to see
+  if they would want insurance with that. Kind of a robustness check}.
+
+\hypertarget{tbl-utility-port}{}
+\begin{table}
+\caption{\label{tbl-utility-port}Average relative percent improvement in utility for 50 fisheries at the
+port complex level. }\tabularnewline
+
+\centering
+\begin{tabular}{llll}
+\toprule
+ & Landings & Revenue & Revenue per Fisher\\
+\midrule
+Linear & 1.9\%
+(2.6) & 1.9\%
+(3.4) & 2.7\%
+(3.9)\\
+LASSO & 4.9\%
+(4.8) & 6\%
+(5) & 6.7\%
+(5)\\
+Random Forest & 11.8\%
+(6.9) & 12.8\%
+(6.2) & 12.5\%
+(6.9)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \hypertarget{sec-discussion}{%
 \section{Discussion}\label{sec-discussion}}
+
+\textbf{Remaining things do to}
+
+\begin{itemize}
+\item
+  Variable importance
+\item
+  Feasibility of interprebable models
+\item
+  Alter m off actuarilly fair
+\item
+  Change utility models
+\item
+  Make a payout frequency table
+\item
+  Show the income smoothing effect as a distribution
+\end{itemize}
 
 \hypertarget{sec-appendix}{%
 \section{Appendix}\label{sec-appendix}}
 
-\begingroup\fontsize{7}{9}\selectfont
-
 \hypertarget{tbl-fish-sum}{}
-\begin{longtable}[t]{lrrlrrrrr}
+\begin{table}
 \caption{\label{tbl-fish-sum}Summary statistics of catch from 1988-2023 for California fisheries. }\tabularnewline
 
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\begin{tabular}{lrrlrrrrr}
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Landings (mt)} & \multicolumn{2}{c}{Revenue (USD)} & \multicolumn{2}{c}{MT per Fisher} & \multicolumn{2}{c}{Number of Fishers} \\
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5} \cmidrule(l{3pt}r{3pt}){6-7} \cmidrule(l{3pt}r{3pt}){8-9}
-Species & Average & Standard
-Deviation & Average & Standard
-Deviation & Average & Standard
-Devation & Average & Standard
-Deviation\\
+Species & Mean & SD & Mean & SD & Mean & SD & Mean & SD\\
 \midrule
 Albacore & 2055.4 & 2646.5 & \$3,574,984 & 4051538.3 & 5.3 & 3.1 & 305.5 & 307.7\\
 Bluefin tuna & 760.5 & 1131.1 & \$1,118,896 & 1137192.5 & 9.3 & 12.1 & 76.3 & 46.1\\
@@ -632,18 +787,18 @@ Swordfish & 808.3 & 554.7 & \$5,671,198 & 3401866.3 & 6.7 & 3.2 & 129.3 & 84.3\\
 White seabass & 109.2 & 76.4 & \$635,876 & 429179.6 & 0.8 & 0.7 & 150.3 & 45.1\\
 Yellowfin tuna & 8853.7 & 17403.5 & \$10,230,193 & 20959459.4 & 67.4 & 89.0 & 74.0 & 73.9\\
 \bottomrule
-\end{longtable}
-\endgroup{}
+\end{tabular}}
+\end{table}
 
 \hypertarget{tbl-fish-port-sum}{}
-\begin{longtable}[t]{llrrlrrrrr}
+\begin{longtable}{llrrlrrrrr}
 \caption{\label{tbl-fish-port-sum}Summary statistics of catch from 1988-2023 for California fisheries
 split between species and port complex }\tabularnewline
 
 \toprule
 \multicolumn{2}{c}{ } & \multicolumn{2}{c}{Landings (mt)} & \multicolumn{2}{c}{Revenue (USD)} & \multicolumn{2}{c}{MT per Fisher} & \multicolumn{2}{c}{Number of Fishers} \\
 \cmidrule(l{3pt}r{3pt}){3-4} \cmidrule(l{3pt}r{3pt}){5-6} \cmidrule(l{3pt}r{3pt}){7-8} \cmidrule(l{3pt}r{3pt}){9-10}
-Species & Port & Average & Standard Deviation & Average & Standard Deviation & Average & Standard Devation & Average & Standard Deviation\\
+Species & Port & Mean & SD & Mean & SD & Mean & SD & Mean & SD\\
 \midrule
  & Eureka & 355.0 & 377.4 & \$672,866 & 634894.5 & 5.4 & 3.4 & 62.2 & 58.9\\
 \cmidrule{2-10}\nopagebreak
@@ -749,6 +904,44 @@ Spotted prawn & \multirow[t]{-2}{*}[1\dimexpr\aboverulesep+\belowrulesep+\cmidru
 \bottomrule
 \end{longtable}
 
+\hypertarget{tbl-env-sum}{}
+\begin{table}
+\caption{\label{tbl-env-sum}Summary statistics of environmental variables from 1988-2023 for
+California fisheries. }\tabularnewline
+
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\begin{tabular}{lrrlll}
+\toprule
+Weather Index & Mean & SD & Temporal Resolution & Spatial Resolution & Source\\
+\midrule
+CUTI Amp & 1.3 & 0.6 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+CUTI Avg & 0.5 & 0.3 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+CUTI Fall & 0.2 & 0.3 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+CUTI Summer & 0.6 & 0.3 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+CUTI Spring & 0.7 & 0.4 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+\addlinespace
+CUTI Winter & 0.2 & 0.3 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+BEUTI Amp & 15.8 & 10.6 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+BEUTI Avg & 4.1 & 3.9 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+BEUTI Fall & 1.0 & 2.0 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+BEUTI Summer & 4.2 & 4.7 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+\addlinespace
+BEUTI Spring & 9.1 & 7.9 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+BEUTI Winter & 1.9 & 4.2 & Monthly & 1 degree latitude & Jacox et al., 2018\\
+Cummulative Habitat Compression Index & 4.8 & 2.3 & Yearly & 1 degree latitude & Integrated Ecosytem Assessment\\
+Average Sea Surface Temperature & 14.2 & 2.0 & Monthly & 5x5 km & NOAA Coral Bleaching Degree Heating Week\\
+Sea Surface Temperature Lag 1 Year & 14.2 & 2.0 & Monthly & 5x5 km & NOAA Coral Bleaching Degree Heating Week\\
+\addlinespace
+Sea Surface Temperature Lag 2 Years & 14.2 & 2.0 & Monthly & 5x5 km & NOAA Coral Bleaching Degree Heating Week\\
+Sea Surface Temperature Lag 3 Years & 14.2 & 2.0 & Monthly & 5x5 km & NOAA Coral Bleaching Degree Heating Week\\
+Sea Surface Temperature Lag 4 Years & 14.2 & 2.0 & Monthly & 5x5 km & NOAA Coral Bleaching Degree Heating Week\\
+ENSO & -0.1 & 0.7 & Monthly & Regional & MEI.v2\\
+Pacific Decadal Oscillation & -0.3 & 1.0 & Monthly & Regional & PDO ERSST V5\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
 \hypertarget{references}{%
 \section*{References}\label{references}}
 \addcontentsline{toc}{section}{References}
@@ -795,6 +988,12 @@ Clement, K.Y., Botzen, W.J.W., Brouwer, R. and Aerts, J.C.J.H. (2018)
 the impact of basis risk on the functioning of and demand for index
 insurance}. \emph{International Journal of Disaster Risk Reduction}
 \textbf{28}, 845--853.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Conradt2015}{}}%
+Conradt, S., Finger, R. and Spörri, M. (2015)
+\href{https://doi.org/10.1016/j.crm.2015.06.003}{Flexible weather
+index-based insurance design}. \emph{Climate Risk Management}
+\textbf{10}, 106--117.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Correia2021}{}}%
 Correia, H.E. (2021)
@@ -946,6 +1145,12 @@ Stigler, M. and Lobell, D. (2024)
 \href{https://doi.org/10.1111/ajae.12375}{Optimal index insurance and
 basis risk decomposition: An application to kenya}. \emph{American
 Journal of Agricultural Economics} \textbf{106}, 306--329.
+
+\leavevmode\vadjust pre{\hypertarget{ref-arias2020}{}}%
+Valverde-Arias, O.R., Esteve, P., Tarquis, A.M. and Garrido, A. (2020)
+\href{https://doi.org/10.5194/nhess-20-345-2020}{Remote sensing in an
+index-based insurance design for hedging economic impacts on rice
+cultivation}. \emph{Hazards Earth Syst. Sci} \textbf{20}, 345--362.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Watson2023}{}}%
 Watson, J.R., Spillman, C.M., Little, L.R., Hobday, A.J. and Levin, P.S.
