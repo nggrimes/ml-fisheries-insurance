@@ -1,8 +1,8 @@
 # Single linear model purrr function
 
 
-lm_mod_fcn<-function(var_name,data,ra=1,ut_mod="log"){
-  
+lm_mod_fcn<-function(var_name,data,ra=1,ut_mod="log",m=1){
+
   
   ## Helper functions for purrr map
   
@@ -91,12 +91,21 @@ lm_mod_fcn<-function(var_name,data,ra=1,ut_mod="log"){
   
   
   
-  opt_out<-optim(par=.1,utility_test,lower=0,method="L-BFGS-B",data=pay_data,a=0.1,ut_mod=ut_mod)
+  opt_out<-optim(par=.1,utility_test,lower=0,upper=1.5,method="L-BFGS-B",data=pay_data,a=ra,ut_mod=ut_mod,m=m)
   u_i=-opt_out$value
   u_noi=-utility_test(0,pay_data,a=ra,ut_mod=ut_mod)
   
   u_rr=(u_i-u_noi)/abs(u_noi)*100
   
-  return(list(best_rmse=best_rmse,final_mod=final_mod,coverage=opt_out$par,u_rr=u_rr))
+  c_raw_pay<-filt_data |> 
+    drop_na() |> 
+    mutate(raw_pay=mean(fish_value)-pred) |> 
+    mutate(raw_pay=case_when(raw_pay<0~0,
+                             TRUE~raw_pay)) 
+    
+    
+    premium=mean(c_raw_pay$raw_pay,na.rm=TRUE)*opt_out$par
+  
+  return(list(best_rmse=best_rmse,final_mod=final_mod,scale=opt_out$par,premium=premium,u_rr=u_rr))
 }  
 

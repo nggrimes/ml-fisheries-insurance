@@ -12,7 +12,7 @@ library(tidymodels)
 
 #load catch data
 
-load(here::here("data","fisheries","cali_catch.rda"))
+load(here::here("data","fisheries","cali_catch_detrend.rda"))
 
 #load weather data
 load(here::here("data","environmental","block_beuti.rda"))
@@ -43,16 +43,16 @@ cali_cw<-cali_catch %>%
 
 
 cali_mt_lasso<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="landings_mt",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_mt,"u_rr","coverage")
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="mt_detrend",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","scale","premium")
 
 cali_rev_lasso<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="value_usd",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_mt,"u_rr","coverage")
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="rev_detrend",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","scale","premium")
 
 cali_per_fisher_lasso<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="rev_per_fisher",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_mt,"u_rr","coverage")
+  mutate(lasso_mod_mt=map2(.x=cw_data,.y="per_detrend",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
+  hoist(lasso_mod_mt,"u_rr","scale","premium")
 
-save(cali_mt_lasso,cali_rev_lasso,cali_per_fisher_lasso,file=here::here("data","output","cali_lasso_output.rda"))
+save(cali_mt_lasso,cali_rev_lasso,cali_per_fisher_lasso,file=here::here("data","output","cali_lasso_output_detrend.rda"))
 

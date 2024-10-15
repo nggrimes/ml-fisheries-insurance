@@ -11,7 +11,7 @@ library(tidymodels)
 
 
 
-load(here::here("data","fisheries","cali_port.rda"))
+load(here::here("data","fisheries","cali_port_detrend.rda"))
 
 #load weather data
 load(here::here("data","environmental","block_beuti.rda"))
@@ -41,15 +41,15 @@ port_cw<-cali_port_catch %>%
 
 
 port_mt_rf<-port_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="landings_mt",~rf_fcn(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_mt,"u_rr","coverage")
+  mutate(rf_mod_mt=map2(.x=cw_data,.y="landings_mt",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
+  hoist(rf_mod_mt,"u_rr","scale","premium")
 
 port_rev_rf<-port_cw %>% 
-  mutate(lasso_mod_lb=map2(.x=cw_data,.y="revenues_usd",~rf_fcn(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_lb,"u_rr","coverage")
+  mutate(rf_mod_lb=map2(.x=cw_data,.y="revenues_usd",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
+  hoist(rf_mod_lb,"u_rr","scale","premium")
 
 port_per_rf<-port_cw %>% 
-  mutate(lasso_mod_n=map2(.x=cw_data,.y="rev_per_fisher",~rf_fcn(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_n,"u_rr","coverage")
+  mutate(rf_mod_n=map2(.x=cw_data,.y="rev_per_fisher",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
+  hoist(rf_mod_n,"u_rr","scale","premium")
 
-save(port_mt_rf,port_rev_rf,port_per_rf,file=here::here("data","output","port_rf_output.rda"))
+save(port_mt_rf,port_rev_rf,port_per_rf,file=here::here("data","output","port_rf_output_cara.rda"))

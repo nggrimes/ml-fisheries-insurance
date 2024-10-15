@@ -7,7 +7,7 @@ library(zoo)
 
 #load catch data
 
-load(here::here("data","fisheries","cali_catch.rda"))
+load(here::here("data","fisheries","cali_catch_detrend.rda"))
 
 #load weather data
 load(here::here("data","environmental","block_beuti.rda"))
@@ -36,17 +36,17 @@ cali_cw<-cali_catch %>%
   mutate(cw_data=map2(.x=species_code,.y=data,~cw_join_cali(.x,.y)))
 
 cali_mt_lm<-cali_cw %>% 
-  mutate(lm_mod_mt=map2(.x=cw_data,.y="landings_mt",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_mt,"u_rr","coverage")
+  mutate(lm_mod_mt=map2(.x=cw_data,.y="mt_detrend",~lm_mod_fcn(var_name=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
+  hoist(lm_mod_mt,"u_rr","scale","premium")
   
 cali_rev_lm<-cali_cw %>% 
-  mutate(lm_mod_rev=map2(.x=cw_data,.y="value_usd",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_rev,"u_rr","coverage")
+  mutate(lm_mod_rev=map2(.x=cw_data,.y="value_usd",~lm_mod_fcn(var_name=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
+  hoist(lm_mod_rev,"u_rr","scale","premium")
 
 cali_per_lm<-cali_cw %>% 
-  mutate(lm_mod_per=map2(.x=cw_data,.y="rev_per_fisher",~lm_mod_fcn(var_name=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lm_mod_per,"u_rr","coverage")
+  mutate(lm_mod_per=map2(.x=cw_data,.y="rev_per_fisher",~lm_mod_fcn(var_name=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
+  hoist(lm_mod_per,"u_rr","scale","premium")
 
 
 # save output
-save(cali_mt_lm,cali_rev_lm,cali_per_lm,file=here::here("data","output","cali_lm_output.rda"))
+save(cali_mt_lm,cali_rev_lm,cali_per_lm,file=here::here("data","output","cali_lm_output_detrend.rda"))

@@ -71,6 +71,14 @@ lasso_fcn<-function(data,dep_var,var_list='all',ra=1,ut_mod='log'){
   
   u_rr=(u_i-u_noi)/abs(u_noi)*100
   
-  return(list(final_mod=cvfit,coverage=opt_out$par,u_rr=u_rr))
+  c_raw_pay<-fit_data |> 
+    drop_na() |> 
+    mutate(raw_pay=mean(fish_value)-pred) |> 
+    mutate(raw_pay=case_when(raw_pay<0~0,
+                             TRUE~raw_pay)) 
+  
+  
+  premium=mean(c_raw_pay$raw_pay,na.rm=TRUE)*opt_out$par
+  return(list(final_mod=cvfit,scale=opt_out$par,u_rr=u_rr,premium=premium))
   
 }  

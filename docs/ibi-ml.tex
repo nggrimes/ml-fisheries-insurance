@@ -197,7 +197,7 @@ insurance using machine learning}
 \makeatother
 \subtitle{Working Paper not for Distribution}
 \author{Nathaniel Grimes}
-\date{2024-10-13}
+\date{2024-10-14}
 
 \begin{document}
 \maketitle
@@ -217,7 +217,7 @@ consistent across all fisheries. Specifically tailored insurance
 contracts must be created for each fishery using the best available data
 and models
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, frame hidden, sharp corners, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, enhanced, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced, frame hidden, interior hidden, sharp corners]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -590,7 +590,8 @@ parsimonious model that still captures the most important weather
 variables. LASSO is particularly well suited for this research design as
 the absolute value of the penalty term shrinks coefficients to zero.
 Overfitting is a concern with so few observations in the initial
-training set; the shrinkage towards zero will help minimize this bias.
+training set; the shrinkage towards zero will help minimize this bias by
+reducing the parameter space.
 
 \hypertarget{random-forests}{%
 \subsection{Random Forests}\label{random-forests}}
@@ -619,7 +620,7 @@ sacrifice interpreability for predictive accuracy. Fishers will be less
 likely to purchase complicated products that do not correspond to their
 experiences. Extracting the relative contribution of weather variables
 will assist translating products to fishers. Additionally, it can help
-ground-truth the chosen variables with previous bioloigcal modelling.
+ground-truth the chosen variables with previous biological modelling.
 
 The cross-validation in the linear models provides a simple weather
 variable comparison. We calculate the frequency a given weather variable
@@ -628,7 +629,7 @@ is chosen as the best performing linear model.
 We use \texttt{vip} package in R to extract importance measures for both
 the LASSO and random forests \footnote{Nathan note: I need to read more
   exactly how this package will extract between permutations or variance
-  measures}. Feature extraction will occur for each fishery product, but
+  measures}. Feature extraction will occur for each fishery product, and
 the importance of each will be normalized then aggregated in order to
 compare all features.
 
@@ -680,6 +681,43 @@ Random Forest & 13.9\%
 \bottomrule
 \end{tabular}
 \end{table}
+
+The range of responses varies for each fishery. Inherent volatility and
+model performance drive the differences. Chinook Salmon saw the largest
+gain in utility out of all fisheries with a random forest model
+triggered on revenues (Figure~\ref{fig-cali-rev}). Random forests always
+led to utility improvements, whereas LASSO and linear models maintained
+exorbitant basis risk compelling fishers to choose no insurance in
+Pacific Bonito, Cabezon, and California Sheephead
+
+\begin{figure}
+
+{\centering \includegraphics{ibi-ml_files/figure-pdf/fig-cali-rev-1.pdf}
+
+}
+
+\caption{\label{fig-cali-rev}Utility improvements for California
+fisheries with index insurance with a revenue trigger. Random Forest
+models (green) provide the greatest utility imporvement relative to no
+insurnace. LASSO (teal) generally out performs linear models (blue).}
+
+\end{figure}
+
+Different triggers maintain the same magntiude of improvements, but
+benefit to specific fisheries can change (Figure~\ref{fig-cali-mt}).
+
+\begin{figure}
+
+{\centering \includegraphics{ibi-ml_files/figure-pdf/fig-cali-mt-1.pdf}
+
+}
+
+\caption{\label{fig-cali-mt}Utility improvements for California
+fisheries with index insurance with a landings trigger. Random Forest
+models (green) provide the greatest utility imporvement relative to no
+insurnace. LASSO (teal) generally out performs linear models (blue).}
+
+\end{figure}
 
 Results are consistent when looking at the port-complex level, though
 LASSO and random forest have 2\% less utility improvements than at the
@@ -743,8 +781,8 @@ Random Forest & 11.8\%
   Show the income smoothing effect as a distribution
 \end{itemize}
 
-\hypertarget{sec-appendix}{%
-\section{Appendix}\label{sec-appendix}}
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
 
 \hypertarget{tbl-fish-sum}{}
 \begin{table}

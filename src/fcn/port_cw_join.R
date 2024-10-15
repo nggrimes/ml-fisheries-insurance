@@ -63,7 +63,7 @@ cw_join_port<-function(spp,port,data){
   
   hold<-data %>% 
     ungroup() %>% 
-    select(year,landings_mt,revenues_usd,rev_per_fisher,mt_per_fisher) %>%
+    dplyr::select(-c(cdfw_name,comm_name,port_area,port_spp_id,price_usd_lb,n_fisher,roll_value_usd,roll_landings,roll_n_rev,roll_n_mt))  %>%
     pivot_longer(-year,names_to="fish_var",values_to="fish_value") %>%
     right_join(env,by="year",relationship='many-to-many') %>%
     drop_na(fish_var)
