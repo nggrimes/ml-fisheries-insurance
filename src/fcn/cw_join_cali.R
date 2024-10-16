@@ -26,7 +26,8 @@ join_sst<-block_data %>%
   group_by(year,var) %>% 
   summarize(value=sum(weighted_val),
             .groups="drop") %>% 
-  filter(year>=1988)
+  filter(year>=1988) |> 
+  filter(var!="sst_lag_4")
 
 join_beuti<-block_data %>% 
   inner_join(block_beuti,by="block_id") %>%

@@ -1,4 +1,4 @@
-rf_fcn<-function(data,var_list='all',dep_var,ra=1,ut_mod='log',m=1){
+rf_fcn<-function(data,var_list='all',dep_var){
   
   if(var_list=='all'){
     filter_data<-data %>% 
@@ -73,47 +73,15 @@ rf_fcn<-function(data,var_list='all',dep_var,ra=1,ut_mod='log',m=1){
   
   
   r_index<-which.min(par_grid$rmse)
-  
+  #Run final model on full training data, test down with utility_eval
   final_mod<-filter_data |> 
+    filter(year<2013) |> 
     select(-year) |> 
     (\(x){ranger(fish_value~.,data=x,num.trees=1000,mtry=par_grid$m[r_index],min.node.size=par_grid$n[r_index])})()
   
 
   
-  pred<-predict(final_mod,filter_data) |> 
-    pluck("predictions") |> 
-    as.data.frame() |> 
-    rename(pred=1)
-  
-  fit_data=filter_data |> 
-    select(fish_value) |> 
-    cbind(pred)
-  
-  pay_data<-fit_data |> 
-    drop_na() |> 
-    mutate(raw_pay=mean(fish_value)-pred) |> 
-    mutate(raw_pay=case_when(raw_pay<0~0,
-                             TRUE~raw_pay)) |> 
-    mutate(raw_pay=raw_pay/max(fish_value),
-           fish_value=fish_value/max(fish_value)
-    )
   
   
-  
-  opt_out<-optim(par=.1,utility_test,lower=0,method="L-BFGS-B",data=pay_data,a=ra,ut_mod=ut_mod,m=m)
-  u_i=-opt_out$value
-  u_noi=-utility_test(0,pay_data,a=ra,ut_mod=ut_mod)
-  
-  u_rr=(u_i-u_noi)/abs(u_noi)*100
-  
-  c_raw_pay<-fit_data |> 
-    drop_na() |> 
-    mutate(raw_pay=mean(fish_value)-pred) |> 
-    mutate(raw_pay=case_when(raw_pay<0~0,
-                             TRUE~raw_pay)) 
-  
-  
-  premium=mean(c_raw_pay$raw_pay,na.rm=TRUE)*opt_out$par
-  
-  return(list(final_mod=final_mod,scale=opt_out$par,premium=premium,u_rr=u_rr))
+  return(list(final_mod=final_mod))
 }

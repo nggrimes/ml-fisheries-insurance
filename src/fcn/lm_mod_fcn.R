@@ -1,7 +1,7 @@
 # Single linear model purrr function
 
 
-lm_mod_fcn<-function(var_name,data,ra=1,ut_mod="log",m=1){
+lm_mod_fcn<-function(var_name,data){
 
   
   ## Helper functions for purrr map
@@ -65,47 +65,17 @@ lm_mod_fcn<-function(var_name,data,ra=1,ut_mod="log",m=1){
     summarize(mean_rmse=mean(rmse)) |> 
     filter(mean_rmse==min(mean_rmse))
  
- # run final model on full data set
+ # run final model on training period data set, testing down with utility_eval
  
  final_mod<-data |> 
    filter(fish_var==var_name & var==best_rmse$var) |>
    drop_na() |>
+   filter(year<2013) |> 
    (\(x){lm(fish_value~value,data=x)})()
  
 ## Run utility analysis
- filt_data<- data |> 
-   filter(fish_var==var_name & var==best_rmse$var)
-   
-  pred<-filt_data |>
-    drop_na() |> 
-    (\(x){predict(final_mod,x)})() 
+
   
-  pay_data<-filt_data |> 
-    drop_na() |> 
-    mutate(raw_pay=mean(fish_value)-pred) |> 
-    mutate(raw_pay=case_when(raw_pay<0~0,
-                               TRUE~raw_pay)) |> 
-    mutate(raw_pay=raw_pay/max(fish_value),
-           fish_value=fish_value/max(fish_value)  # This step 'normalizes' differences in payouts to compare utility across all fisheries
-           )  
-  
-  
-  
-  opt_out<-optim(par=.1,utility_test,lower=0,upper=1.5,method="L-BFGS-B",data=pay_data,a=ra,ut_mod=ut_mod,m=m)
-  u_i=-opt_out$value
-  u_noi=-utility_test(0,pay_data,a=ra,ut_mod=ut_mod)
-  
-  u_rr=(u_i-u_noi)/abs(u_noi)*100
-  
-  c_raw_pay<-filt_data |> 
-    drop_na() |> 
-    mutate(raw_pay=mean(fish_value)-pred) |> 
-    mutate(raw_pay=case_when(raw_pay<0~0,
-                             TRUE~raw_pay)) 
-    
-    
-    premium=mean(c_raw_pay$raw_pay,na.rm=TRUE)*opt_out$par
-  
-  return(list(best_rmse=best_rmse,final_mod=final_mod,scale=opt_out$par,premium=premium,u_rr=u_rr))
+  return(list(best_rmse=best_rmse,final_mod=final_mod))
 }  
 

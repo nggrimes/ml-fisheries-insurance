@@ -43,16 +43,30 @@ cali_cw<-cali_catch %>%
 
 
 cali_mt_lasso<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="mt_detrend",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_mt,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="landings_mt",~lasso_fcn_tm(dep_var=.y,data=.x)))
 
 cali_rev_lasso<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="rev_detrend",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_mt,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="value_usd",~lasso_fcn_tm(dep_var=.y,data=.x)))
 
 cali_per_fisher_lasso<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="per_detrend",~lasso_fcn_tm(dep_var=.y,data=.x,ra=1,ut_mod='log'))) |> 
-  hoist(lasso_mod_mt,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="rev_per_fisher",~lasso_fcn_tm(dep_var=.y,data=.x)))
 
-save(cali_mt_lasso,cali_rev_lasso,cali_per_fisher_lasso,file=here::here("data","output","cali_lasso_output_detrend.rda"))
+save(cali_mt_lasso,cali_rev_lasso,cali_per_fisher_lasso,file=here::here("data","output","cali_lasso_models.rda"))
 
+cali_mt_lasso_ut<-cali_mt_lasso %>% 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+cali_rev_lasso_ut<-cali_rev_lasso %>%
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="value_usd"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+cali_per_fisher_lasso_ut<-cali_per_fisher_lasso %>%
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="fisher_per_rev"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+# save output
+save(cali_mt_lasso_ut,cali_rev_lasso_ut,cali_per_fisher_lasso_ut,file=here::here("data","output","cali_lasso_ut.rda"))

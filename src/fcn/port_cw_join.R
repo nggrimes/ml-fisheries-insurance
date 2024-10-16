@@ -25,7 +25,7 @@ cw_join_port<-function(spp,port,data){
     mutate(weighted_val=value*pct_catch) %>% 
     group_by(year,var) %>% 
     summarize(value=sum(weighted_val)) %>% 
-    filter(year>=1988)
+    filter(year>=1988 & var!="sst_lag_4") 
   
   join_beuti<-block_data %>% 
     inner_join(block_beuti,by="block_id") %>%

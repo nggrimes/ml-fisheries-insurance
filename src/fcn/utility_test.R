@@ -2,7 +2,7 @@ utility_test<-function(l,data,a=ra,ut_mod=ut_mod,m=1){
   #This function calculates the expected utility to pass into the optim function
   #so that fishers may choose their level of coverage
   #browser()
-  profit=data$fish_value+data$raw_pay*l-mean(data$raw_pay*l)*m
+  profit=data$fish_value+data$scale_pay*l-mean(data$scale_pay*l)*m
   
   if(ut_mod=="log"){
     

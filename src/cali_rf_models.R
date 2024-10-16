@@ -43,15 +43,30 @@ cali_cw<-cali_catch %>%
 
 
 cali_mt_rf<-cali_cw %>% 
-  mutate(lasso_mod_mt=map2(.x=cw_data,.y="mt_detrend",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(lasso_mod_mt,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="landings_mt",~rf_fcn(dep_var=.y,data=.x)))
 
 cali_rev_rf<-cali_cw %>% 
-  mutate(lasso_mod_lb=map2(.x=cw_data,.y="rev_detrend",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(lasso_mod_lb,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="value_usd",~rf_fcn(dep_var=.y,data=.x)))
 
 cali_per_rf<-cali_cw %>% 
-  mutate(lasso_mod_n=map2(.x=cw_data,.y="per_detrend",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(lasso_mod_n,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="rev_per_fisher",~rf_fcn(dep_var=.y,data=.x)))
 
-save(cali_mt_rf,cali_rev_rf,cali_per_rf,file=here::here("data","output","cali_rf_output_detrend.rda"))
+save(cali_mt_rf,cali_rev_rf,cali_per_rf,file=here::here("data","output","cali_rf_models.rda"))
+
+cali_mt_rf_ut<-cali_mt_rf %>% 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+cali_rev_rf_ut<-cali_rev_rf %>%
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="value_usd"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+cali_per_rf_ut<-cali_per_rf %>%
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="rev_per_fisher"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+# save output
+save(cali_mt_rf_ut,cali_rev_rf_ut,cali_per_rf_ut,file=here::here("data","output","cali_rf_ut.rda"))

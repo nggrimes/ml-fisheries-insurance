@@ -24,6 +24,7 @@ load(here::here("data","environmental","enso_pdo.rda"))
 source(here::here("src","fcn","port_cw_join.R"))
 source(here::here("src","fcn","rf_fcn.R"))
 source(here::here("src","fcn","utility_test.R"))
+source(here::here("src","fcn","utility_eval.R"))
 
 port_cw<-cali_port_catch %>% 
   group_by(spp_code,port_code) %>%
@@ -41,15 +42,30 @@ port_cw<-cali_port_catch %>%
 
 
 port_mt_rf<-port_cw %>% 
-  mutate(rf_mod_mt=map2(.x=cw_data,.y="landings_mt",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(rf_mod_mt,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="landings_mt",~rf_fcn(dep_var=.y,data=.x)))
 
 port_rev_rf<-port_cw %>% 
-  mutate(rf_mod_lb=map2(.x=cw_data,.y="revenues_usd",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(rf_mod_lb,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="revenues_usd",~rf_fcn(dep_var=.y,data=.x)))
 
 port_per_rf<-port_cw %>% 
-  mutate(rf_mod_n=map2(.x=cw_data,.y="rev_per_fisher",~rf_fcn(dep_var=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(rf_mod_n,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="rev_per_fisher",~rf_fcn(dep_var=.y,data=.x)))
 
-save(port_mt_rf,port_rev_rf,port_per_rf,file=here::here("data","output","port_rf_output_cara.rda"))
+save(port_mt_rf,port_rev_rf,port_per_rf,file=here::here("data","output","port_rf_models.rda"))
+
+port_mt_rf_ut<-port_mt_rf %>% 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+port_rev_rf_ut<-port_rev_rf %>% 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="revenues_usd"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+port_per_rf_ut<-port_per_rf %>%
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="rev_per_fisher"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+# save output
+save(port_mt_rf_ut,port_rev_rf_ut,port_per_rf_ut,file=here::here("data","output","port_rf_ut.rda"))

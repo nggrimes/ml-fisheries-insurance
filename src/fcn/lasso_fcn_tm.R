@@ -1,4 +1,4 @@
-lasso_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log',m=1){
+lasso_fcn_tm<-function(data,var_list='all',dep_var){
   #Uses a tidymodels workflow to calculate the best lasso model for a fishery
   # Better performance with the boostraps then cv.glmnet
   # output is a list of the final workflow that needs to be fitted with data before use
@@ -73,39 +73,6 @@ lasso_fcn_tm<-function(data,var_list='all',dep_var,ra=1,ut_mod='log',m=1){
   )
   
   
-  pred<-predict(final_lasso |> fit(filter_data),filter_data) |> 
-    rename(pred=1)
-  
-  fit_data=filter_data |> 
-    select(fish_value) |> 
-    cbind(pred)
-  
-  pay_data<-fit_data |> 
-    drop_na() |> 
-    mutate(raw_pay=mean(fish_value)-pred) |> 
-    mutate(raw_pay=case_when(raw_pay<0~0,
-                             TRUE~raw_pay)) |> 
-    mutate(raw_pay=raw_pay/max(fish_value),
-           fish_value=fish_value/max(fish_value)
-    )
-  
-
-  #browser()
-  opt_out<-optim(par=.1,utility_test,lower=0,method="L-BFGS-B",data=pay_data,a=ra,ut_mod=ut_mod,m=m)
-  u_i=-opt_out$value
-  u_noi=-utility_test(0,pay_data,a=ra,ut_mod=ut_mod)
-  
-  u_rr=(u_i-u_noi)/abs(u_noi)*100
-  
-  c_raw_pay<-fit_data |> 
-    drop_na() |> 
-    mutate(raw_pay=mean(fish_value)-pred) |> 
-    mutate(raw_pay=case_when(raw_pay<0~0,
-                             TRUE~raw_pay)) 
-  
-  
-  premium=mean(c_raw_pay$raw_pay,na.rm=TRUE)*opt_out$par
-  
-  return(list(final_mod=final_lasso,scale=opt_out$par,u_rr=u_rr,premium=premium))
+  return(list(final_mod=final_lasso))
   
 }

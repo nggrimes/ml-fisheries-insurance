@@ -39,18 +39,35 @@ port_cw<-cali_port_catch %>%
   nest() %>% 
   mutate(cw_data=pmap(list(spp=spp_code,port=port_code,data=data),cw_join_port))
 
-
 port_mt_lm<-port_cw %>% 
-  mutate(lm_mod_mt=map2(.x=cw_data,.y="mt_detrend",~lm_mod_fcn(var_name=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(lm_mod_mt,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="landings_mt",~lm_mod_fcn(var_name=.y,data=.x)))
 
 port_rev_lm<-port_cw %>% 
-  mutate(lm_mod_rev=map2(.x=cw_data,.y="rev_detrend",~lm_mod_fcn(var_name=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(lm_mod_rev,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="revenues_usd",~lm_mod_fcn(var_name=.y,data=.x)))
 
 port_per_lm<-port_cw %>% 
-  mutate(lm_mod_per=map2(.x=cw_data,.y="per_detrend",~lm_mod_fcn(var_name=.y,data=.x,ra=0.08,ut_mod='cara'))) |> 
-  hoist(lm_mod_per,"u_rr","scale","premium")
+  mutate(model=map2(.x=cw_data,.y="rev_per_fisher",~lm_mod_fcn(var_name=.y,data=.x)))
 
-save(port_mt_lm,port_rev_lm,port_per_lm,file=here::here("data","output","port_lm_output_detrend.rda"))
 
+# save output
+save(port_mt_lm,port_rev_lm,port_per_lm,file=here::here("data","output","port_lm_models.rda"))
+
+# Get utility testing improvement
+
+port_mt_lm_ut<-port_mt_lm %>% 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+port_rev_lm_ut<-port_rev_lm %>% 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="revenues_usd"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+port_per_lm_ut<-port_per_lm %>%
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="rev_per_fisher"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  select(-model) #save space by dropping model
+
+# save output
+save(port_mt_lm_ut,port_rev_lm_ut,port_per_lm_ut,file=here::here("data","output","port_lm_ut.rda"))
