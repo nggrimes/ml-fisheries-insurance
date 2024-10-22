@@ -25,6 +25,7 @@ load(here::here("data","environmental","enso_pdo.rda"))
 source(here::here("src","fcn","cw_join_cali.R"))
 source(here::here("src","fcn","lasso_fcn_tm.R"))
 source(here::here("src","fcn","utility_test.R"))
+source(here::here("src","fcn","utility_eval.R"))
 
 cali_cw<-cali_catch %>% 
   group_by(species_code) %>%
@@ -69,4 +70,4 @@ cali_per_fisher_lasso_ut<-cali_per_fisher_lasso %>%
   select(-model) #save space by dropping model
 
 # save output
-save(cali_mt_lasso_ut,cali_rev_lasso_ut,cali_per_fisher_lasso_ut,file=here::here("data","output","cali_lasso_ut.rda"))
+save(cali_mt_lasso_ut,cali_rev_lasso_ut,file=here::here("data","output","cali_lasso_ut.rda"))
