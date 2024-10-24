@@ -69,7 +69,7 @@ env<-rbind(join_sst,join_beuti,join_cuti,join_hci,join_enso,join_pdo)
 
 hold<-data %>% 
   ungroup() %>% 
-  dplyr::select(-c(cdfw_name,comm_name,mgmt_group,price_usd_lb,n_fisher,roll_value_usd,roll_landings,roll_n_rev,roll_n_mt)) %>%
+  dplyr::select(-c(cdfw_name,comm_name,mgmt_group,price_usd_lb,n_fisher)) %>%
   pivot_longer(-year,names_to="fish_var",values_to="fish_value") %>%
   right_join(env,by="year",relationship='many-to-many') %>%
   drop_na(fish_var)
