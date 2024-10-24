@@ -37,35 +37,35 @@ cali_cw<-cali_catch %>%
   mutate(cw_data=map2(.x=species_code,.y=data,~cw_join_cali(.x,.y)))
 
 cali_mt_lm<-cali_cw %>% 
-  mutate(model=map2(.x=cw_data,.y="landings_mt",~lm_mod_fcn(var_name=.y,data=.x)))
+  mutate(model=map2(.x=cw_data,.y="mt_detrend",~lm_mod_fcn(var_name=.y,data=.x)))
   
 cali_rev_lm<-cali_cw %>% 
-  mutate(model=map2(.x=cw_data,.y="value_usd",~lm_mod_fcn(var_name=.y,data=.x)))
+  mutate(model=map2(.x=cw_data,.y="rev_detrend",~lm_mod_fcn(var_name=.y,data=.x)))
 
 cali_per_lm<-cali_cw %>% 
-  mutate(model=map2(.x=cw_data,.y="rev_per_fisher",~lm_mod_fcn(var_name=.y,data=.x)))
+  mutate(model=map2(.x=cw_data,.y="per_detrend",~lm_mod_fcn(var_name=.y,data=.x)))
 
 
 # save output
-save(cali_mt_lm,cali_rev_lm,cali_per_lm,file=here::here("data","output","cali_lm_models.rda"))
+save(cali_mt_lm,cali_rev_lm,cali_per_lm,file=here::here("data","output","cali_lm_models_detrend.rda"))
 
 # Get utility testing improvement
 
 cali_mt_lm_ut<-cali_mt_lm %>% 
-  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval)) %>% 
-  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="mt_detrend"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val",'m_break','test_rmse','train_rmse') |> 
   select(-model) #save space by dropping model
 
 cali_rev_lm_ut<-cali_rev_lm %>% 
-  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="value_usd"),utility_eval)) %>% 
-  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="rev_detrend"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val",'m_break','test_rmse','train_rmse') |> 
   select(-model) #save space by dropping model
 
 cali_per_lm_ut<-cali_per_lm %>%
-  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="rev_per_fisher"),utility_eval)) %>% 
-  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="per_detrend"),utility_eval)) %>% 
+  hoist(u_eval,"test_u_rr","prem_vec","l_val",'m_break','test_rmse','train_rmse') |> 
   select(-model) #save space by dropping model
 
 # save output
-save(cali_mt_lm_ut,cali_rev_lm_ut,cali_per_lm_ut,file=here::here("data","output","cali_lm_ut.rda"))
+save(cali_mt_lm_ut,cali_rev_lm_ut,cali_per_lm_ut,file=here::here("data","output","cali_lm_ut_detrend.rda"))
   
