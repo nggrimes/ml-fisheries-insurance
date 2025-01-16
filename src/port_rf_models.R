@@ -53,13 +53,13 @@ port_per_rf<-port_cw %>%
 save(port_mt_rf,port_rev_rf,port_per_rf,file=here::here("data","output","port_rf_models.rda"))
 
 port_mt_rf_ut<-port_mt_rf %>% 
-  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval)) %>% 
-  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval_wtp)) %>% 
+  hoist(u_eval,"m",'test_u_i','test_u_noi','test_rmse','train_rmse') |> 
   select(-model) #save space by dropping model
 
 port_rev_rf_ut<-port_rev_rf %>% 
-  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="revenues_usd"),utility_eval)) %>% 
-  hoist(u_eval,"test_u_rr","prem_vec","l_val") |> 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="revenues_usd"),utility_eval_wtp)) %>% 
+  hoist(u_eval,"m",'test_u_i','test_u_noi','test_rmse','train_rmse') |> 
   select(-model) #save space by dropping model
 
 port_per_rf_ut<-port_per_rf %>%
@@ -68,4 +68,4 @@ port_per_rf_ut<-port_per_rf %>%
   select(-model) #save space by dropping model
 
 # save output
-save(port_mt_rf_ut,port_rev_rf_ut,port_per_rf_ut,file=here::here("data","output","port_rf_ut.rda"))
+save(port_mt_rf_ut,port_rev_rf_ut,file=here::here("data","output","port_rf_ut_wtp.rda"))

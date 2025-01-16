@@ -1,0 +1,1499 @@
+---
+format: 
+  revealjs:
+    chalkboard: true
+    slide-number: true
+    show-slide-number: print
+    theme:
+     - ucsb-media.scss
+    logo: img/bren-logo.png
+bibliography: library.bib    
+
+---
+
+## {#title-slide data-menu-title="Title Slide" background=.white}
+
+[Suitability of Index Insurance in Fisheries]{.custom-title .blue-text}
+
+[Oral Examination]{.custom-subtitle .gold}
+
+<hr class="hr-teal">
+
+[Nathaniel Grimes]{.body-text-l .center-text .blue-text}
+
+[Bren School of Environmental Science & Management]{.center-text .body-text-m .blue-text}
+
+[**Last updated:** `r format(Sys.time(), '%b %d, %Y')`]{.body-text-s .blue-text}
+
+## {background-image="https://i.insider.com/5644098bdd0895b0578b465f?width=1300&format=jpeg&auto=webp"}
+
+::: {.absolute left="30%" top="8%" right="-15%" style="font-size:1.4em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+- Fishers vulnerable to financial shocks from environmental variability
+
+- Few *financial* risk tools to protect against shocks
+
+- Index insurance has the potential to address this challenge
+
+#### I explore how index insurance could incentivize behavior change in fishers and managers, and what information is needed to design new contracts
+:::
+
+
+## {#ta data-menu-title="Behavior Change" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Behavioral Effects of Index Insurance</div>
+</div>
+
+## {#beh-rq data-menu-title="Behavior Research Questions"}
+
+[Research Questions]{.slide-title3}
+
+<hr>
+
+- **Will Index Insurance change fisher harvest decisions in unconstrained settings?**
+
+- **What influences the direction and magnitude of behavior changes?**
+
+- **How much could insurance change harvest when applied to real world fisheries?**
+
+
+[Methods]{.slide-title3}
+
+<hr>
+
+- **Mathematical proof using novel stochastic, fishery production function**
+
+- **Numerical simulation to test influence of certain parameters**
+
+- **Calibrate with production elasticity estimates from Norwegian fisheries**
+
+
+
+## {#beh-mot data-menu-title="Behavior Motivation"}
+
+[Fishers experience two sources of risk]{.slide-title}
+
+<hr>  
+
+::::{.columns}
+
+:::{.column}
+- **$\theta$**: Biological risk
+  
+- **$\omega$**: Productivity risk from weather
+
+:::
+
+:::{.column}
+
+- $f(X)$: Concave Technology Function
+
+- $\hat\beta$: Mean Stock Abundance
+
+:::
+
+::::
+
+$$
+y=f(X)\hat\beta+\theta f(X)+\omega h(X)
+$${#eq-jpfish}
+
+- Possible examples of $\omega$ and $h(X)$ 
+  
+  - **Storms:** Larger vessels lower risk and make it easier to fish in foul weather
+  
+  - **Spatial:** Experienced captains choose more consistent fishing grounds   
+  
+  - *Any risk not captured by the biological risk*
+  
+  
+  
+## {#beh-mod}
+
+[Fishers maximize expected utility with an exogenous insurance contract]{.slide-title}
+
+<hr>
+
+$$
+\begin{aligned}
+U\equiv\max_{x}\mathbb{E}[U]=\int^{\infty}_{-\infty}&\left[\overbrace{ \int^{\bar\omega}_{-\infty}j_{\omega,\theta}(\omega,\theta)u(\pi(x,\hat{B},\theta,\omega)+(1-J(\bar\omega))\gamma)d\omega}^{\text{Bad Year}} \right.\\
+&\left.+\underbrace{\int^{\infty}_{\bar{\omega}}j_{\omega,\theta}(\omega,\theta) u(\pi(x,\hat{B},
+\theta,\omega)-J(\bar\omega)\gamma)d\omega}_{\text{Good Year}}\right] d\theta
+\end{aligned}
+$$ {#eq-max}
+
+::::{.columns}
+
+:::{.column}
+- $x$: Input choice
+
+- $\pi$: Profit
+
+- $j_{\omega,\theta}$: Joint density
+
+:::
+
+:::{.column}
+
+- $u$: Concave Utility function
+
+- $\gamma$: Insurance payout
+
+- $J(\bar\omega)$: Cumulative distribution of $\omega$
+
+:::
+
+::::
+
+## {#beh-objective data-menu-title="Behavior Objective"}
+
+[Use Implicit Value Function to solve for changes in input with an exogenous change in insurance]{.slide-title}
+
+<hr>
+
+:::{.center-text}
+**Objective: To Sign @eq-foc**
+:::
+
+$$
+\frac{\partial x^{*}}{\partial \gamma}=-\frac{\frac{\partial U}{\partial x \partial \gamma}}{\frac{\partial^2 U}{\partial x^{2}}}
+$$ {#eq-foc}
+
+- Focus on the numerator
+
+  - Conditions of a maximum lead denominator to always be negative
+
+## {#beh-corr data-menu-title="Behavior Model Results"}
+
+[Index Insurance has ambiguous effect on optimal input]{.slide-title}
+
+<hr>  
+
+::::{.columns}
+
+:::{.column width="55%"}
+
+:::{.center-text}
+**Independent**
+:::
+
+- Risk decreasing ($h_x(x)<0$) will always lower input use
+  
+- Risk increasing ($h_x(x)>0$) will always increase input use
+  
+:::
+
+:::{.column width="45%"}
+
+:::{.center-text}
+**Perfect Correlation**
+
+- Risk decreasing inputs are ambiguous
+
+- Risk increasing inputs always increase
+:::
+
+:::
+
+::::
+
+- <a href="#/beh-proof">Proof is complicated </a>
+
+## {#beh-corr2 data-menu-title="Behavior Model Results"}
+
+[Index Insurance has ambiguous effect on optimal input]{.slide-title3}
+
+<hr>  
+
+```{r, fig.align='center',fig.width=12,fig.height=6}
+load("C:/Users/Natha/Documents/fisheries-insurance/data/two_shock_10_29.Rdata")
+
+
+library(tidyverse)
+library(latex2exp)
+txt_size<-16
+my_labeller_one <- as_labeller(
+  x = c(
+    '0.25' = 'alpha == 0.25',
+    '0.5' = 'alpha == 0.5',
+    '0.75' = 'alpha == 0.75'
+  ), 
+  default = label_parsed
+)
+
+p_df<-comb |> 
+  filter(a==1,wtrig==0,sigmaw==0.4,sigmat==.1,corr>=0)
+
+                      
+p_df |> 
+  ggplot()+
+  geom_bar(aes(x=corr,y=pct_x,fill=factor(beta)),stat="identity",position="dodge")+
+  labs(x="Correlation",y="Percent Change in Optimal Input")+
+  theme_minimal()+
+ theme(axis.text = element_text(size=txt_size),
+        axis.title = element_text(size=txt_size+4),
+        legend.text=element_text(size=txt_size+2),
+       legend.title=element_text(size=txt_size+4),
+        plot.title = element_text(size=txt_size+6),
+        strip.text = element_text(
+          size = txt_size+2, color = "black", face = "bold",
+        ),
+        legend.position='bottom')+
+  facet_grid(.~alpha,scales="fixed",labeller = my_labeller_one)+
+  scale_fill_manual(values=pals::warmcool(n=8),labels=c("-0.7","-0.5","-0.3","-0.1","0.1","0.3","0.5","0.7"),name=TeX(r'($\beta$ Risk Effect)'))+
+  scale_y_continuous(labels=scales::percent_format(accuracy=1))
+```
+
+- <a href="#/beh-ra">Magnitude impacted by other parameters </a>
+
+## {#beh-res data-menu-title="Behavior Results"}
+
+[Norwegian fisheries would change optimal harvest with index insurance ]{.slide-title}
+
+<hr>
+
+
+```{r, fig.align='center',fig.width=12,fig.height=4}
+library(tidyverse)
+library(latex2exp)
+
+load("C:/Users/Natha/Documents/fisheries-insurance/data/asche_runs_11_8.RData")
+txt_size=16
+
+# Get the means of pct_h for each method ignoring extreme outliers
+
+dat_text <- data.frame(
+  label = c("~1% Increase", "~12.5% Increase", "~4% Decrease","~1.5% Decrease"),
+  method   = c("coast_sein", "coastal_ground", "purse_sein","trawler")
+)
+
+
+
+asche_label <- as_labeller(
+  x = c(
+    'coast_sein' = 'Coastal Seiner',
+    'coastal_ground' = 'Coastal Groundfish',
+    'purse_sein' = 'Purse Seiner',
+    'trawler' = 'Groundfish Trawler'
+  )
+)
+
+
+asche_runs_11_8 |> 
+  ggplot()+
+  geom_density(aes(pct_h))+
+  facet_wrap(~method,scales="fixed",labeller = asche_label)+
+  labs(x="Percent Change in Harvest",y="Density")+
+  theme_bw()+
+  scale_x_continuous(labels=scales::percent_format(accuracy=1),limits = c(-0.25,0.5))+
+  geom_vline(xintercept=0,color="black",linetype="dashed")+
+  geom_text(data = dat_text,
+            mapping = aes(x = .08, y = 14, 
+            label = label),
+            hjust   = -0.1,
+            vjust   = -1,
+            size=7)+
+  theme(axis.text = element_text(size=txt_size),
+        axis.title = element_text(size=txt_size+4),
+        legend.text=element_text(size=txt_size+2),
+        plot.title = element_text(size=txt_size+6),
+        strip.text = element_text(
+          size = txt_size+2, color = "black", face = "bold",
+        ),
+        legend.position='bottom')
+```
+
+
+::::{.columns}
+
+
+:::{.column width="35%"}
+
+- <a href="#/beh-multi">Multiple inputs interact in complex ways </a>
+
+:::
+
+:::{.column width="65%"}
+
+- Tradeoff between mean harvest gain and variance reduction for risk decreasing inputs
+
+:::
+
+::::
+
+## {#beh-future data-menu-title="Behavior Future Work"}
+
+[Future Steps]{.slide-title}
+
+<hr>
+
+- Editing final manuscript for submission to JEEM
+
+- Tightening focus and discussion
+
+- Will send updated draft next week
+
+  - Take time over break to review
+
+
+## {#mg data-menu-title="Finding Indicies" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Manager choices with insurance</div>
+</div>
+
+## {background-image="https://images.squarespace-cdn.com/content/v1/57cf18ae6b8f5ba693497e1a/1476208218464-3JH5HJRWZ6E2GWBW36SH/AP_16137752061919.jpg?format=1500w"}
+
+::: {.absolute left="-5%" top="8%" right="50%" style="font-size:1.4em; color: rgba(255,255,255,1); padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+
+- Insurance will change unconstrained behavior of fishers
+
+- Management places "binding" constraints to protect long term sustainability 
+  
+- Managers have to change quotas to respond to shocks  
+  
+- Insurance can protect financial risk brought on by necessary changes in quota
+:::
+
+
+## {#hcr-q data-menu-title="HCR RQ"}
+
+[Research Questions]{.slide-title}
+
+<hr>
+
+-   **Would a manager change their harvest control rule if fishers were protected by index insurance?**
+
+<br>
+
+-  **How does the timing of shocks and payouts change decisions?**
+
+<br>
+
+-   **How much would biological sustainability improve with updated HCRs?**
+
+  
+## {#m-mod data-menu-title="Model"}
+
+[Manager acts as sole owner maximizing infinite utility stream of fishers]{.slide-title}
+
+<hr>
+
+$$
+\begin{aligned}
+\max_{f_t} \sum_{t=0}^\infty\beta^t\mathbb{E}_t&\left[u(f_t,\omega,\theta,I(v))\right]\\
+\text{s.t. } b_{t+1}&=z_{t+1}^\theta G(b_t-h_t) \\
+h_t&=b_tf_tz_t^\omega
+\end{aligned}
+$$ {#eq-npv}
+
+::::{.columns}
+
+:::{.column}
+
+:::{.center-text}
+**Two sources of uncertainty**
+:::
+
+$\omega$: Current weather shock (measurement, harvest, etc.)
+
+$\theta$: Growth uncertainty
+:::
+
+:::{.column}
+
+**Concave utility function** $u$
+
+Insurance contract:
+
+$$
+\mathbb{I}[(v)]=\begin{cases}
+\overbrace{I(v)}^{\text{payout}}-\rho(v) & \text{if } v_t>\bar z \\
+\underbrace{-\rho(v)}_{\text{premium}} & \text{otherwise}\end{cases}
+$$
+:::
+
+::::
+
+
+## {#hcr-bell data-menu-title="Bellman Equation"}
+
+[Formulate as Bellman and use Value Function Iteration to solve]{.slide-title}
+
+<hr>
+
+$$
+V_t(b_t)=\max_{f_t}\mathbb{E}[u(f_t,\omega_t,\theta_t,I(v_t))+\beta V_{t+1}(z_{t+1}^\theta G(b_t-h_t))]
+$$ {#eq-bellman}
+
+- $V_t(b_t)$: Value function at time $t$ given biomass $b_t$
+
+- <a href="#/hcr-prob">Insuring different shocks changes timing </a>
+
+:::{.center-text}
+**Value Function Iteration**
+
+- Discretize state space and iterate on Bellman equation until value function convergence
+
+- Approximate Dynamic Programming 
+
+  - Timing of insurance may be more conducive to ADP
+  
+:::
+
+## {#hcr-res data-menu-title="HCR Preliminary"}
+
+[Preliminary Results]{.slide-title}
+
+<hr>
+
+
+```{r}
+load("C:/Users/Natha/Documents/fisheries-insurance/data/combo_Df_long.Rdata")
+
+ggplot(combo_df_long,aes(x=b,y=f_opt,color=model))+
+  geom_line(linewidth=2.5)+
+  scale_color_manual(name="Risk Preferences",labels=c("Risk Averse","Insurance","Risk Neutral"),values=c("#003660","#FEBC11","#09847A"))+
+  theme_classic()+
+  labs(y='Optimal Harvest',x='Biomass')+
+  theme(legend.text=element_text(size=24))+
+  theme(legend.title =element_text(size=28))+
+  theme(axis.text =element_text(size=22))+
+  theme(axis.title = element_text(size=26))
+```
+
+
+
+## {#mg-future data-menu-title="Future Work"}
+
+[Future Steps]{.slide-title}
+
+<hr>
+
+- Solve value function iteration with two shocks
+
+  - Design insurance contracts for both shocks and solve
+
+- Sensitivity analysis on parameters
+
+- Compare converged value functions for overall improvement
+
+- Forward simulation with new HCR to show the long run impact on biomass
+
+
+## {#ml data-menu-title="Finding Indicies" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">How to design IBI in Fisheries</div>
+</div>
+
+## {#ml-mot data-menu-title="ML Motivation"}
+
+[Basis risk and definition of loss are the greatest impediments to fisheries index insurance uptake]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+:::{.center-text}
+
+**Basis Risk**
+  
+:::
+
+- Need to find weather measures that correlate with fisher income/catch
+
+- Environmental variables influence catch, but really difficult to measure
+
+  - Non-linear, unobservables, management plays a role
+  
+:::
+
+:::{.column}
+
+:::{.center-text}
+**Loss**
+:::
+
+- Loss in fisheries not as clear as in agriculture [@Herrmann2004]
+
+- What constitutes a bad year in fisheries?
+
+- Fishers catch is not the same each year
+
+:::
+
+::::
+
+
+
+## {#ml-qs data-menu-title="ML Research Questions"}
+
+[Research Questions]{.slide-title}
+
+<hr>
+
+- **How much would fishers be willing to pay for fisheries insurance contracts?**
+
+<br>
+
+- **Can we design indices to accurately indemnify fishery losses?**
+
+<br>
+
+- **What models and types of contracts can improve index insurance for fisheries?**
+
+<br>
+
+- **What are the most important environmental variables for predicting fishery loss?**
+
+
+## {#ml-mod data-menu-title="ML Model"}
+
+[Find the premium that makes fishers indifferent between insurance and none]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+$$
+\mathbb{E}[U_{ni}(\pi)]=\mathbb{E}[U_{i}(\pi,I(\omega),\rho)]
+$$
+
+:::
+
+:::{.column}
+$U_{ni}$: utility no insurance
+
+$U_i$: utility with insurance
+
+$\pi$: Revenue, landings, etc.
+:::
+
+::::
+  
+  - $\rho$ represents the marginal willingness to pay for insurance
+  
+  - High $\rho$ means fishers really want insurance
+  
+  
+:::{.center-text}
+*Models with lower basis risk will have higher $\rho$*
+:::
+
+## {#contract data-menu-title="Insurance contract"}
+
+[Use different contracts and fishery measures to indemnify loss ]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+:::{.center-text}
+**Deviation from mean**
+:::
+
+$$
+I(\omega)=\max(0,\bar\pi-\hat{\pi}_t^k(\omega))
+$$
+
+Most commonly used in agriculture
+
+$k\in\{LM,LASSO,RF\}$
+:::
+
+:::{.column}
+
+:::{.center-text}
+**Deviations from Moving Average**
+:::
+
+$$
+I(\omega)=\max(0,\frac{1}{j}\sum^n_{i=n-j+1}\pi_t-\hat{\pi}_t^k(\omega))
+$$
+
+$j$: number of periods to average
+
+:::
+
+::::
+
+- Insurance payouts when $\omega$ predicts a lower catch than the trigger
+
+
+:::{.center-text}
+**Premium**
+
+Average previous payouts times a loading factor $m$
+
+Vary $m$ to get WTP
+:::
+
+$$
+\rho(w)=\mathbb{E}[I(\omega)]m
+$$
+
+
+
+## {#ml-data data-menu-title="Data Overview"}
+
+[74 California fisheries at the state and port level provide detailed catch data]{.slide-title}
+
+<hr>
+
+```{r,fig.align='center'}
+load(here::here('data','fisheries','cali_catch.rda'))
+
+load(here::here('data','fisheries','cali_port.rda'))
+
+p1<-cali_catch %>% 
+  group_by(comm_name) %>% 
+  summarize(total_revenue=sum(value_usd)) %>% 
+  mutate(comm_name=fct_reorder(comm_name,total_revenue)) %>% 
+  ggplot()+
+  geom_col(aes(x=comm_name,y=total_revenue),fill="#047C91")+
+  scale_y_continuous(expand=c(0,0),labels = scales::unit_format(unit = "M", scale = 1e-6))+
+  theme_classic()+
+  labs(x='',y='Total Revenue 1981-2023','California State')+
+  theme(axis.text.x = element_text(angle=45,hjust=1))+
+  theme(axis.title=element_text(size=18),
+        axis.text.y=element_text(size=14))
+
+top_15<-cali_port_catch %>% 
+  group_by(port_spp_id) %>% 
+  summarize(tot_rev=sum(revenues_usd)) %>% 
+  top_n(15)
+
+p2<-cali_port_catch %>% 
+  filter(port_spp_id %in% top_15$port_spp_id) %>% 
+  mutate(comm_name=factor(comm_name,levels=c("Chub mackerel",'Swordfish','Chinook salmon','California spiny lobster','Red sea urchin','Market squid','Dungeness crab'))) %>% 
+  ggplot()+
+  geom_col(aes(x=comm_name,y=revenues_usd,fill=port_area))+
+  scale_fill_viridis_d(name="Port Area")+
+  scale_y_continuous(expand=c(0,0),labels = scales::unit_format(unit = "M", scale = 1e-6))+
+  theme_classic()+
+  labs(x='',y='Total Revenue 1981-2023',title='Top 15 most productive ports and species')+
+  theme(axis.text.x = element_text(angle=45,hjust=1))+
+  theme(axis.text=element_text(size=14),
+        axis.title=element_text(size=18),
+        legend.text=element_text(size=14),
+        legend.title=element_text(size=18),
+        title=element_text(size=19))
+
+library(patchwork)
+
+p1+p2
+```
+
+## {#overfit data-menu-title="Overfitting"}
+
+[Strictly weather variables cannot account for trends in management]{.slide-title}
+
+<hr>
+
+```{r, fig.align='center'}
+
+load(here::here('data','output','cali_lm_ut_wtp.rda'))
+load(here::here('data','output','cali_rf_ut_wtp.rda'))
+load(here::here('data','output','port_lm_ut_wtp.rda'))
+load(here::here('data','output','port_rf_ut_wtp.rda'))
+
+library(ranger)
+load(here::here('data','output','cali_lm_models.rda'))
+load(here::here('data','output','cali_rf_models.rda'))
+
+dcrb_data<-cali_mt_lm |> 
+  filter(species_code=='CBZ1') |> 
+  ungroup() |> 
+  dplyr::select(cw_data) |> 
+  unnest(cw_data)
+
+lm_mod_df<-cali_mt_lm |> 
+  filter(species_code=='CBZ1') |> 
+  hoist(model,'final_mod','best_rmse')
+
+lm_mod<-lm_mod_df$final_mod[[1]]
+
+filt<-lm_mod_df$best_rmse$var
+
+lm_pred<-dcrb_data |> filter(var==filt & fish_var=='landings_mt') |> 
+  (\(x)(predict(lm_mod,newdata=x)))()
+
+
+rf_mod_df<-cali_mt_rf |> 
+  filter(species_code=='CBZ1')
+
+rf_mod<-rf_mod_df$model[[1]]$final_mod
+
+rf_pred<-dcrb_data |> filter(fish_var=='landings_mt') |> 
+  pivot_wider(
+        names_from=var,
+        values_from=value
+      ) |> 
+  drop_na() |> 
+  (\(x)(predict(rf_mod,x)$predictions))()
+
+
+dcrb<-dcrb_data |> 
+  filter(fish_var=='landings_mt') |> 
+  pivot_wider(
+        names_from=var,
+        values_from=value
+      ) 
+rf_pred<-c(NA,rf_pred)
+ggplot(data=dcrb)+
+  geom_line(aes(x=year,y=fish_value,color='Data'),linewidth=2)+
+  geom_point(aes(x=year,y=lm_pred,color='Linear Model'),size=3)+
+  geom_point(aes(x=year,y=rf_pred,color='Random Forest'),size=3)+
+  scale_color_manual(name="",values=c('Data'='#003660','Linear Model'='#047C91','Random Forest'='#79A540'))+
+  theme_classic()+
+  labs(x='Year',y='Landings (MT)',title = "Cabezon")+
+  theme(legend.position = 'top')+
+  geom_hline(yintercept=mean(dcrb$fish_value),linetype='dashed',color='black',linewidth=2)+
+  theme(title = element_text(size=19),
+        axis.text=element_text(size=21),
+        legend.text = element_text(size=16),
+        legend.title = element_text(size=19))+
+  geom_vline(xintercept=2013,linetype='dashed',color='red',size=1.5)
+  
+```
+
+<a href="#/rmse">Differences in test and train sets cause models to underperform </a>
+
+## {#strike data-menu-title="Strike Level"}
+
+[Mean strike levels might be problematic in fisheries]{.slide-title}
+
+<hr>
+
+
+```{r, fig.align='center'}
+
+library(zoo)
+
+cali_cw<-cali_catch %>% 
+  group_by(species_code) %>%
+  mutate(mt_per_fisher=case_when(mt_per_fisher==Inf~0,
+                              .default=as.numeric(mt_per_fisher)),
+         lb_per_fisher=case_when(lb_per_fisher==Inf~0,
+                                 .default=as.numeric(lb_per_fisher))) %>% 
+  mutate(roll_value_usd=rollmean(value_usd,3,fill=NA,align="right",na.rm=TRUE),
+         roll_landings=rollmean(landings_mt,3,fill=NA,align='right',na.rm=TRUE),
+         roll_n_rev=rollmean(rev_per_fisher,3,fill=NA,align='right',na.rm=TRUE),
+         roll_n_mt=rollmean(mt_per_fisher,3,fill=NA,align='right',na.rm=TRUE)) %>%
+  filter(year>=1988) 
+
+## Plot albc
+
+p5<-cali_cw %>% filter(species_code=='ALBC') %>% 
+  ggplot()+
+  geom_point(aes(x=year,y=landings_mt,color='Data'),size=3)+
+  geom_line(aes(x=year,y=mean(landings_mt),color='Mean'),size=2)+
+  geom_line(aes(x=year,y=roll_landings,color='Moving Average'),size=2)+
+  scale_color_manual(values=c('black','blue','forestgreen'))+
+  theme_classic()+labs(x='',y='Landings (MT)',title='Albacore')+
+  theme(legend.title=element_blank())+
+  theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=18),
+        legend.text=element_text(size=16),
+        title=element_text(size=19))
+
+
+p5
+```
+
+
+<a href="#/ml-lm">Bias results in the utility measures. If it always pays out you want it badly </a>
+
+## {#future data-menu-title="Preliminary Results"}
+
+[Future Steps]{.slide-title}
+
+<hr>
+
+- **Embed management as some form of predictor**
+  
+- **Pin down what is the expected amount of loss in a bad year**  
+
+  - *CPUE might be the better measure of fisher success*
+  
+  - *Or directly measure biomass?*
+  
+- Run utility models with updated models to find WTP
+  
+- Extract weather features of importance  
+
+## {background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg"}
+
+::: {.absolute left="10%" top="8%" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+
+**Questions?**
+
+:::
+
+
+
+## {#appx data-menu-title="Appendix" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Appendix</div>
+</div>
+
+## {#beh-ra data-menu-title="Risk Aversion"}
+
+[Risk aversion has a large impact on optimal input]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-cap: "Risk Aversion (A), weather variance $\\omega$ (B), and trigger (C) all influence the magnitude of change in harvest. Mean production elasticity is set to 0.5. Average percent change in input (y-axis) is summarized across all other parameter combinations for each risk effect value of $\\beta$. "
+#| label: fig-sum
+
+txt_size=16
+
+ak=0.5
+ins<-comb |> 
+  filter(i_x>0.0001 & gamma>0.0000001) |> 
+  filter(alpha==ak) |> 
+  group_by(a,alpha,beta) |> 
+  summarize(u=mean(pct_u),x=mean(pct_x)) 
+
+
+ins_wtrig<-comb |> 
+  filter(gamma>0.0000001) |> 
+  filter(alpha==ak) |> 
+  group_by(wtrig,alpha,beta) |> 
+  summarize(u=mean(pct_u),x=mean(pct_x)) 
+
+ins_sig<-comb |> 
+  filter(i_x>0.0001 & gamma>0.00000001) |> 
+  filter(alpha==ak) |> 
+  group_by(sigmaw,alpha,beta) |> 
+  summarize(u=mean(pct_u),x=mean(pct_x))  
+
+a<-ggplot(data=ins)+
+  geom_vline(xintercept = 0,color="grey")+
+  geom_hline(yintercept = 0,color="grey")+
+  geom_line(aes(x=beta,y=x,color=as.factor(a)),linewidth=2)+
+  labs(x="Risk Effects",y="Average Percentage\nChange in Input",color="Risk Aversion (a)")+
+  theme_classic()+
+  scale_color_manual(values=c("#003660","#EF5645","#79A540"))+
+  theme(text=element_text(size=txt_size),
+    legend.position = "bottom",
+        legend.title = element_text(size = txt_size), 
+        legend.text  = element_text(size = txt_size-3),
+        legend.key.size = unit(.8, "lines"))+
+  scale_y_continuous(labels=scales::percent,expand=c(0,0),limits=c(-0.05,.25))+
+  guides(color = guide_legend(title.position="top", title.hjust = 0.5, override.aes = list(size=0.1)))
+
+
+
+c<-ggplot(data=ins_wtrig)+
+  geom_vline(xintercept = 0,color="grey")+
+  geom_hline(yintercept = 0,color="grey")+
+  geom_line(aes(x=beta,y=x,color=as.factor(wtrig)),size=2)+
+  labs(x="Risk Effects",y="Average Percentage\nChange in Input",
+       color="Trigger Threshold")+
+  theme_classic()+
+  scale_color_manual(values=c("#003660","#EF5645","#79A540"))+
+  theme(text=element_text(size=txt_size),
+    legend.position = "bottom",
+        legend.title = element_text(size = txt_size), 
+        legend.text  = element_text(size = txt_size-3),
+        legend.key.size = unit(.8, "lines"))+
+  scale_y_continuous(labels=scales::percent,expand=c(0,0),limits=c(-.05,.25))+
+  guides(color = guide_legend(title.position="top", title.hjust = 0.5, override.aes = list(size=0.1)))
+
+b<-ggplot(data=ins_sig)+
+  geom_vline(xintercept = 0,color="grey")+
+  geom_hline(yintercept = 0,color="grey")+
+  geom_line(aes(x=beta,y=x,color=as.factor(sigmaw)),size=2)+
+  labs(x="Risk Effects",y="Average Percentage\nChange in Input",color=TeX(r'(Variance $\sigma_\omega$)'))+
+  theme_classic()+
+  scale_color_manual(values=c("#003660","#EF5645","#79A540","#09847A"))+
+  theme(text=element_text(size=txt_size),
+    legend.position = "bottom",
+        legend.title = element_text(size = txt_size), 
+        legend.text  = element_text(size = txt_size-3),
+        legend.key.size = unit(.8, "lines"))+
+  scale_y_continuous(labels=scales::percent,expand=c(0,0),limits=c(-0.05,0.25))+
+  guides(color = guide_legend(title.position="top", title.hjust = 0.5, override.aes = list(size=0.1)))
+library(patchwork)
+
+a+b+c+plot_layout(axis_titles = "collect")+plot_annotation(tag_levels ='A')
+```
+
+<a href="#/beh-corr2">Back to slide </a>
+
+## {#beh-multi data-menu-title="Multiple Inputs"}
+
+[Ambiguity is increased with multiple inputs]{.slide-title}
+
+<hr>
+
+$$
+\begin{aligned}
+&\frac{\partial x_a}{\partial \gamma}=\frac{-1}{Det}\left[\frac{\partial U}{\partial x_b \partial x_b}\frac{\partial U}{\partial x_a \partial \gamma}-\frac{\partial U}{\partial x_a \partial x_b}\frac{\partial U}{\partial x_b \partial \gamma}\right] \\
+&\frac{\partial x_b}{\partial \gamma}=\frac{-1}{Det}\left[\frac{-\partial U}{\partial x_b \partial x_a}\frac{\partial U}{\partial x_a \partial \gamma}+\frac{\partial U}{\partial x_a \partial x_a}\frac{\partial U}{\partial x_b \partial \gamma}\right]
+\end{aligned}
+$$ {#eq-ivtsol}
+
+:::{#prp-samre}
+In fisheries with two inputs, when $\theta$ and $\omega$ are uncorrelated, index insurance will change the optimal use of a specific input in accordance to an input's own risk effect when the following sufficient condition is true:
+
+$\frac{\partial U}{\partial x_a\partial x_b}>0$ when both inputs share the same risk effects, and $\frac{\partial U}{\partial x_a\partial x_b}<0$ when inputs have opposite risk effects.
+
+Otherwise, Index Insurance will have ambiguous effects on optimal input choice. 
+:::
+
+- <a href="#/beh-res">Back to Slide</a>
+
+## {#beh-proof data-menu-title="Proof Steps"}
+
+[Proof of single input]{.slide-title3}
+
+<hr>
+
+$$
+\begin{aligned}
+\small
+\frac{U}{\partial x \partial \gamma}=\int^{\infty}_{-\infty}j_{\theta}(\theta)\left[ \int^{\bar\omega}_{-\infty}j_{\omega}(\omega)u''(\pi(x,\hat{B},\theta,\omega)+(1-J(\bar\omega))\gamma)\frac{\partial \pi}{\partial x}(x,\hat{B},\theta,\omega)(1-J(\bar\omega))d\omega\right.\\
++\left.\int^{\infty}_{\bar{\omega}}j_{\omega}(\omega) u''(\pi(x,\hat{B},\theta,\omega)-J(\bar\omega)\gamma)\frac{\partial \pi}{\partial x}(x,\hat{B},\theta,\omega)(-J(\bar\omega))d\omega\right] d\theta
+\end{aligned}
+$$ {#eq-egam}
+
+$$
+\begin{aligned}
+\small
+\frac{U}{\partial x \partial \gamma}=\int^{\infty}_{-\infty}&j_{\theta}(\theta)J(\bar\omega)(1-J(\bar\omega))u''(\theta,\cdot)\\
+&\left[ \int^{\bar\omega}_{-\infty}j_{\omega}(\omega)\frac{\partial \pi}{\partial x}(x,\hat{B},\theta,\omega)d\omega
+-\int^{\infty}_{\bar{\omega}}j_{\omega}(\omega)\frac{\partial \pi}{\partial x}(x,\hat{B},\theta,\omega)d\omega\right] d\theta
+\end{aligned}
+$$ {#eq-simp}
+
+$$
+\begin{aligned}
+\small
+\frac{U}{\partial x \partial \gamma}=\int^{\infty}_{-\infty}&\overbrace{j_{\theta}(\theta)J(\bar\omega)(1-J(\bar\omega))u''(\theta,\cdot)}^{-}\\
+&\left[ \int^{\bar\omega}_{-\infty}\underbrace{j_{\omega}(\omega)\frac{\partial \pi}{\partial x}(x,\hat{B},\theta,\omega)d\omega
+-\int^{\infty}_{\bar{\omega}}j_{\omega}(\omega)\frac{\partial \pi}{\partial x}(x,\hat{B},\theta,\omega)d\omega}_{+}\right] d\theta\\
+<0
+\end{aligned}
+$$ {#eq-gs}
+
+- <a href="#/beh-corr">Back to Slide </a>
+
+## {#beh-lem data-menu-title="Lemma"}
+
+**Lemma 3.1** *Individual fisher expected marginal profit of a specific input, $x_m$, is greater in the good state than expected marginal profit in the bad state when $h_{x_m}(X)>0$. Expected marginal profit is higher in the bad state when $h_{x_m}(X)<0$.  If $h_{x_m}(X)=0$, the marginal profits are equivalent in both states.*
+
+## {#beh-lem2 data-menu-title="Lemma 2"}
+
+$$
+\begin{aligned}
+\small
+\frac{\partial \mathbb{E}[\pi|\omega<\bar\omega]}{\partial x^*_m}-\frac{\partial \mathbb{E}[\pi|\omega>\bar\omega]}{\partial x^*_m}=&\mathbb{E}[\omega h_{x_m^*}(X^*)|\omega<\bar\omega]+f_{x_m^*}(X^*)\hat{B}+\mathbb{E}[\theta f_x(X^*)|\omega <\bar\omega]-c_{x^*_m}(X^*) \\
+&-\mathbb{E}[\omega h_{x_m^*}(X^*)|\omega>\bar\omega]+f_{x_m^*}(X^*)\hat{B}+\mathbb{E}[\theta f_x(X^*)|\omega >\bar\omega]-c_{x^*_m}(X^*)\\
+=&\mathbb{E}[\omega h_{x_m^*}(X^*)|\omega<\bar\omega]-\mathbb{E}[\omega h_{x_m^*}(X^*)|\omega>\bar\omega]
+\end{aligned}
+$$ {#eq-comppi1}
+
+
+## {#hcr-prob data-menu-title="HCR problem"}
+
+[Two insurance contracts test timing of payouts]{.slide-title}
+
+<hr>
+
+```{r, out.width="100%", fig.align='center'}
+knitr::include_graphics("img/pre-shock.png")
+```
+
+:::{.center-text}
+Contract built on $\omega$ pays out after realization of current period shock
+:::
+
+:::{.fragment}
+
+```{r,out.width="100%", fig.align='center'}
+knitr::include_graphics("img/post-shock.png")
+```
+
+:::{.center-text}
+Contract built on $\theta$ pays out before realization of current period shock
+:::
+
+:::
+
+- <a href="#/hcr-bell">Back to Slides </a>
+
+## {#hcr-pct data-menu-title="HCR Preliminary"}
+
+[Relatively large percent changes in harvest]{.slide-title}
+
+<hr>
+
+```{r}
+#| echo: false
+ins_pol<-combo_df_long |> 
+  filter(model=="insurance") |> 
+  dplyr::select(f_opt)
+
+ra_pol<-combo_df_long |> 
+  filter(model=="averse") |> 
+  dplyr::select(f_opt)
+
+b<-unique(combo_df_long$b)
+
+pct_diff<-(ins_pol-ra_pol)/ra_pol
+
+plot_df<-data.frame(b=b,pct_diff=pct_diff)
+
+ggplot(plot_df,aes(x=b,y=f_opt))+
+  geom_line(color="#003660",linewidth=2.5)+
+  scale_y_continuous(labels=scales::percent)+
+  theme_classic()+
+  labs(x="Biomass",y="Pcerent Difference in HCR")+
+  theme(axis.text =element_text(size=22))+
+  theme(axis.title = element_text(size=26))
+  
+```
+
+## {#mg-effects data-menu-title="Discrete"}
+
+[Breakdown of Value Function FOC]{.slide-title}
+
+<hr>
+
+$$
+\begin{aligned}
+&\mathbb{E}[\pi'(f_t,z_t^\omega)U'(f_t,z_t^\omega,z_t^\theta,I(v))]=\beta \mathbb{E}[G'(b_t-h_t)V'(z_{t+1}^\theta G(b_t-h_t))] \\
+&\mathbb{E}[\pi'(f_t,z_t^\omega)]\mathbb{E}[U'(f_t,z_t^\omega,z_t^\theta,I(v))]+\text{cov}[\pi'(f_t,z_t^\omega),U'(f_t,z_t^\omega,z_t^\theta,I(v))] \\
+&=\beta \mathbb{E}[G'(b_t-h_t)]\mathbb{E}[V'(z_{t+1}^\theta G(b_t-h_t))] +\text{cov}[G'(b_t-h_t),V'(z_{t+1}^\theta G(b_t-h_t))]
+\end{aligned}
+$$ {#eq-vfoc}
+
+## {#mg-discrete data-menu-title="Discrete"}
+
+[Binning of $\omega$]{.slide-title}
+
+<hr>
+
+
+```{r}
+
+#Environmental parameters
+mean_omega=0
+sigma_omega=0.5
+
+#bin parameters
+n_z=13
+n_sims=100000
+
+set.seed(42)
+
+#Get distribution and bins of
+omega_raw<-rlnorm(n_sims,mean=mean_omega,sd=sigma_omega)
+omega_dist<-omega_raw[which(omega_raw<2.5)]
+
+omegahist<-hist(omega_dist,breaks=seq(min(omega_dist),max(omega_dist),l=n_z+1),main=latex2exp::TeX(r'(Distribution of $z_t^\omega$)'),xlab=latex2exp::TeX(r'($z_t^\omega)'),ylab="Frequency",col="lightblue",border="black")
+```
+
+## {#ml-theory data-menu-title="Theory"}
+
+[Theory on basis risk  impacts on insurance demand]{.slide-title}
+
+<hr>
+
+- No risk averse person will buy insurance if the expected payout conditional on a given loss is higher than the commercial premium [@Clarke2016]
+
+$$
+\begin{aligned}
+\kappa(l)&=\frac{\mathbb{E}[\tilde i | \tilde l =l]}{m \mathbb{E}[\tilde i]} & i\text{ = measure of index, } l=\text{ loss}  \\
+\end{aligned}
+$$ {#eq-clark}
+
+
+- Limited to ex-ante analysis of payouts 
+
+- Utility measures better reflect value of insurance for hypothetical contracts [@Kenduiywo2021;@Conradt2015;@Chen2024]
+
+
+## {#mod-out data-menu-title="Model Outline"}
+
+[Model Outline]{.slide-title}
+
+<hr>
+
+**Step 1: Train Model on Data**
+
+    - Perserve time order and split into training (<2005), validation (2005-2013), and test (>2013) sets. 
+    
+    - Tune hyperparameters on validation set
+    
+**Step 2: Predict payout schedule**
+
+    - Use model to predict payouts for each year (<2013)
+    
+**Step 3: Find the actuarially fair premium for each of the testing set**
+
+    - Model updates and retrains each year in the testing set with realization of weather to find new insurance premiums 
+    
+    - Mimics real world insurance
+
+**Step 4: Calculate utility in testing sample**
+
+**Step 5: Find the loading factor that leaves fishers just as well of with insurance**
+
+
+## {#data data-menu-title="Data"}
+
+[Environmental Data Sources]{.slide-title}
+
+<hr>
+
+```{r}
+#| label: tbl-env-sum
+#| tbl-cap: Summary statistics of environmental variables from 1988-2023 for California fisheries.
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+load(here::here("data","environmental","block_cuti.rda"))
+load(here::here("data","environmental","block_beuti.rda"))
+load(here::here("data","environmental","block_hci.rda"))
+load(here::here("data","environmental","block_sst.rda"))
+load(here::here("data","environmental","enso_pdo.rda"))
+
+
+# seperate each into yearly mean, yearly sd, the temporal resoltuion and the spatial resolution
+
+cuti_sum<-block_cuti %>% 
+  drop_na() |> 
+  filter(var=='avg_cuti') |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Monthly",
+         spatial="1 degree latitude",
+         source="Jacox et al., 2018") |> 
+  select(-var)
+
+rownames(cuti_sum)<-c("CUTI")
+
+beuti_sum<-block_beuti %>% 
+  drop_na() |> 
+  filter(var=="avg_beuti") |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Monthly",
+         spatial="1 degree latitude",
+         source="Jacox et al., 2018") |> 
+  select(-var)
+
+rownames(beuti_sum)<-c("BEUTI")
+
+hci_sum<-block_hci %>% 
+  drop_na() |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Yearly",
+         spatial="3 degree latitude",
+         source="Integrated Ecosytem Assessment") |> 
+  select(-var)
+
+rownames(hci_sum)<-c("Cummulative Habitat Compression Index")
+
+sst_sum<-block_sst %>% 
+  drop_na() |> 
+  filter(var=="avg_sst") |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Monthly",
+         spatial="5x5 km",
+         source="NOAA Coral Bleaching Degree Heating Week") |> 
+  select(-var)
+
+rownames(sst_sum)<-c("Sea Surface Temperature")
+
+enso_sum<-enso |> 
+  group_by(year) |> 
+  summarize(yr_enso=mean(enso)) |> 
+  ungroup() |> 
+  drop_na() |> 
+  summarize(mean=mean(yr_enso),
+         sd=sd(yr_enso)) |> 
+  mutate(resolution="Monthly",
+         spatial="Regional",
+         source="MEI.v2")
+
+rownames(enso_sum)<-c("ENSO")
+
+pdo_sum<-pdo |> 
+  group_by(year) |> 
+  summarize(yr_pdo=mean(pdo)) |> 
+  ungroup() |> 
+  drop_na() |> 
+  summarize(mean=mean(yr_pdo),
+         sd=sd(yr_pdo)) |> 
+  mutate(resolution="Monthly",
+         spatial="Regional",
+         source="PDO ERSST V5")
+
+rownames(pdo_sum)<-c("Pacific Decadal Oscillation")
+
+env_tbl<-rbind(cuti_sum,beuti_sum,hci_sum,sst_sum,enso_sum,pdo_sum) |> 
+  mutate(across(where(is.numeric),round,1))
+
+env_tbl$variable<-c("CUTI",
+                     "BEUTI",
+                     "Cummulative Habitat Compression Index",
+                     "Sea Surface Temperature",
+                     "ENSO","Pacific Decadal Oscillation")
+
+env_tbl<-env_tbl %>%
+  select(variable,mean,sd,resolution,spatial,source)
+
+
+
+env_tbl |>
+  kable(format='html',col.names = c("Weather Index","Mean","SD","Temporal Resolution","Spatial Resolution","Source"),booktabs=T) |> 
+  kable_styling()
+
+```
+
+
+## {#sst data-menu-title="SST"}
+
+[Example of spatial coverage]{.slide-title}
+
+<hr>
+::::{.columns}
+
+:::{.column}
+
+```{r}
+knitr::include_graphics("img/beuti.png")
+```
+
+:::
+
+:::{.column}
+
+```{r, out.width="100%"}
+knitr::include_graphics("img/hci.jpg")
+```
+
+
+:::
+
+
+
+::::
+
+## {#spatial data-menu-title="Spatial Data"}
+
+[Match fishing blocks with spatial data]{.slide-title}
+
+<hr>
+
+```{r}
+library(tidyverse)
+library(sf)
+library(wcfish)
+library(raster)
+library(rnaturalearth)
+library(pals)
+library(ncdf4)
+
+state<-ne_states(country='United States of America')
+  
+state_sf<-st_as_sf(state) %>% 
+  filter(name %in% c('California','Oregon','Washington','Nevada'))
+load(here::here('data','environmental','sst_dhw_2021-2023.Rdata'))
+p2<-sst %>% 
+  filter(t=='2021-01-16') %>% 
+  ggplot()+
+  geom_tile(aes(x=longitude,y=latitude,fill=temp))+
+  scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  geom_sf(data=state_sf)+
+  geom_sf(data=blocks,fill=NA,color='white')+
+  coord_sf(xlim = c(-129,-117),ylim=c(30,42))+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x = NULL, y = NULL, fill = "SST (°C)") +
+  theme(legend.position = c(0.85, 0.75),
+        legend.box.background = element_rect(color="#047C91", linewidth =1),
+        axis.text.x = element_text(angle = 45,vjust=0.5,colour = "#047C91"),
+        title = element_text(size=19,colour = "#047C91"),
+        axis.text=element_text(size=21,colour = "#047C91"),
+        legend.title = element_text(size=19,colour = "#047C91"),
+        legend.text = element_text(size=16,colour = "#047C91"))
+
+```
+
+
+```{r}
+load(here::here('data','environmental','sst_blocks.rda'))
+
+dcrb<-readxl::read_xlsx(here::here('data','blocks','port','msqd_sba.xlsx')) %>% 
+  drop_na()
+
+catch_data<-dcrb %>% 
+  janitor::clean_names() %>% 
+  drop_na(total_pounds) %>% 
+  filter(total_pounds>0) %>% 
+  filter(block_id!="Total") %>% 
+  mutate(block_id=as.numeric(block_id))
+
+## construct sf blocks for intersection
+block_data<-catch_data %>% 
+  inner_join(blocks,by="block_id") %>% 
+  mutate(pct_catch=total_pounds/sum(total_pounds)) %>% 
+  st_drop_geometry() %>% 
+  dplyr::select(block_id,pct_catch)
+
+sst_join<-sst_blocks %>%
+  filter(year==2020 & month==1) %>% 
+  filter(block_id %in% block_data$block_id) %>% 
+  inner_join(blocks) %>% 
+  st_as_sf()
+
+p1<-ggplot()+
+  geom_sf(data=sst_join,aes(fill=sst))+
+  scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  geom_sf(data=state_sf)+
+  geom_sf(data=blocks,fill=NA,color='black')+
+  coord_sf(xlim = c(-129,-117),ylim=c(30,42))+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x = NULL, y = NULL, fill = "SST (°C)",title="Market Squid for SBA") +
+  theme(legend.position = c(0.85, 0.75),
+        legend.box.background = element_rect(color="#047C91", linewidth =1),
+        axis.text.x = element_text(angle = 45,vjust=0.5,colour = "#047C91"),
+        title = element_text(size=19,colour = "#047C91"),
+        axis.text=element_text(size=21,colour = "#047C91"),
+        legend.title = element_text(size=19,colour = "#047C91"),
+        legend.text = element_text(size=16,colour = "#047C91"))
+
+p2+p1+ plot_layout(guides = 'collect')
+```
+
+
+## {#rmse data-menu-title="RMSE"}
+
+[Random Forests excel in the train, but are underwhelming in the testing]{.slide-title}
+
+<hr>
+
+```{r}
+# get train_rmse for rf and compare it relative to the lm rmse for both test and train
+
+c_mt_train<-(cali_mt_rf_ut$train_rmse-cali_mt_lm_ut$train_rmse)/cali_mt_lm_ut$train_rmse
+
+
+p_mt_train<-(port_mt_rf_ut$train_rmse-port_mt_lm_ut$train_rmse)/port_mt_lm_ut$train_rmse
+
+rf_mt_train<-mean(c(c_mt_train,p_mt_train))
+
+c_mt_test<-(cali_mt_rf_ut$test_rmse-cali_mt_lm_ut$test_rmse)/cali_mt_lm_ut$test_rmse
+
+p_mt_test<-(port_mt_rf_ut$test_rmse-port_mt_lm_ut$test_rmse)/port_mt_lm_ut$test_rmse
+
+rf_mt_test<-mean(c(c_mt_test,p_mt_test))
+
+# Repeat same steps but with the rev 
+
+c_rev_train<-(cali_rev_rf_ut$train_rmse-cali_rev_lm_ut$train_rmse)/cali_rev_lm_ut$train_rmse
+
+p_rev_train<-(port_rev_rf_ut$train_rmse-port_rev_lm_ut$train_rmse)/port_rev_lm_ut$train_rmse
+
+rf_train_rev<-mean(c(c_rev_train,p_rev_train))
+
+c_rev_test<-(cali_rev_rf_ut$test_rmse-cali_rev_lm_ut$test_rmse)/cali_rev_lm_ut$test_rmse
+
+p_rev_test<-(port_rev_rf_ut$test_rmse-port_rev_lm_ut$test_rmse)/port_rev_lm_ut$test_rmse
+
+rf_test_rev<-mean(c(c_rev_test,p_rev_test))
+
+
+plot_df<-data.frame(rmse=c(rf_mt_train,rf_mt_test,rf_train_rev,rf_test_rev),x=c('Train','Test','Train','Test'),type=c('Landings','Landings','Revenue','Revenue'))
+
+ggplot(plot_df)+
+  geom_col(aes(x=x,y=rmse,fill=type),position = 'dodge')+
+  scale_fill_manual(name='',values=c('#047C91','#79A540'))+
+  scale_y_continuous(labels = scales::percent)+
+  theme_classic()+
+  labs(x='',y='RMSE Relative to Linear Model')+
+  theme(legend.position = 'top',
+        title = element_text(size=19),
+        axis.text=element_text(size=21),
+        legend.text = element_text(size=16),
+        legend.title = element_text(size=19))
+
+```
+
+<a href="#/overfit">Back to slide </a>
+
+## {#ml-lm data-menu-title="Preliminary Utility Results"}
+
+[Linear models almost always payout leading to high desirability]{.slide-title}
+
+<hr>
+
+```{r}
+
+cali_mt_lm_ut %>% 
+  ggplot()+
+  geom_col(aes(x=species_code,y=m),fill='#003660')+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x='',y='M (Willingness to Pay')+
+  theme(axis.text.x = element_text(angle=45,hjust=1))+
+  theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=18))
+
+```
+
+<a href="#/strike">Back to slide </a>
+
+## {#ml-dun data-menu-title="Crab example"}
+
+[Crab example]{.slide-title}
+
+<hr>
+
+```{r}
+
+p6<-cali_cw %>% filter(species_code=='DCRB') %>% 
+  ggplot()+
+  geom_point(aes(x=year,y=landings_mt,color='Data'),size=3)+
+  geom_line(aes(x=year,y=mean(landings_mt),color='Mean'),size=2)+
+  geom_line(aes(x=year,y=roll_landings,color='Moving Average'),size=2)+
+  scale_color_manual(values=c('black','blue','forestgreen'))+
+  theme_classic()+labs(x='',y='Landings (MT)',title='Dungeness Crab')+
+  theme(legend.title=element_blank())+
+  theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=18),
+        legend.text=element_text(size=16),
+        title = element_text(size=19))
+
+p6
+```
+
+
+
+## References
+
+
+
+

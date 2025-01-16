@@ -1,0 +1,1127 @@
+---
+format: 
+  revealjs:
+    chalkboard: true
+    slide-number: true
+    show-slide-number: print
+    theme:
+     - ucsb-media.scss
+    logo: img/bren-logo.png
+
+---
+
+## {#title-slide data-menu-title="Title Slide" background=.white}
+
+[Index Insurance in Fisheries]{.custom-title .blue-text}
+
+[Gaines Lab Meeting]{.custom-subtitle .gold}
+
+<hr class="hr-teal">
+
+[Nathaniel Grimes]{.body-text-l .center-text .blue-text}
+
+[Bren School of Environmental Science & Management]{.center-text .body-text-m .blue-text}
+
+[**Last updated:** `r format(Sys.time(), '%b %d, %Y')`]{.body-text-s .blue-text}
+
+
+
+## {background-image="https://i.insider.com/5644098bdd0895b0578b465f?width=1300&format=jpeg&auto=webp"}
+
+::: {.absolute left="10%" top="8%" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+- Fishing is a risky business
+
+- Storms, marine heatwaves, and other environmental variables directly impact fisher livelihoods
+
+- Fisher choices and management  take steps to eliminate risk
+
+- Lack of financial tools to hedge against losses
+:::
+
+## {#ibi data-menu-title="Index Based Insurance"}
+
+[Index Insurance has the potential to address income variation]{.slide-title}
+
+<hr>
+
+```{r}
+knitr::include_graphics("img/windex.png")
+```
+
+## {#snow data-menu-title="Snow Crab"}
+
+[Bering Sea Crab Fisheries closure demonstrates the need for insurance]{.slide-title}
+
+<hr>
+
+
+{{< video https://www.youtube.com/watch?v=LM75TwzHGAg width="100%" height="70%" >}}
+
+## {#crab data-menu-title="Crab Community"}
+
+[Marine Heatwave in 2018-2019 root cause of the collapse]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+```{r}
+#| fig-cap: (Szuwalski et al., 2023)
+
+knitr::include_graphics("img/snow-crab-dis.png")
+```
+
+
+:::
+
+:::{.column}
+- **10 Billion** Snow Crab disappeared 
+
+<br>
+
+- **55%** decline of male Red King Crabs
+
+<br>
+
+- **>$250 million each year** loss in revenue
+
+<br>
+
+- Red King Crab opened in 2024, Snow crab just opened last month
+
+:::
+
+::::
+
+## {#fed data-menu-title="Federal Disaster"}
+
+[Relief only comes through Federal Disaster Programs]{.slide-title}
+
+<hr>
+
+- Congress appropriates funds to help fishers recover from disasters via MSA
+
+<br>
+
+- \$94 million and \$96 million awarded to Bristol Bay Crab Fisheries 
+
+<br>
+
+- ***The funds are just now being dispersed to the communities!!!***
+
+<br>
+
+- Senators Murkowski and Collins calling for a new system to replace to address this slow process
+
+## {#cali data-menu-title="California"}
+
+[California Fisheries are also vulnerable to similar shocks]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Chinook Salmon 2024**
+:::
+
+![](img/chinook.jpg)
+
+:::{.center-text}
+Under Review
+:::
+
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Red Sea Urchin 2019**
+:::
+
+![](img/uni.webp)
+
+:::{.center-text}
+Funds not available until 2025
+:::
+
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Dungeness Crab 2016**
+:::
+
+![](img/d-crab.jpg)
+
+:::{.center-text}
+$25 million in 2018
+
+Inequity in distribution (Jardine et al., 2020)
+:::
+:::
+
+::::
+
+
+
+
+
+## {#ml-mot data-menu-title="ML Motivation"}
+
+[Basis risk is the greatest impediment to index insurance uptake]{.slide-title}
+
+<hr>
+
+- **Definition: Basis Risk -** Does the insurance payout when the fisher needs it?
+
+- Most programs in agriculture fail or require large subsidies to incentivize uptake
+
+- Need to find weather measures that correlate with fisher income/catch
+
+- Environmental variables influence catch, but really difficult to measure
+
+  - Non-linear, unobservables, management plays a role
+
+## {#ml-qs data-menu-title="ML Research Questions"}
+
+[How can we design indices to accurately indemnify fishery losses?]{.slide-title}
+
+<hr>
+
+### 1. What is a fisher's marginal willingness to pay for insurance?
+
+### 2. What models and types of contracts can improve index insurance for fisheries?
+
+#### a. Will one-to-one application of agriculture techniques work in fisheries?
+
+### 3. What are the most important environmental variables for predicting fishery income?
+
+
+## {#econ data-menu-title="Economic Models" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Economic Models</div>
+</div>
+
+## {#br data-menu-title="Basis Risk"}
+
+[Basis risk adds more risk]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column width="33%"}
+
+
+```{r}
+library(copula)
+library(tidyverse)
+
+  txt_size<-10
+  
+  multi_perf<-mvdc(copula = normalCopula(param=1,dim=2),
+                     margins=c("norm","norm"),
+                     paramMargins = list(list(mean=0,sd=1),
+                                         list(mean=0,sd=1)))
+  
+   multi_low<-mvdc(copula = normalCopula(param=0.2,dim=2),
+                     margins=c("norm","norm"),
+                     paramMargins = list(list(mean=0,sd=1),
+                                         list(mean=0,sd=1)))
+   
+    multi_med<-mvdc(copula = normalCopula(param=0.8,dim=2),
+                     margins=c("norm","norm"),
+                     paramMargins = list(list(mean=0,sd=1),
+                                         list(mean=0,sd=1)))
+  n=1000
+  set.seed(123)
+  sim_perf<-as.data.frame(rMvdc(n,multi_perf))
+  
+  sim_low<-as.data.frame(rMvdc(n,multi_low))
+  
+  sim_med<-as.data.frame(rMvdc(n,multi_med))
+  
+  colnames(sim_low)=c("z","w")
+  colnames(sim_perf)=c("z","w")
+  colnames(sim_med)=c("z","w")
+  
+  low_plot<-ggplot(sim_low,aes(x=w,y=z))+
+    geom_point(size=2,color="#003660")+
+    scale_y_continuous(breaks=c(-2,-85,0,2),labels=c("-2","ztrig","0","2"),limits=c(-3,3))+
+    scale_x_continuous(breaks=c(-2,-85,0,2),labels=c("-2","wtrig","0","2"),limits=c(-3,3))+
+    theme_bw()+
+    ggtitle("Correlation equal to 0.2")+
+    theme(axis.title = element_text(size=txt_size+4))+
+    theme(axis.text = element_text(size=txt_size))+
+    theme(plot.title = element_text(size=txt_size+8))+
+    annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=4)+
+    annotate("label",x=2,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
+    annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=4)+
+    annotate("label",x=2,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
+    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    labs(x="Weather Shock",y="Revenue Shock")
+  
+  med_plot<-ggplot(sim_med,aes(x=w,y=z))+
+    geom_point(size=2,color="#003660")+
+    scale_y_continuous(breaks=c(-2,-85,0,2),labels=c("-2","ztrig","0","2"),limits=c(-3,3))+
+    scale_x_continuous(breaks=c(-2,-85,0,2),labels=c("-2","wtrig","0","2"),limits=c(-3,3))+
+    theme_bw()+
+    ggtitle("Correlation equal to 0.8")+
+    theme(axis.title = element_text(size=txt_size+4))+
+    theme(axis.text = element_text(size=txt_size))+
+    theme(plot.title = element_text(size=txt_size+8))+
+    annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=4)+
+    annotate("label",x=2,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
+    annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=4)+
+    annotate("label",x=2,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
+    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    labs(x="Weather Shock",y="Revenue Shock")
+  
+  perf_plt<-ggplot(sim_perf,aes(x=w,y=z))+
+    geom_point(size=2,color="#003660")+
+    scale_y_continuous(breaks=c(-2,-85,0,2),labels=c("-2","ztrig","0","2"),limits=c(-3,3))+
+    scale_x_continuous(breaks=c(-2,-85,0,2),labels=c("-2","wtrig","0","2"),limits=c(-3,3))+
+    theme_bw()+
+    ggtitle("Correlation equal to 1")+
+    theme(axis.title = element_text(size=txt_size+4))+
+    theme(axis.text = element_text(size=txt_size))+
+    theme(plot.title = element_text(size=txt_size+8))+
+    annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=4)+
+    annotate("label",x=2,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
+    annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=4)+
+    annotate("label",x=2,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
+    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    labs(x="Weather Shock",y="Revenue Shock")
+  
+```
+
+
+```{r,fig.dim=c(4,7)}
+low_plot
+```
+
+:::
+
+:::{.column width="33%"}
+
+```{r, fig.dim=c(4,7)}
+med_plot
+```
+
+:::
+
+:::{.column width="33%"}
+
+```{r, fig.dim=c(4,7)}
+perf_plt
+```
+
+:::
+
+::::
+
+
+## {#utility data-menu-title="Utility"}
+
+[Risk aversion is a necessary ingredient to make insurance desirable]{.slide-title}
+
+<hr>
+
+- Expected Utility captures riskiness and desire to avoid it
+
+- Choose a premium price, $\rho$, that makes fishers indifferent between having insurance and not having it
+
+::::{.columns}
+
+:::{.column}
+
+$$
+\mathbb{E}[U_{ni}(\pi)]=\mathbb{E}[U_{i}(\pi,I(\omega),\rho)]
+$$
+
+:::
+
+:::{.column}
+$U_{ni}$: utility no insurance
+
+$U_i$: utility with insurance
+
+$\pi$: Either revenue, landings,
+:::
+
+::::
+  
+  - The selected $\rho$ is the marginal willingness to pay for insurance
+  
+  - High $\rho$ means fishers really want insurance
+  
+  - $\rho<1$ means insurance has to be subsidized
+  
+- Models with lower basis risk will have higher $\rho$  
+
+
+## {#contract data-menu-title="Insurance contract"}
+
+[The offered insurance contract depends on the predictive models]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+:::{.center-text}
+**Deviation from mean**
+:::
+
+$$
+I(\omega)=\max(0,\bar\pi-\hat{\pi}_t^k(\omega)
+$$
+
+Most commonly used in agriculture
+
+$k\in\{LM,LASSO,RF\}$
+:::
+
+:::{.column}
+
+:::{.center-text}
+**Deviations from Moving Average**
+:::
+
+$$
+I(\omega)=\max(0,\frac{1}{j}\sum^n_{i=n-j+1}\pi_t-\hat{\pi}_t^k(\omega))
+$$
+
+$j$: number of periods to average
+
+:::
+
+::::
+
+- Insurance payouts when $\omega$ predicts a lower catch than the trigger
+
+
+:::{.center-text}
+**Premium**
+
+Average previous payouts times a loading factor $m$
+
+Vary $m$ to get WTP
+:::
+
+$$
+\rho(w)=\mathbb{E}[I(\omega)]m
+$$
+
+
+
+    
+## {#data-pg data-menu-title="Data" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Data</div>
+</div>    
+    
+## {#data data-menu-title="Data"}
+
+[Environmental Data Sources]{.slide-title}
+
+<hr>
+
+```{r}
+#| label: tbl-env-sum
+#| tbl-cap: Summary statistics of environmental variables from 1988-2023 for California fisheries.
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+load(here::here("data","environmental","block_cuti.rda"))
+load(here::here("data","environmental","block_beuti.rda"))
+load(here::here("data","environmental","block_hci.rda"))
+load(here::here("data","environmental","block_sst.rda"))
+load(here::here("data","environmental","enso_pdo.rda"))
+
+
+# seperate each into yearly mean, yearly sd, the temporal resoltuion and the spatial resolution
+
+cuti_sum<-block_cuti %>% 
+  drop_na() |> 
+  filter(var=='avg_cuti') |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Monthly",
+         spatial="1 degree latitude",
+         source="Jacox et al., 2018") |> 
+  select(-var)
+
+rownames(cuti_sum)<-c("CUTI")
+
+beuti_sum<-block_beuti %>% 
+  drop_na() |> 
+  filter(var=="avg_beuti") |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Monthly",
+         spatial="1 degree latitude",
+         source="Jacox et al., 2018") |> 
+  select(-var)
+
+rownames(beuti_sum)<-c("BEUTI")
+
+hci_sum<-block_hci %>% 
+  drop_na() |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Yearly",
+         spatial="3 degree latitude",
+         source="Integrated Ecosytem Assessment") |> 
+  select(-var)
+
+rownames(hci_sum)<-c("Cummulative Habitat Compression Index")
+
+sst_sum<-block_sst %>% 
+  drop_na() |> 
+  filter(var=="avg_sst") |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Monthly",
+         spatial="5x5 km",
+         source="NOAA Coral Bleaching Degree Heating Week") |> 
+  select(-var)
+
+rownames(sst_sum)<-c("Sea Surface Temperature")
+
+enso_sum<-enso |> 
+  group_by(year) |> 
+  summarize(yr_enso=mean(enso)) |> 
+  ungroup() |> 
+  drop_na() |> 
+  summarize(mean=mean(yr_enso),
+         sd=sd(yr_enso)) |> 
+  mutate(resolution="Monthly",
+         spatial="Regional",
+         source="MEI.v2")
+
+rownames(enso_sum)<-c("ENSO")
+
+pdo_sum<-pdo |> 
+  group_by(year) |> 
+  summarize(yr_pdo=mean(pdo)) |> 
+  ungroup() |> 
+  drop_na() |> 
+  summarize(mean=mean(yr_pdo),
+         sd=sd(yr_pdo)) |> 
+  mutate(resolution="Monthly",
+         spatial="Regional",
+         source="PDO ERSST V5")
+
+rownames(pdo_sum)<-c("Pacific Decadal Oscillation")
+
+env_tbl<-rbind(cuti_sum,beuti_sum,hci_sum,sst_sum,enso_sum,pdo_sum) |> 
+  mutate(across(where(is.numeric),round,1))
+
+env_tbl$variable<-c("CUTI",
+                     "BEUTI",
+                     "Cummulative Habitat Compression Index",
+                     "Sea Surface Temperature",
+                     "ENSO","Pacific Decadal Oscillation")
+
+env_tbl<-env_tbl %>%
+  select(variable,mean,sd,resolution,spatial,source)
+
+
+
+env_tbl |>
+  kable(format='html',col.names = c("Weather Index","Mean","SD","Temporal Resolution","Spatial Resolution","Source"),booktabs=T) |> 
+  kable_styling()
+
+```
+
+## {#sst data-menu-title="SST"}
+
+[Example of spatial coverage]{.slide-title}
+
+<hr>
+::::{.columns}
+
+:::{.column}
+
+```{r}
+knitr::include_graphics("img/beuti.png")
+```
+
+:::
+
+:::{.column}
+
+```{r, out.width="100%"}
+knitr::include_graphics("img/hci.jpg")
+```
+
+
+:::
+
+
+
+::::
+
+## {#fish data-menu-title="Fish Data"}
+
+[Fishing data comes from California Department Fish and Wildlife]{.slide-title}
+
+<hr>
+
+```{r,fig.align='center'}
+load(here::here('data','fisheries','cali_catch.rda'))
+
+load(here::here('data','fisheries','cali_port.rda'))
+
+p1<-cali_catch %>% 
+  group_by(comm_name) %>% 
+  summarize(total_revenue=sum(value_usd)) %>% 
+  mutate(comm_name=fct_reorder(comm_name,total_revenue)) %>% 
+  ggplot()+
+  geom_col(aes(x=comm_name,y=total_revenue),fill="#047C91")+
+  scale_y_continuous(expand=c(0,0),labels = scales::unit_format(unit = "M", scale = 1e-6))+
+  theme_classic()+
+  labs(x='',y='Total Revenue 1981-2023','California State')+
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+
+top_15<-cali_port_catch %>% 
+  group_by(port_spp_id) %>% 
+  summarize(tot_rev=sum(revenues_usd)) %>% 
+  top_n(15)
+
+p2<-cali_port_catch %>% 
+  filter(port_spp_id %in% top_15$port_spp_id) %>% 
+  mutate(comm_name=factor(comm_name,levels=c("Chub mackerel",'Swordfish','Chinook salmon','California spiny lobster','Red sea urchin','Market squid','Dungeness crab'))) %>% 
+  ggplot()+
+  geom_col(aes(x=comm_name,y=revenues_usd,fill=port_area))+
+  scale_fill_viridis_d()+
+  scale_y_continuous(expand=c(0,0),labels = scales::unit_format(unit = "M", scale = 1e-6))+
+  theme_classic()+
+  labs(x='',y='Total Revenue 1981-2023',title='Top 15 most productive ports and species')+
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+
+library(patchwork)
+
+p1+p2
+```
+
+- Continuous data and average revenue greater than $100,000 between 2010-2019
+
+- 24 Fisheries at the State Level and 50 Port-Complex
+
+
+## {#spatial data-menu-title="Spatial Data"}
+
+[Match fishing blocks with spatial data]{.slide-title}
+
+<hr>
+
+```{r}
+library(tidyverse)
+library(sf)
+library(wcfish)
+library(raster)
+library(rnaturalearth)
+library(pals)
+library(ncdf4)
+
+state<-ne_states(country='United States of America')
+  
+state_sf<-st_as_sf(state) %>% 
+  filter(name %in% c('California','Oregon','Washington','Nevada'))
+load(here::here('data','environmental','sst_dhw_2021-2023.Rdata'))
+p2<-sst %>% 
+  filter(t=='2021-01-16') %>% 
+  ggplot()+
+  geom_tile(aes(x=longitude,y=latitude,fill=temp))+
+  scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  geom_sf(data=state_sf)+
+  geom_sf(data=blocks,fill=NA,color='white')+
+  coord_sf(xlim = c(-129,-117),ylim=c(30,42))+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x = NULL, y = NULL, fill = "SST (°C)") +
+  theme(legend.position = c(0.85, 0.75),
+        legend.box.background = element_rect(color="#047C91", linewidth =1),
+        axis.text.x = element_text(angle = 45,vjust=0.5,colour = "#047C91"),
+        title = element_text(size=19,colour = "#047C91"),
+        axis.text=element_text(size=21,colour = "#047C91"),
+        legend.title = element_text(size=19,colour = "#047C91"),
+        legend.text = element_text(size=16,colour = "#047C91"))
+
+```
+
+
+```{r}
+load(here::here('data','environmental','sst_blocks.rda'))
+
+dcrb<-readxl::read_xlsx(here::here('data','blocks','port','msqd_sba.xlsx')) %>% 
+  drop_na()
+
+catch_data<-dcrb %>% 
+  janitor::clean_names() %>% 
+  drop_na(total_pounds) %>% 
+  filter(total_pounds>0) %>% 
+  filter(block_id!="Total") %>% 
+  mutate(block_id=as.numeric(block_id))
+
+## construct sf blocks for intersection
+block_data<-catch_data %>% 
+  inner_join(blocks,by="block_id") %>% 
+  mutate(pct_catch=total_pounds/sum(total_pounds)) %>% 
+  st_drop_geometry() %>% 
+  dplyr::select(block_id,pct_catch)
+
+sst_join<-sst_blocks %>%
+  filter(year==2020 & month==1) %>% 
+  filter(block_id %in% block_data$block_id) %>% 
+  inner_join(blocks) %>% 
+  st_as_sf()
+
+p1<-ggplot()+
+  geom_sf(data=sst_join,aes(fill=sst))+
+  scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  geom_sf(data=state_sf)+
+  geom_sf(data=blocks,fill=NA,color='black')+
+  coord_sf(xlim = c(-129,-117),ylim=c(30,42))+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x = NULL, y = NULL, fill = "SST (°C)",title="Market Squid for SBA") +
+  theme(legend.position = c(0.85, 0.75),
+        legend.box.background = element_rect(color="#047C91", linewidth =1),
+        axis.text.x = element_text(angle = 45,vjust=0.5,colour = "#047C91"),
+        title = element_text(size=19,colour = "#047C91"),
+        axis.text=element_text(size=21,colour = "#047C91"),
+        legend.title = element_text(size=19,colour = "#047C91"),
+        legend.text = element_text(size=16,colour = "#047C91"))
+
+p2+p1+ plot_layout(guides = 'collect')
+```
+
+## {#algo data-menu-title="Data" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Prediction Models</div>
+</div>
+
+## {#mod-out data-menu-title="Model Outline"}
+
+[Model Outline]{.slide-title}
+
+<hr>
+
+**Step 1: Train Model on Data**
+
+    - Perserve time order and split into training (<2005), validation (2005-2013), and test (>2013) sets. 
+    
+    - Tune hyperparameters on validation set
+    
+**Step 2: Predict payout schedule**
+
+    - Use model to predict payouts for each year (<2013)
+    
+**Step 3: Find the actuarially fair premium for each of the testing set**
+
+    - Model updates and retrains each year in the testing set with realization of weather to find new insurance premiums 
+    
+    - Mimics real world insurance
+
+**Step 4: Calculate utility in testing sample**
+
+**Step 5: Find the loading factor that leaves fishers just as well of with insurance**
+
+## {#lm data-menu-title="Linear Models"}
+
+[Linear Models are the gold standard in agriculture insurance]{.slide-title}
+
+<hr>
+
+- $\beta_1$ captures the yield/weather dependence
+
+$$
+\hat\pi_t=\beta_0+\beta_1\omega_t+\epsilon_t
+$$
+
+- Use the tuning set to select the best $\omega$ ,i.e. CUTI, BEUTI, SST, ENSO, or PDO
+
+
+
+
+## {#rf data-menu-title="Random Forests"}
+
+[Random Forests are the most popular in agriculture]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+![](https://media.geeksforgeeks.org/wp-content/uploads/20240701170624/Random-Forest-Algorithm.webp)
+
+:::
+
+:::{.column}
+
+- Captures non-linear interactions
+
+- Robust to overfitting
+
+- Very black box
+:::
+
+::::
+
+## {#mod-pred data-menu-title="Model Predictions"}
+
+[It is hard to pick up shocks]{.slide-title}
+
+<hr>
+
+```{r}
+library(ranger)
+load(here::here('data','output','cali_lm_models.rda'))
+load(here::here('data','output','cali_rf_models.rda'))
+
+dcrb_data<-cali_mt_lm |> 
+  filter(species_code=='DCRB') |> 
+  ungroup() |> 
+  dplyr::select(cw_data) |> 
+  unnest(cw_data)
+
+lm_mod_df<-cali_mt_lm |> 
+  filter(species_code=='DCRB') |> 
+  hoist(model,'final_mod','best_rmse')
+
+lm_mod<-lm_mod_df$final_mod[[1]]
+
+filt<-lm_mod_df$best_rmse$var
+
+lm_pred<-dcrb_data |> filter(var==filt & fish_var=='landings_mt') |> 
+  (\(x)(predict(lm_mod,newdata=x)))()
+
+
+rf_mod_df<-cali_mt_rf |> 
+  filter(species_code=='DCRB')
+
+rf_mod<-rf_mod_df$model[[1]]$final_mod
+
+rf_pred<-dcrb_data |> filter(fish_var=='landings_mt') |> 
+  pivot_wider(
+        names_from=var,
+        values_from=value
+      ) |> 
+  drop_na() |> 
+  (\(x)(predict(rf_mod,x)$predictions))()
+
+
+dcrb<-dcrb_data |> 
+  filter(fish_var=='landings_mt') |> 
+  pivot_wider(
+        names_from=var,
+        values_from=value
+      ) 
+rf_pred<-c(NA,rf_pred)
+ggplot(data=dcrb)+
+  geom_line(aes(x=year,y=fish_value,color='Data'),linewidth=2)+
+  geom_point(aes(x=year,y=lm_pred,color='Linear Model'),size=3)+
+  geom_point(aes(x=year,y=rf_pred,color='Random Forest'),size=3)+
+  scale_color_manual(name="",values=c('Data'='#003660','Linear Model'='#047C91','Random Forest'='#79A540'))+
+  theme_classic()+
+  labs(x='Year',y='Landings (MT)',title = "Dungeness Crab")+
+  theme(legend.position = 'top')+
+  geom_hline(yintercept=mean(dcrb$fish_value),linetype='dashed',color='black',linewidth=2)+
+  theme(title = element_text(size=19),
+        axis.text=element_text(size=21),
+        legend.text = element_text(size=16),
+        legend.title = element_text(size=19))
+  
+
+  
+
+```
+
+## {#rmse data-menu-title="RMSE"}
+
+[Random Forests excel in the train, but are underwhelming in the testing]{.slide-title}
+
+<hr>
+
+```{r}
+load(here::here('data','output','cali_lm_ut_wtp.rda'))
+load(here::here('data','output','cali_rf_ut_wtp.rda'))
+load(here::here('data','output','port_lm_ut_wtp.rda'))
+load(here::here('data','output','port_rf_ut_wtp.rda'))
+
+# get train_rmse for rf and compare it relative to the lm rmse for both test and train
+
+c_mt_train<-(cali_mt_rf_ut$train_rmse-cali_mt_lm_ut$train_rmse)/cali_mt_lm_ut$train_rmse
+
+
+p_mt_train<-(port_mt_rf_ut$train_rmse-port_mt_lm_ut$train_rmse)/port_mt_lm_ut$train_rmse
+
+rf_mt_train<-mean(c(c_mt_train,p_mt_train))
+
+c_mt_test<-(cali_mt_rf_ut$test_rmse-cali_mt_lm_ut$test_rmse)/cali_mt_lm_ut$test_rmse
+
+p_mt_test<-(port_mt_rf_ut$test_rmse-port_mt_lm_ut$test_rmse)/port_mt_lm_ut$test_rmse
+
+rf_mt_test<-mean(c(c_mt_test,p_mt_test))
+
+# Repeat same steps but with the rev 
+
+c_rev_train<-(cali_rev_rf_ut$train_rmse-cali_rev_lm_ut$train_rmse)/cali_rev_lm_ut$train_rmse
+
+p_rev_train<-(port_rev_rf_ut$train_rmse-port_rev_lm_ut$train_rmse)/port_rev_lm_ut$train_rmse
+
+rf_train_rev<-mean(c(c_rev_train,p_rev_train))
+
+c_rev_test<-(cali_rev_rf_ut$test_rmse-cali_rev_lm_ut$test_rmse)/cali_rev_lm_ut$test_rmse
+
+p_rev_test<-(port_rev_rf_ut$test_rmse-port_rev_lm_ut$test_rmse)/port_rev_lm_ut$test_rmse
+
+rf_test_rev<-mean(c(c_rev_test,p_rev_test))
+
+
+plot_df<-data.frame(rmse=c(rf_mt_train,rf_mt_test,rf_train_rev,rf_test_rev),x=c('Train','Test','Train','Test'),type=c('Landings','Landings','Revenue','Revenue'))
+
+ggplot(plot_df)+
+  geom_col(aes(x=x,y=rmse,fill=type),position = 'dodge')+
+  scale_fill_manual(name='',values=c('#047C91','#79A540'))+
+  scale_y_continuous(labels = scales::percent)+
+  theme_classic()+
+  labs(x='',y='RMSE Relative to Linear Model')+
+  theme(legend.position = 'top',
+        title = element_text(size=19),
+        axis.text=element_text(size=21),
+        legend.text = element_text(size=16),
+        legend.title = element_text(size=19))
+
+```
+
+## {#overfit data-menu-title="Overfitting"}
+
+[Random forests cannot capture management regime shifts in the testing period]{.slide-title}
+
+<hr>
+
+```{r}
+dcrb_data<-cali_mt_lm |> 
+  filter(species_code=='CBZ1') |> 
+  ungroup() |> 
+  dplyr::select(cw_data) |> 
+  unnest(cw_data)
+
+lm_mod_df<-cali_mt_lm |> 
+  filter(species_code=='CBZ1') |> 
+  hoist(model,'final_mod','best_rmse')
+
+lm_mod<-lm_mod_df$final_mod[[1]]
+
+filt<-lm_mod_df$best_rmse$var
+
+lm_pred<-dcrb_data |> filter(var==filt & fish_var=='landings_mt') |> 
+  (\(x)(predict(lm_mod,newdata=x)))()
+
+
+rf_mod_df<-cali_mt_rf |> 
+  filter(species_code=='CBZ1')
+
+rf_mod<-rf_mod_df$model[[1]]$final_mod
+
+rf_pred<-dcrb_data |> filter(fish_var=='landings_mt') |> 
+  pivot_wider(
+        names_from=var,
+        values_from=value
+      ) |> 
+  drop_na() |> 
+  (\(x)(predict(rf_mod,x)$predictions))()
+
+
+dcrb<-dcrb_data |> 
+  filter(fish_var=='landings_mt') |> 
+  pivot_wider(
+        names_from=var,
+        values_from=value
+      ) 
+rf_pred<-c(NA,rf_pred)
+ggplot(data=dcrb)+
+  geom_line(aes(x=year,y=fish_value,color='Data'),linewidth=2)+
+  geom_point(aes(x=year,y=lm_pred,color='Linear Model'),size=3)+
+  geom_point(aes(x=year,y=rf_pred,color='Random Forest'),size=3)+
+  scale_color_manual(name="",values=c('Data'='#003660','Linear Model'='#047C91','Random Forest'='#79A540'))+
+  theme_classic()+
+  labs(x='Year',y='Landings (MT)',title = "Cabezon")+
+  theme(legend.position = 'top')+
+  geom_hline(yintercept=mean(dcrb$fish_value),linetype='dashed',color='black',linewidth=2)+
+  theme(title = element_text(size=19),
+        axis.text=element_text(size=21),
+        legend.text = element_text(size=16),
+        legend.title = element_text(size=19))+
+  geom_vline(xintercept=2013,linetype='dashed',color='red',size=1.5)
+  
+
+  
+```
+
+
+## {#prem-res-dis data-menu-title="Preliminary Results"}
+
+[Mean strike levels might be problematic in fisheries]{.slide-title}
+
+<hr>
+
+
+```{r}
+
+library(zoo)
+
+cali_cw<-cali_catch %>% 
+  group_by(species_code) %>%
+  mutate(mt_per_fisher=case_when(mt_per_fisher==Inf~0,
+                              .default=as.numeric(mt_per_fisher)),
+         lb_per_fisher=case_when(lb_per_fisher==Inf~0,
+                                 .default=as.numeric(lb_per_fisher))) %>% 
+  mutate(roll_value_usd=rollmean(value_usd,3,fill=NA,align="right",na.rm=TRUE),
+         roll_landings=rollmean(landings_mt,3,fill=NA,align='right',na.rm=TRUE),
+         roll_n_rev=rollmean(rev_per_fisher,3,fill=NA,align='right',na.rm=TRUE),
+         roll_n_mt=rollmean(mt_per_fisher,3,fill=NA,align='right',na.rm=TRUE)) %>%
+  filter(year>=1988) 
+
+## Plot albc
+
+p5<-cali_cw %>% filter(species_code=='ALBC') %>% 
+  ggplot()+
+  geom_point(aes(x=year,y=landings_mt,color='Data'),size=3)+
+  geom_line(aes(x=year,y=mean(landings_mt),color='Mean'),size=2)+
+  geom_line(aes(x=year,y=roll_landings,color='Moving Average'),size=2)+
+  scale_color_manual(values=c('black','blue','forestgreen'))+
+  theme_classic()+labs(x='',y='Landings (MT)',title='Albacore')+
+  theme(legend.title=element_blank())
+
+p6<-cali_cw %>% filter(species_code=='DCRB') %>% 
+  ggplot()+
+  geom_point(aes(x=year,y=landings_mt,color='Data'),size=3)+
+  geom_line(aes(x=year,y=mean(landings_mt),color='Mean'),size=2)+
+  geom_line(aes(x=year,y=roll_landings,color='Moving Average'),size=2)+
+  scale_color_manual(values=c('black','blue','forestgreen'))+
+  theme_classic()+labs(x='',y='Landings (MT)',title='Dungeness Crab')+
+  theme(legend.title=element_blank())
+
+p5+p6+ plot_layout(guides = 'collect')
+```
+
+## {#results data-menu-title="Preliminary results" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Preliminary Results</div>
+</div>    
+
+## {#prem-res data-menu-title="Preliminary Utility Results"}
+
+[Linear models almost always payout leading to high desirability]{.slide-title}
+
+<hr>
+
+```{r}
+
+cali_mt_lm_ut %>% 
+  ggplot()+
+  geom_col(aes(x=species_code,y=m),fill='#003660')+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x='',y='M (Willingness to Pay')+
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+
+```
+
+
+## {#prem-res-rf data-menu-title="Preliminary Results"}
+
+[Random forests are more consistent]{.slide-title}
+
+<hr>
+
+```{r}
+
+cali_mt_rf_ut %>% 
+  ggplot()+
+  geom_col(aes(x=species_code,y=m),fill='#003660')+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x='',y='M (Willingness to Pay)')+
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+
+```
+
+
+
+
+
+## {#future data-menu-title="Preliminary Results"}
+
+[Future Steps]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+- Extract weather features that most influence the payout schedule
+
+
+:::
+
+:::{.column}
+
+- Run rolling average strike models
+
+- Robustness checks (different utility, use cali models at the port-level, etc.)
+
+
+:::
+
+::::
+
+```{r,fig.align='center'}
+load(here::here('data','output','cali_lm_models.rda'))
+
+cali_mt_lm %>% 
+hoist(model,'best_rmse') %>% 
+  ggplot()+
+  geom_bar(aes(x=best_rmse$var),fill='royalblue')+
+  theme_classic()+
+  labs(x='',y='Times selected as best predictor')+
+  theme(axis.text.x = element_text(size=18,hjust=1,angle=45),
+        axis.text.y = element_text(size=18),
+        title = element_text(size=19),
+        axis.title = element_text(size=18))
+```
+
+
+## {background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg"}
+
+::: {.absolute left="10%" top="8%" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+
+**Questions?**
+
+:::

@@ -52,13 +52,13 @@ save(cali_mt_lm,cali_rev_lm,cali_per_lm,file=here::here("data","output","cali_lm
 # Get utility testing improvement
 
 cali_mt_lm_ut<-cali_mt_lm %>% 
-  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="mt_detrend"),utility_eval)) %>% 
-  hoist(u_eval,"test_u_rr","prem_vec","l_val",'m_break','test_rmse','train_rmse') |> 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="landings_mt"),utility_eval_wtp)) %>% 
+  hoist(u_eval,"m",'test_u_i','test_u_noi','test_rmse','train_rmse') |> 
   select(-model) #save space by dropping model
 
 cali_rev_lm_ut<-cali_rev_lm %>% 
-  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="rev_detrend"),utility_eval)) %>% 
-  hoist(u_eval,"test_u_rr","prem_vec","l_val",'m_break','test_rmse','train_rmse') |> 
+  mutate(u_eval=pmap(list(data=cw_data,mod=model,var_name="value_usd"),utility_eval_wtp)) %>% 
+  hoist(u_eval,"m",'test_u_i','test_u_noi','test_rmse','train_rmse') |> 
   select(-model) #save space by dropping model
 
 cali_per_lm_ut<-cali_per_lm %>%
@@ -67,5 +67,5 @@ cali_per_lm_ut<-cali_per_lm %>%
   select(-model) #save space by dropping model
 
 # save output
-save(cali_mt_lm_ut,cali_rev_lm_ut,cali_per_lm_ut,file=here::here("data","output","cali_lm_ut_detrend.rda"))
+save(cali_mt_lm_ut,cali_rev_lm_ut,file=here::here("data","output","cali_lm_ut_wtp.rda"))
   

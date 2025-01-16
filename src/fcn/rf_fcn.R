@@ -1,4 +1,4 @@
-rf_fcn<-function(data,var_list='all',dep_var){
+rf_fcn<-function(data,var_list='all',dep_var,m_seq=seq(2,16,by=2),n_seq=seq(2,8),ntree=1000){
   
   if(var_list=='all'){
     filter_data<-data %>% 
@@ -30,8 +30,8 @@ rf_fcn<-function(data,var_list='all',dep_var){
   }
   
   # create grid of possible hyperparameter combinations
-  par_grid<-expand_grid(m=seq(2,16,by=2),
-               n=seq(2,8)) |> 
+  par_grid<-expand_grid(m=m_seq,
+               n=n_seq) |> 
     mutate(rmse=NA)
   
   n_fold=10
@@ -55,7 +55,7 @@ rf_fcn<-function(data,var_list='all',dep_var){
         select(-year)
       
       set.seed(123)
-      md<-ranger(fish_value~.,data=train,num.trees=1000,mtry=par_grid$m[j],min.node.size=par_grid$n[j])
+      md<-ranger(fish_value~.,data=train,num.trees=ntree,mtry=par_grid$m[j],min.node.size=par_grid$n[j])
       
       out<-predict(md,test)
       
@@ -77,7 +77,7 @@ rf_fcn<-function(data,var_list='all',dep_var){
   final_mod<-filter_data |> 
     filter(year<2013) |> 
     select(-year) |> 
-    (\(x){ranger(fish_value~.,data=x,num.trees=1000,mtry=par_grid$m[r_index],min.node.size=par_grid$n[r_index])})()
+    (\(x){ranger(fish_value~.,data=x,num.trees=ntree,mtry=par_grid$m[r_index],min.node.size=par_grid$n[r_index])})()
   
 
   
