@@ -17,4 +17,11 @@ enso<-read.table(here::here("data","environmental","meiv2.data"),fill=T,header=F
   mutate(enso=as.numeric(enso))%>% 
   mutate(enso=na_if(enso,-999))
 
-save(enso,pdo,file=here::here("data","environmental","enso_pdo.rda"))
+
+oni<-read.table('https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt',header=TRUE) |>
+  janitor::clean_names() %>% 
+  filter(seas =='JFM') %>% 
+  filter(yr>=1980) %>% 
+  select(seas,yr,anom)
+
+save(enso,pdo,oni,file=here::here("data","environmental","enso_pdo.rda"))
