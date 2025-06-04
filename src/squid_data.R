@@ -4,25 +4,32 @@ library(lubridate)
 
 rock<-tabledap('FED_Rockfish_Catch','time>=1980-01-01','time<=2024-12-31')
 
+
+stations<-c(106,212,455,465,474,475,605,607,617,625,627) # stations that never get mqsd
 rock_sq<-rock %>% 
   filter(common_name=='MARKET SQUID') %>% 
-  filter(station_latitude<34.5) %>% 
   mutate(time=as.Date(time)) %>% 
-  mutate(year=year(time)) 
+  mutate(year=year(time))
 
 krill<-rock %>% filter(common_name=='KRILL, TOTAL') %>% 
-  filter(station_latitude<34.5) %>% 
   mutate(time=as.Date(time)) %>% 
-  mutate(year=year(time)) 
+  mutate(year=year(time))
 
+rock_sq<-rock_sq[-which(rock_sq$station %in% stations),]
 
+a<-krill %>% group_by(station) %>% summarize(n=n())
+
+k_stat_rm<-a$station[which(a$n<10)]
+
+krill<-krill %>% 
+  filter(!station %in% k_stat_rm)
 ### attempt at delta glm
 
 krill$presence<-as.numeric(krill$catch>0)
-presence_model<-glm(presence~as.factor(year)+as.factor(station),data=krill,family=binomial)
+presence_model<-glm(presence~as.factor(year),data=krill,family=binomial)
 
 positive_data<-subset(krill,catch>0)
-positive_model<-glm(catch~as.factor(year)+as.factor(station),data=positive_data,family=Gamma(link='log'))
+positive_model<-glm(catch~as.factor(year),data=positive_data,family=Gamma(link='log'))
 
 # Predict probability of presence
 p_presence <- predict(presence_model, newdata = krill, type = "response")
@@ -63,7 +70,7 @@ squid_df<-rock_sq %>%
   group_by(year) %>% 
   summarize(cpue=mean(log(predict)))
 
-save(squid_df,krill_df,file=here::here('data','fisheries','squid_bio.Rdata'))
+save(squid_df,krill_df,file=here::here('data','fisheries','squid_bio_all.Rdata'))
 
 ###### CPS Not used #######
 
