@@ -38,66 +38,136 @@ format:
 - Lack of financial tools to hedge against losses
 :::
 
+## {#ibi data-menu-title="Index Based Insurance"}
+
+[Index Insurance has the potential to address income variation]{.slide-title}
+
+<hr>
+
+```{r}
+knitr::include_graphics("img/windex.png")
+```
+
+## {#snow data-menu-title="Snow Crab"}
+
+[Bering Sea Crab Fisheries closure demonstrates the need for insurance]{.slide-title}
+
+<hr>
+
+
+{{< video https://www.youtube.com/watch?v=LM75TwzHGAg width="100%" height="70%" >}}
+
+## {#crab data-menu-title="Crab Community"}
+
+[Marine Heatwave in 2018-2019 root cause of the collapse]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+```{r}
+#| fig-cap: (Szuwalski et al., 2023)
+
+knitr::include_graphics("img/snow-crab-dis.png")
+```
+
+
+:::
+
+:::{.column}
+- **10 Billion** Snow Crab disappeared 
+
+<br>
+
+- **55%** decline of male Red King Crabs
+
+<br>
+
+- **>$250 million each year** loss in revenue
+
+<br>
+
+- Red King Crab opened in 2024, Snow crab just opened last month
+
+:::
+
+::::
+
 ## {#why data-menu-title="Why no market?"}
 
 [Why Doesn't a Market Exist?]{.slide-title}
 
 <hr>
 
-:::::{.columns}
+- Index Insurance needs well specified models to be effective
 
-::: {.column}
+  - **Basis Risk:** The risk that the index does not perfectly match the actual loss experienced by the insured party.
+  
+- ***Basis Risk is the single greatest impediment to fishery index insurance***
 
-:::{.center-text}
-**Prior Supply Barriers**
-:::
+- D
 
-- Limited Fishery Data
 
-- Limited Oceanographic Data
+## {#rq data-menu-title="Research Questions"}
 
-<br>
+[Research Questions]{.slide-title}
 
-:::{.center-text}
-**Prior Demand Barriers**
-:::
-
-- Disaster Relief provided protection, but is unpopular now
-
-:::
-
-::: {.column .fragment}
-
-:::{.center-text}
-**Current Supply Barriers**
-
-:::
-
-- Trying to One-to-One apply agriculture index insurance onto fisheries
-
-- Information and Innovation Constraint
-
-    - I don't think insurance companies understand fisheries
-    
-:::{.center-text}
-**Current Demand Barriers**
-:::
-
-- Budget constraints
-
-:::
-
-:::::
-
-<br>
+<hr>
 
 :::{.fragment}
-***Supply has the largest barrier primarily stemming from data and methodological limitations***
+### 1) What are the data factors that impede fisheries index insurance?
 :::
+
+:::{.fragment}
+
+### 2) How can we successfully address each factor for successful insurance contracts?
+:::
+
+:::{.fragment}
+
+### 3) What indices and models would be feasible for fisheries insurance?
+
+:::
+
+:::{.fragment}
+
+### 4) Would fishing communitites have been better off with feasible insurance contracts?
+
+:::
+
+## {#contribution data-menu-title="Contributions"}
+
+[Contributions]{.slide-title}
+
+<hr>
+
+- Expanding literature on environmental impacts on fisheries, espeically by expanding on use of machine learning.
+
+- Climate adapation and fishery resiliency
+
+- Meeting a policy need for fishers
+
+:::{.fragment}
+***"Our families, friends, and communitites are stuggling. We need help."***
+:::
+
+:::{.center-text .blue-text .fragment}
+
+**The explosion of fishery and oceanopgraphic data means it's finally possible to answer these questions**
+:::
+
+
+## {#f data-menu-title="Factors" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Factors</div>
+</div>
 
 ## {#four data-menu-title="Four Areas"}
 
-[We will focus on four difficulties in fisheries index insurance]{.slide-title}
+[Four factors limit data driven insurance applications]{.slide-title}
 
 <hr>
 
@@ -143,70 +213,86 @@ format:
 
 ::::
 
-## {#rq data-menu-title="Research Questions"}
+## {#f1 data-menu-title="Fishery Loss"}
 
-[Research Questions]{.slide-title}
-
-<hr>
-
-### Why is each factor an impediment to index insurance success?
-
-### How can we successfully address each factor for successful insurance contracts?
-
-### What models provide the best outcomes?
-
-### Would fishing communitites have been better off with feasible insurance contracts?
-
-## {#f data-menu-title="Factors" background-color="#047C90"}
-
-<div class="page-center">
-<div class="custom-subtitle">Factors</div>
-</div>
-
-## {#crabloss-1 data-menu-title="Fishery Loss"}
-
-[What years would you classify as a loss?]{.slide-title}
+[No clear definition of loss in fisheries]{.slide-title}
 
 <hr>
 
-```{r}
-library(tidyverse)
-load(here::here('data','fisheries','cali_catch_detrend.rda'))
+::::{.columns}
 
-cali_catch %>% 
-  filter(species_code=='DCRB') %>% 
-  ggplot(aes(x=year,y=landings_mt))+
-  geom_line(size=3,color='black')+
-  theme_classic()+
-  labs(x='',y='Landings (MT)')+
-  scale_x_continuous(breaks=seq(1985,2023,by=2))+
-  theme(axis.text.x = element_text(angle=45,vjust=0,size=21),
-        axis.text.y = element_text(size=21),
-        axis.title = element_text(size=23))
-```
 
-## {#crabloss-2 data-menu-title="Fishery Loss"}
+:::{.column}
 
-[What years would you classify as a loss?]{.slide-title}
+:::{.center-text}
+**Agriculture**
+:::
+
+- Lossess are reported metrics
+
+  - How much was planted - how much was harvested
+  
+  - Mortality rate: What proportion of your cows/goats/sheep died
+  
+- Easily applied to per/acre metric to account for relative size of farms or counties
+
+
+:::
+
+:::{.column}
+<center>
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKKyRD_7jybjvsoF0GcanGX8RMckK6_7TuTw&s" width="400"/>
+</center>
+
+:::
+
+::::
+
+
+## {#f2 data-menu-title="Fishery Loss"}
+
+[No clear definition of loss in fisheries]{.slide-title}
 
 <hr>
 
-```{r}
-library(tidyverse)
-load(here::here('data','fisheries','cali_catch_detrend.rda'))
+::::{.columns}
 
-cali_catch %>% 
-  filter(species_code=='DCRB') %>% 
-  ggplot(aes(x=year,y=landings_mt))+
-  geom_line(size=3,color='black')+
-  theme_classic()+
-  labs(x='',y='Landings (MT)',title = 'Dungeness Crab')+
-  scale_x_continuous(breaks=seq(1985,2023,by=2))+
-  theme(axis.text.x = element_text(angle=45,vjust=0,size=21),
-        axis.text.y = element_text(size=21),
-        axis.title = element_text(size=23))
-```
 
+:::{.column}
+
+:::{.center-text}
+**Agriculture**
+:::
+
+- Lossess are reported metrics
+
+  - How much was planted - how much was harvested
+  
+  - Mortality rate: What proportion of your cows/goats/sheep died
+  
+- Easily applied to per/acre metric to account for relative size of farms or counties
+
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKKyRD_7jybjvsoF0GcanGX8RMckK6_7TuTw&s" alt="drawing"/>
+
+:::
+
+:::{.column}
+
+:::{.center-text}
+**Fisheries**
+
+- How much fish should we have caught?
+  
+  - Unobservable / Unknowable
+  
+- Individual data is not public
+
+- Should we look at revenue? Landings? CPUE? 
+:::
+
+:::
+
+::::
 
 ## {#loss-squid-1 data-menu-title="Fishery Loss"}
 
@@ -237,7 +323,7 @@ cali_catch %>%
 <hr>
 
 ```{r}
-library(tidyverse)
+
 load(here::here('data','fisheries','cali_catch_detrend.rda'))
 
 cali_catch %>% 
@@ -260,8 +346,8 @@ cali_catch %>%
 <hr>
 
 ```{r}
-library(tidyverse)
-load(here::here('data','fisheries','cali_catch_detrend.rda'))
+
+
 
 cali_catch %>% 
   filter(species_code=='CBZ1') %>% 
@@ -283,6 +369,8 @@ cali_catch %>%
 
 ```{r}
 library(tidyverse)
+library(ggimage)
+
 load(here::here('data','fisheries','cali_catch_detrend.rda'))
 
 cali_catch %>% 
@@ -296,5 +384,433 @@ cali_catch %>%
         axis.text.y = element_text(size=21),
         axis.title = element_text(size=23),
         title=element_text(size=26))+
-  geom_vline(xintercept=2013,linetype='dashed',color='red',size=1.5)
+  geom_vline(xintercept=2013,linetype='dashed',color='red',size=1.5)+ geom_image(
+    data = tibble(year = 1989, landings_mt = 100),
+    aes(image = here::here("docs","presentations","img","cabezon.jpg")),
+    size = .7
+  )
 ```
+
+## {#squ data-menu-title="Squid}
+
+[Market Squid is the most "corn" like species in California]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+<img src="https://www.fisheries.noaa.gov/s3//styles/original/s3/2022-08/640x427-Squid-California-Market-NOAAFisheries.png?itok=hQUd1nmR" />
+
+:::
+
+:::{.column}
+
+:::{.fragment}
+- Short lived
+
+  - We harvest nearly every adult spawner each year
+
+- Heavily influenced by environmental conditions
+
+- Economically important
+
+- Limited Management
+
+  - Permit system with a max cap of 118,000 mt each year
+:::
+
+:::
+
+::::
+
+## {#squid-ecology data-menu-title="Squid Ecology"}
+
+[Fisheries Ecology is way more complex than agriculture]{.slide-title}
+
+<hr>
+
+<img src="https://groundcover.grdc.com.au/__data/assets/image/0032/582764/p10-11_S162006-Fig-01-web.jpg" width="100%"/>
+
+## {#squid-ecology-2 data-menu-title="Squid Ecology"}
+
+[Fisheries Ecology is way more complex than agriculture]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+
+knitr::include_graphics("img/squid-ecology.png")
+```
+
+
+
+## {#squid-ecology-4 data-menu-title="Squid Ecology"}
+
+[Across all fisheries, we know the environment is important but don't fully know how or why]{.slide-title}
+
+<hr>
+
+- Fish live in 3D space
+
+- Environmental impacts at different life stages have vastly different outcomes
+    
+    - Fertilization/Spawning depends on currents
+    
+    - Larvae growth depends on temperature
+    
+    - Juvenile growth depends on prey availability
+    
+    - Adults move based on thermal tolerance
+
+- Most stock assessment models do not incorporate the environment
+
+- Research usually involves fitting GAM or GMMs to recruitment measures to tease out statistically significant relationships with envrionmental variable
+
+- I just need strong correlation to build good insurance contracts, mcahine learning could meet that need.
+
+
+## {#method data-menu-title="Methods" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Application Methods</div>
+</div>
+
+## {#overview data-menu-title="Overview"}
+
+[Overview of Methods]{.slide-title}
+
+<hr>
+
+**Show how standard single index contracts in ag perform for the fishery with the best available data**
+
+1) Collect publically available data for possible indicies
+
+2) Match data to spatial profile of fishery
+
+3) Run models to predict catch
+
+4) Design insurance contracts from predictive models
+
+5) Evaluate whether fishers would be better or worse off with insurance
+
+## {#methods data-menu-title="Methods"}
+
+[Simple, Single index insurance contract]{.slide-title}
+
+<hr>
+
+
+:::: {layout="[[1,1], [1,1]]"}
+:::{#model}
+
+All fisheries production $y$ is a function of environmental variables $WI$
+
+$$
+y=g(WI) + \epsilon
+$$
+
+:::
+
+:::{#estimation .fragment}
+
+Estimate the relationship for fishery
+
+$$
+y_{t}=\beta_0 + \beta_1 WI_{t} + \epsilon_{t}
+$$
+
+:::
+
+:::{#insurance .fragment}
+
+Use model estimates to find $I(WI)$ payout and $\rho$ premium based on a given strike level ($S_t$)
+
+$$
+\begin{aligned}
+I_t(WI_t)&=\mathbb{E}[\max(\beta_1\times[S_{t}-WI_{t}],0] \\
+\rho&=\mathbb{E}[I_t(WI_t)]\cdot m \\
+S_t&=g_t^{-1}(y_t)\cdot c
+\end{aligned}
+$$
+:::
+
+
+:::{#utility .fragment}
+Measure improvements in utility with and without insurance
+
+$$
+\begin{aligned}
+U_i&=\mathbb{E}[\ln (y_t+I_t(WI_t)-\rho)] \\
+U_{noi}&=\mathbb{E}[\ln (y_t)] \\
+U_{rr}&=\frac{U_i-U_{noi}}{U_{noi}}
+\end{aligned}
+$$
+
+:::
+
+::::
+
+## {#data data-menu-title="Data"}
+
+[Environmental Data Sources]{.slide-title}
+
+<hr>
+
+```{r}
+#| label: tbl-env-sum
+#| tbl-cap: Summary statistics of environmental variables from 1988-2023 for California fisheries.
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+load(here::here("data","environmental","block_cuti.rda"))
+load(here::here("data","environmental","block_beuti.rda"))
+load(here::here("data","fisheries","squid_bio_all.Rdata"))
+load(here::here("data","environmental","block_sst.rda"))
+load(here::here("data","environmental","enso_pdo.rda"))
+
+
+# seperate each into yearly mean, yearly sd, the temporal resoltuion and the spatial resolution
+
+cuti_sum<-block_cuti %>% 
+  drop_na() |> 
+  filter(var=='avg_cuti') |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Daily",
+         spatial="1 degree latitude",
+         source="Jacox et al., 2018") |> 
+  select(-var)
+
+rownames(cuti_sum)<-c("CUTI")
+
+beuti_sum<-block_beuti %>% 
+  drop_na() |> 
+  filter(var=="avg_beuti") |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Daily",
+         spatial="1 degree latitude",
+         source="Jacox et al., 2018") |> 
+  select(-var)
+
+rownames(beuti_sum)<-c("BEUTI")
+
+hci_sum<-squid_df %>% 
+  drop_na() |> 
+  summarize(mean=mean(cpue),
+            sd=sd(cpue)) %>% 
+  mutate(resolution="Yearly",
+         spatial="Trawls ~2 Degree",
+         source="Rockfish Recruitment and Ecosystem Assessment Survey")
+
+rownames(hci_sum)<-c("Paralarve Abundance")
+
+krill<-krill_df %>% 
+  drop_na() |> 
+  summarize(mean=mean(cpue),
+            sd=sd(cpue)) %>% 
+  mutate(resolution="Yearly",
+         spatial="Trawls ~2 Degree",
+         source="Rockfish Recruitment and Ecosystem Assessment Survey")
+
+rownames(krill)<-c("Krill Abundance")
+
+sst_sum<-block_sst %>% 
+  drop_na() |> 
+  filter(var=="avg_sst") |> 
+  group_by(var) %>% 
+  summarize(mean=mean(value),
+            sd=sd(value)) %>% 
+  mutate(resolution="Monthly",
+         spatial="5x5 km",
+         source="NOAA Coral Bleaching Degree Heating Week") |> 
+  select(-var)
+
+rownames(sst_sum)<-c("Sea Surface Temperature")
+
+enso_sum<-enso |> 
+  group_by(year) |> 
+  summarize(yr_enso=mean(enso)) |> 
+  ungroup() |> 
+  drop_na() |> 
+  summarize(mean=mean(yr_enso),
+         sd=sd(yr_enso)) |> 
+  mutate(resolution="Monthly",
+         spatial="Regional",
+         source="MEI.v2")
+
+rownames(enso_sum)<-c("ENSO")
+
+pdo_sum<-pdo |> 
+  group_by(year) |> 
+  summarize(yr_pdo=mean(pdo)) |> 
+  ungroup() |> 
+  drop_na() |> 
+  summarize(mean=mean(yr_pdo),
+         sd=sd(yr_pdo)) |> 
+  mutate(resolution="Monthly",
+         spatial="Regional",
+         source="PDO ERSST V5")
+
+rownames(pdo_sum)<-c("Pacific Decadal Oscillation")
+
+env_tbl<-rbind(cuti_sum,beuti_sum,hci_sum,krill,sst_sum,enso_sum,pdo_sum) |> 
+  mutate(across(where(is.numeric),round,1))
+
+env_tbl$variable<-c("CUTI",
+                     "BEUTI",
+                     "Paralarve Abundance",
+                     "Krill Abundance",
+                     "Sea Surface Temperature",
+                     "ENSO","Pacific Decadal Oscillation")
+
+env_tbl<-env_tbl %>%
+  select(variable,mean,sd,resolution,spatial,source)
+
+
+
+env_tbl |>
+  kable(format='html',col.names = c("Weather Index","Mean","SD","Temporal Resolution","Spatial Resolution","Source"),booktabs=T) |> 
+  kable_styling()
+
+```
+
+## {#spatial data-menu-title="Spatial Data"}
+
+[Match fishing blocks with spatial data]{.slide-title}
+
+<hr>
+
+```{r}
+library(tidyverse)
+library(sf)
+library(wcfish)
+library(raster)
+library(rnaturalearth)
+library(pals)
+library(ncdf4)
+
+state<-ne_states(country='United States of America')
+  
+state_sf<-st_as_sf(state) %>% 
+  filter(name %in% c('California','Oregon','Washington','Nevada'))
+load(here::here('data','environmental','sst_dhw_2021-2023.Rdata'))
+p2<-sst %>% 
+  filter(t=='2021-01-16') %>% 
+  ggplot()+
+  geom_tile(aes(x=longitude,y=latitude,fill=temp))+
+  scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  geom_sf(data=state_sf)+
+  geom_sf(data=blocks,fill=NA,color='white')+
+  coord_sf(xlim = c(-129,-117),ylim=c(30,42))+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x = NULL, y = NULL, fill = "SST (°C)") +
+  theme(legend.position = c(0.85, 0.75),
+        legend.box.background = element_rect(color="#047C91", linewidth =1),
+        axis.text.x = element_text(angle = 45,vjust=0.5,colour = "#047C91"),
+        title = element_text(size=19,colour = "#047C91"),
+        axis.text=element_text(size=21,colour = "#047C91"),
+        legend.title = element_text(size=19,colour = "#047C91"),
+        legend.text = element_text(size=16,colour = "#047C91"))
+
+```
+
+
+```{r}
+library(patchwork)
+load(here::here('data','environmental','sst_blocks.rda'))
+
+dcrb<-readxl::read_xlsx(here::here('data','blocks','port','msqd_sba.xlsx')) %>% 
+  drop_na()
+
+catch_data<-dcrb %>% 
+  janitor::clean_names() %>% 
+  drop_na(total_pounds) %>% 
+  filter(total_pounds>0) %>% 
+  filter(block_id!="Total") %>% 
+  mutate(block_id=as.numeric(block_id))
+
+## construct sf blocks for intersection
+block_data<-catch_data %>% 
+  inner_join(blocks,by="block_id") %>% 
+  mutate(pct_catch=total_pounds/sum(total_pounds)) %>% 
+  st_drop_geometry() %>% 
+  dplyr::select(block_id,pct_catch)
+
+sst_join<-sst_blocks %>%
+  filter(year==2020 & month==1) %>% 
+  filter(block_id %in% block_data$block_id) %>% 
+  inner_join(blocks) %>% 
+  st_as_sf()
+
+p1<-ggplot()+
+  geom_sf(data=sst_join,aes(fill=sst))+
+  scale_fill_gradientn(colours=ocean.thermal(20),guide = "colourbar")+
+  geom_sf(data=state_sf)+
+  geom_sf(data=blocks,fill=NA,color='black')+
+  coord_sf(xlim = c(-129,-117),ylim=c(30,42))+
+  scale_y_continuous(expand=c(0,0))+
+  theme_classic()+
+  labs(x = NULL, y = NULL, fill = "SST (°C)",title="Market Squid for SBA") +
+  theme(legend.position = c(0.85, 0.75),
+        legend.box.background = element_rect(color="#047C91", linewidth =1),
+        axis.text.x = element_text(angle = 45,vjust=0.5,colour = "#047C91"),
+        title = element_text(size=19,colour = "#047C91"),
+        axis.text=element_text(size=21,colour = "#047C91"),
+        legend.title = element_text(size=19,colour = "#047C91"),
+        legend.text = element_text(size=16,colour = "#047C91"))
+
+p2+p1+ plot_layout(guides = 'collect')
+```
+
+## {#Results data-menu-title="Results" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Results</div>
+</div>
+
+## {#Results data-menu-title="Results"}
+
+[In general, fishers appear worse off with single index insurance contracts]{.slide-title}
+
+<hr>
+
+```{r}
+
+load(here::here("data","output","squid_cali_lm.Rdata"))
+boot_df |> 
+  ggplot(aes(x=fish_vars, y=avg_rr))+
+  geom_col()+
+  geom_hline(yintercept=0,color='black')+
+  facet_wrap(~var_names)+
+  scale_y_continuous(labels=scales::percent)+
+  labs(x='',y='Utility Improvement')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=90,vjust=0.5))
+
+```
+
+## {#Results data-menu-title="Results"}
+
+[Better models lead to slightly higher utility]{.slide-title}
+
+<hr>
+
+```{r}
+boot_df |> 
+  ggplot(aes(x=fish_vars, y=avg_rsq))+
+  geom_col()+
+  facet_wrap(~var_names)+
+  scale_y_continuous(labels=scales::percent)+
+  labs(x='',y='R^2')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=90,vjust=0.5))
+```
+

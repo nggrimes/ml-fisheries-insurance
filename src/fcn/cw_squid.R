@@ -64,12 +64,24 @@ cw_squid<-function(spp,data){
               var="pdo",
               .groups="drop")
   
-  join_larvae<-squid_larvae %>% 
-    filter(year>=1988) %>% 
-    mutate(var='larvae')
   
+  join_oni<-oni %>% 
+    filter(yr>=1988) %>% 
+    select(yr,anom) %>% 
+    rename(year='yr',
+           value='anom') %>% 
+    mutate(var='oni')
   
-  env<-rbind(join_sst,join_beuti,join_cuti,join_hci,join_enso,join_pdo,join_larvae)
+  join_krill<-krill_df %>% 
+    mutate(var='krill') %>% 
+    rename(value='cpue')
+  
+  join_squid<-squid_df %>% 
+    mutate(var='squid') %>% 
+    rename(value='cpue')
+  
+  env<-rbind(join_sst,join_beuti,join_cuti,join_hci,join_enso,join_pdo,join_oni,join_krill,join_squid)
+  
   
   hold<-data %>% 
     ungroup() %>% 

@@ -21,10 +21,7 @@ load(here::here('data','fisheries','squid_bio_all.Rdata'))
 
 #load designed fucntions
 source(here::here("src","fcn","cw_squid_port.R"))
-source(here::here("src","fcn","lm_mod_fcn.R"))
-source(here::here("src","fcn","pred_fcn.R"))
-source(here::here("src","fcn","ins.R"))
-source(here::here("src","fcn","utility_test.R"))
+
 
 port_cw<-cali_port_catch %>% 
   filter(spp_code=='MSQD' & port_code=='SBA') %>% 
@@ -52,28 +49,7 @@ fish_vars<-fish_vars[-which(fish_vars %in% c('landings_lb','lb_per_fisher'))]
 combo<-expand_grid(var_names,fish_vars)
 
 
-lm_fcn<-function(v,fv,data){
-  
-
-  df<-data %>% 
-    filter(var==v) %>% 
-    filter(fish_var==fv)
-  
-  lm_mod<-lm(fish_value~value,data=df)
-  
-  return(lm_mod)
-}
-normal_like<-function(theta,y){
-  mu<-theta[1]
-  sigma2<-theta[2]
-  n<-nrow(y)
-  
-  logl<- -0.5*n*log(2*pi)-0.5*n*log(sigma2)-(1/(2*sigma2))*sum((y-mu)**2)
-  
-  return(-logl)
-}
-
-premium<-function(boot_data,strike,tick){
+premium<-function(boot_data,strike,tick,m){
 
   # burn rate
   
@@ -86,9 +62,8 @@ p=mean(payout)*m  #m is the loading factor
   return(p)
 }
 
-ut_fcn<-function(data,strike,tick,premium,ra=0.008,mod='cara'){
+ut_fcn<-function(data,strike,tick,premium,ra=0.1,mod='cara'){
 
-  
    payout<-data$value %>% map_dbl(.f=~max(tick*(strike-.x),0))
   
   profit=payout+data$fish_value-premium
@@ -96,7 +71,7 @@ ut_fcn<-function(data,strike,tick,premium,ra=0.008,mod='cara'){
   if(mod=='cara'){
     ut=-mean((1-exp(-ra*profit))/ra,na.rm=TRUE)
   } else if (mod=='log'){
-    profit[which(profit<=0)]<-0.00001
+    profit<-profit+abs(min(profit))+1 # Turn negative values positive, but keep relative order
     ut<-mean(log(profit),na.rm=TRUE)
   }
   
@@ -109,7 +84,8 @@ analysis<-function(index,data,coverage,m){
   
   # run regression on train data
   
-  mod<-lm_fcn('sti','landings_mt',train)
+  
+  mod<-lm(fish_value~value,data=train)
   
   
   tick<-coefficients(mod)[2]
@@ -118,7 +94,7 @@ analysis<-function(index,data,coverage,m){
   
   
   # get premium
-  prem<-premium(train$value,strike=strike,tick=tick)
+  prem<-premium(train$value,strike=strike,tick=tick,m=m)
   
   u_i<-ut_fcn(train,strike,tick,prem)
   
@@ -133,7 +109,7 @@ analysis<-function(index,data,coverage,m){
   test_rr<-(u_i_test-u_noi_test)/u_noi_test
   # think about solving for the m that makes them indifferent
   
-  return(data.frame(train_rr,test_rr,rsq=summary(mod)$r.squared))
+  return(data.frame(train_rr,test_rr,rsq=summary(mod)$r.squared,prem=prem,beta=tick))
 }
 
 
@@ -149,15 +125,19 @@ index<-sample(nrow(df),split_t)
 
 bootstrap_samples <- replicate(
   1000,
-  sample(nrow(df), size = T, replace = TRUE),
+  sample(nrow(df), size = split_t, replace = TRUE),
   simplify = FALSE
 )
 
 
 boot_out<-bootstrap_samples %>% map_df(.f=~analysis(.x,data=df,coverage=coverage,m=m))
 
-return(avg_rr=mean(boot_out$test_rr),sd_rr=sd(boot_out$test_rr),avg_rsq=mean(boot_out$rsq),sd_rsq=sd(boot_out$rsq))
+return(data.frame(avg_rr=mean(boot_out$test_rr),sd_rr=sd(boot_out$test_rr),avg_rsq=mean(boot_out$rsq),sd_rsq=sd(boot_out$rsq),avg_prem=mean(boot_out$prem),sd_prem=sd(boot_out$prem),avg_beta=mean(boot_out$beta),sd_beta=sd(boot_out$beta)))
 }
 
 boot_df<-combo %>% 
   mutate(results=map2(.x=var_names,.y=fish_vars,~boot(.x,.y,big_data=port_cw$cw_data[[1]])))
+
+
+boot_df<-boot_df %>%
+  unnest_wider(results)
