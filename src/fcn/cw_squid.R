@@ -67,10 +67,10 @@ cw_squid<-function(spp,data){
   
   join_oni<-oni %>% 
     filter(yr>=1988) %>% 
-    select(yr,anom) %>% 
     rename(year='yr',
            value='anom') %>% 
-    mutate(var='oni')
+    mutate(var='oni') |> 
+    dplyr::select(-seas)
   
   join_krill<-krill_df %>% 
     mutate(var='krill') %>% 

@@ -25,8 +25,8 @@ store_df<-data.frame(species_code=character(),
                      lb_per_fisher=numeric(),
                      mt_detrend=numeric(),
                      rev_detrend=numeric(),
-                     per_detrend=numeric(),
-                     per_mt_detrend=numeric())
+                     rev_per_detrend=numeric(),
+                     mt_per_detrend=numeric())
 
 for(j in 1:length(j_vec)){
   temp_df<-cali_catch |> 
@@ -45,15 +45,11 @@ for(j in 1:length(j_vec)){
   md_per=rlm(rev_per_fisher~year,data=temp_df,method="MM")
   md_per_mt=rlm(mt_per_fisher~year,data=temp_df,method="MM")
   
-  pred_mt<-predict(md_mt)
-  pred_rev<-predict(md_rev)
-  pred_per<-predict(md_per)
-  pred_per_mt<-predict(md_per_mt)
   
-  temp_df$mt_detrend<-temp_df$landings_mt-pred_mt
-  temp_df$rev_detrend<-temp_df$value_usd-pred_rev
-  temp_df$per_detrend<-temp_df$rev_per_fisher-pred_per
-  temp_df$per_mt_detrend<-temp_df$mt_per_fisher-pred_per_mt
+  temp_df$mt_detrend<-temp_df$landings_mt+(max(temp_df$year)-temp_df$year)*md_mt$coefficients[2]
+  temp_df$rev_detrend<-temp_df$value_usd+(max(temp_df$year)-temp_df$year)*md_rev$coefficients[2]
+  temp_df$rev_per_detrend<-temp_df$rev_per_fisher+(max(temp_df$year)-temp_df$year)*md_per$coefficients[2]
+  temp_df$mt_per_detrend<-temp_df$mt_per_fisher+(max(temp_df$year)-temp_df$year)*md_per_mt$coefficients[2]
   
   store_df<-rbind(store_df,temp_df)
   
@@ -61,7 +57,7 @@ for(j in 1:length(j_vec)){
 
 cali_catch<-store_df
 
-save(cali_catch,file=here::here("data","fisheries","cali_catch_detrend.rda"))
+save(cali_catch,file=here::here("data","fisheries","cali_catch_detrend_2.rda"))
 
 ### Repeat for the port data
 
@@ -84,7 +80,7 @@ store_df<-data.frame(spp_code=character(),
                      lb_per_fisher=numeric(),
                      mt_detrend=numeric(),
                      rev_detrend=numeric(),
-                     per_detrend=numeric(),
+                     per_rev_detrend=numeric(),
                      per_mt_detrend=numeric())
 
 j_vec<-unique(cali_port_catch$port_spp_id)
@@ -110,15 +106,10 @@ for(j in 1:length(j_vec)){
   md_per=rlm(rev_per_fisher~year,data=temp_df,method="MM")
   md_per_mt=rlm(mt_per_fisher~year,data=temp_df,method="MM")
   
-  pred_mt<-predict(md_mt)
-  pred_rev<-predict(md_rev)
-  pred_per<-predict(md_per)
-  pred_per_mt<-predict(md_per_mt)
-  
-  temp_df$mt_detrend<-temp_df$landings_mt-pred_mt
-  temp_df$rev_detrend<-temp_df$revenues_usd-pred_rev
-  temp_df$per_detrend<-temp_df$rev_per_fisher-pred_per
-  temp_df$per_mt_detrend<-temp_df$mt_per_fisher-pred_per_mt
+  temp_df$mt_detrend<-temp_df$landings_mt+(max(temp_df$year)-temp_df$year)*md_mt$coefficients[2]
+  temp_df$rev_detrend<-temp_df$revenues_usd+(max(temp_df$year)-temp_df$year)*md_rev$coefficients[2]
+  temp_df$per_rev_detrend<-temp_df$rev_per_fisher+(max(temp_df$year)-temp_df$year)*md_per$coefficients[2]
+  temp_df$per_mt_detrend<-temp_df$mt_per_fisher+(max(temp_df$year)-temp_df$year)*md_per_mt$coefficients[2]
   
   store_df<-rbind(store_df,temp_df)
   
@@ -126,4 +117,4 @@ for(j in 1:length(j_vec)){
      
 cali_port_catch<-store_df
 
-save(cali_port_catch,file=here::here("data","fisheries","cali_port_detrend.rda"))
+save(cali_port_catch,file=here::here("data","fisheries","cali_port_detrend_2.rda"))

@@ -12,7 +12,7 @@ format:
 
 ## {#title-slide data-menu-title="Title Slide" background=.white}
 
-[Suitable Indices for fisheries insurance]{.custom-title .blue-text}
+[Suitable Indices for Fisheries Index Insurance]{.custom-title .blue-text}
 
 [Lab+ Meeting]{.custom-subtitle .gold}
 
@@ -71,6 +71,7 @@ knitr::include_graphics("img/windex.png")
 #| fig-cap: (Szuwalski et al., 2023)
 
 knitr::include_graphics("img/snow-crab-dis.png")
+
 ```
 
 
@@ -89,7 +90,7 @@ knitr::include_graphics("img/snow-crab-dis.png")
 
 <br>
 
-- Red King Crab opened in 2024, Snow crab just opened last month
+- Red King Crab opened in 2024, Snow crab just opened in October
 
 :::
 
@@ -101,14 +102,72 @@ knitr::include_graphics("img/snow-crab-dis.png")
 
 <hr>
 
-- Index Insurance needs well specified models to be effective
+::::{.columns}
 
-  - **Basis Risk:** The risk that the index does not perfectly match the actual loss experienced by the insured party.
-  
-- ***Basis Risk is the single greatest impediment to fishery index insurance***
+:::{.column width="48%"}
 
-- D
+:::{.center-text}
+**Supply Side**
+:::
 
+- Data Limitations
+
+- Knowledge Gap
+
+    - Insurance companies do not understand fisheries
+    
+<br>
+    
+:::{.center-text .blue-text .fragment}
+
+**Recent explosion of fishery and oceanopgraphic data means it's finally possible to answer these questions**
+:::
+    
+:::
+
+:::{.column width="48%"}
+
+:::{.center-text}
+**Demand Side**
+
+:::
+
+- Better management more important [(Herrmann et al., 2004)]{.small-text}
+
+- Liquidity Constraints
+
+<br>
+
+<br>
+
+:::{.fragment}
+***"Our families, friends, and communitites are stuggling. We need help."***
+:::
+
+:::
+
+
+::::
+
+## {#basis data-menu-title="Basis Risk"}
+
+[Building contracts will still be difficult]{.slide-title}
+
+<hr>
+
+- **Basis Risk**: Insurance payouts do not match fisher losses
+
+<br>
+
+- Basis Risk lowers demand [(Binswanger 2012, Clarke 2016)]{.small-text}
+
+<br>
+
+- Good indicies have strong correlations with fisher losses
+
+<br>
+
+- Inherently this will be more difficult in fisheries than agriculture, but that does not mean it is impossible. We just might have to think differently.
 
 ## {#rq data-menu-title="Research Questions"}
 
@@ -116,14 +175,17 @@ knitr::include_graphics("img/snow-crab-dis.png")
 
 <hr>
 
-:::{.fragment}
-### 1) What are the data factors that impede fisheries index insurance?
-:::
+
+### 1) What are the data and methodological factors that impede fisheries index insurance?
+
+<br>
 
 :::{.fragment}
 
 ### 2) How can we successfully address each factor for successful insurance contracts?
 :::
+
+<br>
 
 :::{.fragment}
 
@@ -131,32 +193,14 @@ knitr::include_graphics("img/snow-crab-dis.png")
 
 :::
 
+<br>
+
 :::{.fragment}
 
 ### 4) Would fishing communitites have been better off with feasible insurance contracts?
 
 :::
 
-## {#contribution data-menu-title="Contributions"}
-
-[Contributions]{.slide-title}
-
-<hr>
-
-- Expanding literature on environmental impacts on fisheries, espeically by expanding on use of machine learning.
-
-- Climate adapation and fishery resiliency
-
-- Meeting a policy need for fishers
-
-:::{.fragment}
-***"Our families, friends, and communitites are stuggling. We need help."***
-:::
-
-:::{.center-text .blue-text .fragment}
-
-**The explosion of fishery and oceanopgraphic data means it's finally possible to answer these questions**
-:::
 
 
 ## {#f data-menu-title="Factors" background-color="#047C90"}
@@ -350,7 +394,7 @@ cali_catch %>%
 
 
 cali_catch %>% 
-  filter(species_code=='CBZ1') %>% 
+  filter(species_code=='SABL') %>% 
   ggplot(aes(x=year,y=landings_mt))+
   geom_line(size=3,color='black')+
   theme_classic()+
@@ -374,19 +418,21 @@ library(ggimage)
 load(here::here('data','fisheries','cali_catch_detrend.rda'))
 
 cali_catch %>% 
-  filter(species_code=='CBZ1') %>% 
+  filter(species_code=='SABL') %>% 
   ggplot(aes(x=year,y=landings_mt))+
   geom_line(size=3,color='black')+
   theme_classic()+
-  labs(x='',y='Landings (MT)',title='Cabezon')+
+  labs(x='',y='Landings (MT)',title='Sablefish')+
   scale_x_continuous(breaks=seq(1985,2023,by=2))+
   theme(axis.text.x = element_text(angle=45,vjust=0,size=21),
         axis.text.y = element_text(size=21),
         axis.title = element_text(size=23),
         title=element_text(size=26))+
-  geom_vline(xintercept=2013,linetype='dashed',color='red',size=1.5)+ geom_image(
-    data = tibble(year = 1989, landings_mt = 100),
-    aes(image = here::here("docs","presentations","img","cabezon.jpg")),
+  geom_vline(xintercept=1992,linetype='dashed',color='red',size=1.5)+
+  geom_vline(xintercept=2005,linetype='dashed',color='blue',size=1.5)+
+  geom_image(
+    data = tibble(year = 2013, landings_mt = 4000),
+    aes(image = here::here("docs","presentations","img","sable.jpg")),
     size = .7
   )
 ```
@@ -408,7 +454,7 @@ cali_catch %>%
 :::{.column}
 
 :::{.fragment}
-- Short lived
+- Short lived ~ 1 Year
 
   - We harvest nearly every adult spawner each year
 
@@ -430,8 +476,9 @@ cali_catch %>%
 [Fisheries Ecology is way more complex than agriculture]{.slide-title}
 
 <hr>
-
+<center>
 <img src="https://groundcover.grdc.com.au/__data/assets/image/0032/582764/p10-11_S162006-Fig-01-web.jpg" width="100%"/>
+</center>
 
 ## {#squid-ecology-2 data-menu-title="Squid Ecology"}
 
@@ -475,7 +522,7 @@ knitr::include_graphics("img/squid-ecology.png")
 ## {#method data-menu-title="Methods" background-color="#047C90"}
 
 <div class="page-center">
-<div class="custom-subtitle">Application Methods</div>
+<div class="custom-subtitle">Methods</div>
 </div>
 
 ## {#overview data-menu-title="Overview"}
@@ -488,7 +535,7 @@ knitr::include_graphics("img/squid-ecology.png")
 
 1) Collect publically available data for possible indicies
 
-2) Match data to spatial profile of fishery
+2) Match data to spatial catch profile of fishery
 
 3) Run models to predict catch
 
@@ -770,13 +817,13 @@ p1<-ggplot()+
 p2+p1+ plot_layout(guides = 'collect')
 ```
 
-## {#Results data-menu-title="Results" background-color="#047C90"}
+## {#util data-menu-title="Results" background-color="#047C90"}
 
 <div class="page-center">
 <div class="custom-subtitle">Results</div>
 </div>
 
-## {#Results data-menu-title="Results"}
+## {#rsq data-menu-title="Results"}
 
 [In general, fishers appear worse off with single index insurance contracts]{.slide-title}
 
@@ -812,5 +859,130 @@ boot_df |>
   labs(x='',y='R^2')+
   theme_classic()+
   theme(axis.text.x = element_text(angle=90,vjust=0.5))
+```
+
+
+## {#ns data-menu-title="Next Steps" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Next Steps</div>
+</div>
+
+## {#sum data-menu-title="Summary"}
+
+[Next steps]{.slide-title}
+
+<hr>
+
+- One-to-One Application of agricultural insurance contracts to fisheries will probably not work
+
+- We can up the predictive power with Machine Learning
+
+    - These contracts become much more difficult and complicated to indemnfiy
+    
+- Continue this application with squid
+
+:::{.fragment}
+
+- **What about the other factors: Dynamics and Management?**
+
+:::
+
+## {#dynamics data-menu-title="Dynamics"}
+
+[Consider the dynamics of Dungeness Crab]{.slide-title}
+
+<hr>
+
+- Most economically important fishery on the West Coast
+
+- 4 year spawn to adult relationship
+
+- We harvest nearly every male adult spawner each year
+
+```{r}
+#| fig-align: center
+#| fig-cap: "Shanks et al., 2010"
+
+knitr::include_graphics("img/crab_larv_sp.png")
+```
+
+
+## {#alternative data-menu-title="Alternative"}
+
+[Management Indicies]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+- Management decisions create the most impact on fisher loss
+
+- Create indicies to match management decisions
+
+- Examples:
+
+    - Domoic Acid
+    
+    - Quotas
+    
+    - Days of fishing closure
+    
+    - Salmon Forecast and Escapement
+    
+:::
+
+:::{.column}
+
+<center>
+<img src="https://www.adfg.alaska.gov/static/fishing/images/research/bristolbay_counting.jpg"/>
+</center>
+
+:::
+
+::::
+    
+## {#salmon data-menu-title="Salmon"}
+
+[Fishers and Processors use Preseason forecasts of run strength]{.slide-title}
+
+<hr>
+
+```{r}
+ak_h<-read_csv(here::here("data","fisheries","ak_salmon.csv")) |> 
+  janitor::clean_names() |> 
+  filter(area=='Bristol Bay') |> 
+  filter(species_name=='Sockeye Salmon')
+
+forecast<-read.table(here::here("data","fisheries","preseasonForecast.dat"),header=FALSE,skip=1) |> 
+  rename(agency=V1,forecaster=V2,return_yr=V3,dist=V4,system_id=V5,fw_age=V6,o_age=V7,return=V8)
+
+bb_sum<-forecast |> 
+  group_by(return_yr) |> 
+  summarize(sum_return=sum(return,na.rm=TRUE))
+
+
+manual<-data.frame(return_yr=c(2020,2021,2022,2023,2024,2025),sum_return=1000*c(48.95,50,75.27,49.1,44.95,54.07))
+
+bb_sum<-rbind(bb_sum,manual)
+
+bb<-bb_sum |> 
+  filter(return_yr %in% ak_h$year)
+
+ggplot(data=bb_sum,aes(x=return_yr, y=sum_return,color='Forecast'))+
+  geom_line(size=3)+
+  geom_line(data=ak_h,aes(x=year,y=number_of_fish_estimated/1000,color='Harvest'),size=3)+
+  scale_color_manual(values=c('Forecast'='#047C91','Harvest'='#F2A900',name=''))+
+  theme_classic()+
+  labs(x='',y='Number of Fish (1000s)')+
+  theme(legend.title=element_blank())+
+  theme(axis.text.x = element_text(size=21),
+        axis.text.y = element_text(size=21),
+        axis.title = element_text(size=23),
+        legend.text = element_text(size=21),
+        )
+  
 ```
 
