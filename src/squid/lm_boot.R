@@ -21,6 +21,10 @@ load(here::here('data','fisheries','squid_bio_all.Rdata'))
 
 #load designed fucntions
 source(here::here("src","fcn","cw_squid.R"))
+source(here::here("src","fcn","ci_fcn.R"))
+source(here::here("src","fcn","ut_fcn.R"))
+source(here::here("src","fcn","find_m.R"))
+source(here::here("src","fcn","inv_ut.R"))
 
 
 port_cw<-cali_catch %>% 
@@ -34,10 +38,6 @@ port_cw<-cali_catch %>%
   mutate(cw_data=pmap(list(spp=species_code,data=data),cw_squid))
 
 ###
-
-example<-port_cw$cw_data[[1]] %>% 
-  filter(var=='sti') %>% 
-  filter(fish_var=='landings_mt')
 
 var_names<-unique(port_cw$cw_data[[1]]$var)
 fish_vars<-unique(port_cw$cw_data[[1]]$fish_var)
@@ -62,42 +62,6 @@ premium<-function(boot_data,strike,tick){
   return(p)
 }
 
-inv_ut<-function(ra,eu,mod){
-  if(mod=='cara'){
-    return(-log(1-eu*ra)/ra)
-  } else if (mod=='log'){
-    return(exp(eu))
-  } else if (mod=='power'){
-    return(eu*(1-ra)^(1/(1-ra)))
-  }
-  
-}
-
-ut_fcn<-function(value,payout_vec,premium,m=1,ra=0.1,mod='cara'){
-
-  
-  profit=payout_vec+value-premium*m
-  
-  profit=profit/max(value) #scale to make sure everything matches?
-  
-  if(mod=='cara'){
-    ut=-mean((1-exp(-ra*profit))/ra,na.rm=TRUE)
-  } else if (mod=='log'){
-    profit[which(profit<0)]=0.00001 # Make negative profits really small
-    ut<-mean(log(profit),na.rm=TRUE)
-  }
-  
-  return(data.frame(ut=ut,profit=mean(profit)))
-}
-
-find_m<-function(m_in,data,payout_vec,prem,ra,mod){
-  # m is the multiplier for the premium
-  # we want to find the m that maximizes the utility
-
-  u_out<-ut_fcn(data,payout_vec,prem,m=m_in,ra=ra,mod=mod)[1]-ut_fcn(data,0,0,m=m_in,ra=ra,mod=mod)[1]
-  
-  return(u_out$ut)
-}
 
 analysis<-function(index,data,coverage,m,ra,ut_mod){
   train<-data[index,]
@@ -115,6 +79,10 @@ analysis<-function(index,data,coverage,m,ra,ut_mod){
   
   strike<-((mean(data$fish_value)-coefficients(mod)[1])/tick)*coverage   #coverage is how much to protect 0.65 is way below average, 0.9 is small, 1 is average
   
+  # assess through rmse
+  residuals <- data$fish_value - predict(mod, newx = train)
+  
+  rmse <- sqrt(mean(residuals^2, na.rm = TRUE))
   
   # get premium
   prem<-premium(train$value,strike=strike,tick=tick)
@@ -157,6 +125,9 @@ analysis<-function(index,data,coverage,m,ra,ut_mod){
   
   risk_p<-(r_i_test-r_noi_test)/abs(r_noi_test)
   
+  # get insurance profits
+  ins_pi<-prem*nrow(test)-sum(payout_vec)
+  
  # find the m that makes fishers indifferent
 
   m_out <- tryCatch({
@@ -172,8 +143,21 @@ analysis<-function(index,data,coverage,m,ra,ut_mod){
     #message("uniroot failed: ", e$message)
     NA  # or another default/fallback value
   })
+  
+  # If there were no prior payouts then fishers are indifferent
+  if(prem==0){
+    m_out=1
+  }
 
-return(data.frame(train_rr,test_rr,rsq=summary(mod)$r.squared,prem=prem,beta=tick,ris_p=risk_p,r_i=r_i_test,r_noi=r_noi_test,m_out=m_out))
+  # get rsq
+  rsq<-summary(mod)$r.squared
+  
+  # get risk premium
+  risk_p<-(r_i_test-r_noi_test)/abs(r_noi_test)
+  
+  # return results
+return(data.frame(train_rr,test_rr,rsq=rsq,prem=prem,beta=tick,ris_p=risk_p,m_out=m_out,ins_pi=ins_pi,
+                  rmse=rmse))
 }
 
 
@@ -195,12 +179,37 @@ boot<-function(v,fv,big_data,coverage=1,m=1,split_t=25,ra,ut_mod){
   
   boot_out<-bootstrap_samples %>% map_df(.f=~analysis(.x,data=df,coverage=coverage,m=m,ut_mod=ut_mod,ra=ra))
 
-  return(data.frame(avg_rr=mean(boot_out$test_rr),sd_rr=sd(boot_out$test_rr),avg_rsq=mean(boot_out$rsq),sd_rsq=sd(boot_out$rsq),avg_prem=mean(boot_out$prem),sd_prem=sd(boot_out$prem),avg_beta=mean(boot_out$beta),sd_beta=sd(boot_out$beta),risk_p=mean(boot_out$ris_p),m_out=mean(boot_out$m_out,na.rm=TRUE)))
+  
+  u_ci<-ci_fcn(boot_out$test_rr,alpha=0.05)
+  m_ci<-ci_fcn(boot_out$m_out,alpha=0.05)
+  r_ci<-ci_fcn(boot_out$risk_p,alpha=0.05)
+  ins_ci<-ci_fcn(boot_out$ins_pi,alpha=0.05)
+  rsq_ci<-ci_fcn(boot_out$rsq,alpha=0.05)
+  rmse_ci<-ci_fcn(boot_out$rmse,alpha=0.05)
+  
+  return(data.frame(u_rr=mean(boot_out$test_rr,na.rm=TRUE),
+                    urr_ci_hi=u_ci$hi,
+                    urr_ci_lo=u_ci$lo,
+                    m_out=mean(boot_out$m_out,na.rm=TRUE),
+                    m_out_hi=m_ci$hi,
+                    m_out_lo=m_ci$lo,
+                    r_rr=mean(boot_out$r_rr,na.rm=TRUE),
+                    r_ci_hi=r_ci$hi,
+                    r_ci_lo=r_ci$lo,
+                    ins_pi=mean(boot_out$ins_pi,na.rm=TRUE),
+                    ins_ci_hi=ins_ci$hi,
+                    ins_ci_lo=ins_ci$lo,
+                    rsq=mean(boot_out$rsq,na.rm=TRUE),
+                    rsq_hi=rsq_ci$hi,
+                    rsq_lo=rsq_ci$lo,
+                    rmse=mean(boot_out$rmse,na.rm=TRUE),
+                    rmse_hi=rmse_ci$hi,
+                    rmse_lo=rmse_ci$lo))
 }
 
-boot_df_2<-combo %>% 
+boot_df<-combo %>% 
   mutate(results=map2(.x=var_names,.y=fish_vars,~boot(.x,.y,big_data=port_cw$cw_data[[1]],ra=0.01,ut_mod='log')))
 
 
-boot_df_2<-boot_df_2 %>%
+boot_df<-boot_df %>%
   unnest_wider(results)

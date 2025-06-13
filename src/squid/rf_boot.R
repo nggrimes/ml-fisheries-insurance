@@ -49,84 +49,70 @@ fish_vars<-unique(port_cw$cw_data[[1]]$fish_var)
 fish_vars<-fish_vars[-which(fish_vars %in% c('landings_lb','lb_per_fisher'))]
 
 
-lasso_analysis<-function(index,data,coverage,m,ra,ut_mod){
- 
+rf_analysis<-function(index,data,coverage,m,ra,ut_mod){
   
-   train<-data[index,]
+  
+  train<-data[index,]
   test<-data[-index,]
   
-lasso_x<-train |> 
-  dplyr::select(-c(fish_var,year,fish_value)) |> 
-  as.matrix()
-
-lasso_y<-train |>
-  dplyr::select(fish_value) |> 
-  as.matrix()
-
-lasso_fit <- cv.glmnet(lasso_x, lasso_y, alpha = 1,nfolds=8)
-
-payout_vec<-predict(lasso_fit, newx = lasso_x, s = "lambda.min") |> 
-  map_dbl(.f=~max(coverage*mean(lasso_y)-.x,0))
-
-# Get fitted RMSE and R-squared
-
-residuals <- lasso_y - predict(lasso_fit, newx = lasso_x, s = "lambda.min")
-
-rmse <- sqrt(mean(residuals^2, na.rm = TRUE))
-
-rsq <- 1 - (sum(residuals^2, na.rm = TRUE) / sum((lasso_y - mean(lasso_y))^2, na.rm = TRUE))
-
-prem<-mean(payout_vec)*m
-
-
-lasso_x_test<-test |> 
-  dplyr::select(-c(fish_var,year,fish_value)) |> 
-  as.matrix()
-
-lasso_y_test<-test |>
-  dplyr::select(fish_value) |> 
-  as.matrix()
-
-payout_out_test<-predict(lasso_fit, newx = lasso_x_test, s = "lambda.min")|> 
-  map_dbl(.f=~max(coverage*mean(lasso_y)-.x,0))
-
-
-
-u_out_i<-ut_fcn(value=lasso_y_test,payout_vec=payout_out_test,premium=prem,ra=0.1,mod='log')
-u_out_noi<-ut_fcn(value=lasso_y_test,payout_vec=0,premium=0,ra=0.1,mod='log')
-
-u_noi_test<-u_out_noi$ut
-pi_noi_test<-u_out_noi$profit
-
-u_i_test<-u_out_i$ut
-pi_i_test<-u_out_i$profit
-
-r_i_test<-mean(pi_i_test)-inv_ut(u_i_test,ra=ra,mod=ut_mod)
-r_noi_test<-mean(pi_noi_test)-inv_ut(u_noi_test,ra=ra,mod=ut_mod)
-
-u_rr<-(u_i_test-u_noi_test)/abs(u_noi_test)
-
-r_rr<-(r_i_test-r_noi_test)/abs(r_noi_test)
-
-#get average insurance profits
-
-ins_pi<-prem*nrow(test)-sum(payout_out_test)
-
-m_out <- tryCatch({
-  result <- uniroot(find_m,
-                    interval = c(0.01, 10),
-                    data = test$fish_value,
-                    payout_vec = payout_out_test,
-                    prem = prem,
-                    ra = ra,
-                    mod = ut_mod)
-  result$root  # extract root only if uniroot succeeds
-}, error = function(e) {
-  #message("uniroot failed: ", e$message)
-  NA  # or another default/fallback value
-})
-
-return(data.frame(
+  
+  rf_model <- ranger(fish_value ~ ., data = train)
+  
+  payout_vec<-predict(rf_model, data = train)$predictions |> 
+    map_dbl(.f=~max(coverage*mean(train$fish_value)-.x,0))
+  
+  # Get fitted RMSE and R-squared
+  
+  residuals <- train$fish_value - predict(rf_model, data = train)$predictions
+  
+  rmse <- sqrt(mean(residuals^2, na.rm = TRUE))
+  
+  rsq <- 1 - (sum(residuals^2, na.rm = TRUE) / sum((train$fish_value - mean(train$fish_value))^2, na.rm = TRUE))
+  
+  prem<-mean(payout_vec)*m
+  
+  
+  
+  payout_out_test<-predict(rf_model, data = test)$predictions|> 
+    map_dbl(.f=~max(coverage*mean(train$fish_value)-.x,0))
+  
+  
+  
+  u_out_i<-ut_fcn(value=test$fish_value,payout_vec=payout_out_test,premium=prem,ra=0.1,mod=ut_mod)
+  u_out_noi<-ut_fcn(value=test$fish_value,payout_vec=0,premium=0,ra=0.1,mod=ut_mod)
+  
+  u_noi_test<-u_out_noi$ut
+  pi_noi_test<-u_out_noi$profit
+  
+  u_i_test<-u_out_i$ut
+  pi_i_test<-u_out_i$profit
+  
+  r_i_test<-mean(pi_i_test)-inv_ut(u_i_test,ra=ra,mod=ut_mod)
+  r_noi_test<-mean(pi_noi_test)-inv_ut(u_noi_test,ra=ra,mod=ut_mod)
+  
+  u_rr<-(u_i_test-u_noi_test)/abs(u_noi_test)
+  
+  r_rr<-(r_i_test-r_noi_test)/abs(r_noi_test)
+  
+  #get average insurance profits
+  
+  ins_pi<-prem*nrow(test)-sum(payout_out_test)
+  
+  m_out <- tryCatch({
+    result <- uniroot(find_m,
+                      interval = c(0.01, 10),
+                      data = test$fish_value,
+                      payout_vec = payout_out_test,
+                      prem = prem,
+                      ra = ra,
+                      mod = ut_mod)
+    result$root  # extract root only if uniroot succeeds
+  }, error = function(e) {
+    #message("uniroot failed: ", e$message)
+    NA  # or another default/fallback value
+  })
+  
+  return(data.frame(
     u_rr=u_rr,
     m_out=m_out,
     u_i=u_i_test,
@@ -138,7 +124,7 @@ return(data.frame(
   ))
 }
 
-boot_lasso<-function(fv,big_data,coverage=1,m=1,split_t=25,ra,ut_mod){
+boot_rf<-function(fv,big_data,coverage=1,m=1,split_t=25,ra,ut_mod){
   
   df<-big_data |> 
     filter(fish_var==fv) |> 
@@ -151,8 +137,8 @@ boot_lasso<-function(fv,big_data,coverage=1,m=1,split_t=25,ra,ut_mod){
   )
   
   
-  boot_out<-bootstrap_samples %>% map_df(.f=~lasso_analysis(.x,data=df,coverage=coverage,m=m,ut_mod=ut_mod,ra=ra))
-
+  boot_out<-bootstrap_samples %>% map_df(.f=~rf_analysis(.x,data=df,coverage=coverage,m=m,ut_mod=ut_mod,ra=ra))
+  
   # Get CI for each metric
   
   
@@ -189,11 +175,11 @@ boot_lasso<-function(fv,big_data,coverage=1,m=1,split_t=25,ra,ut_mod){
   
 }
 
-lasso_df<-as.data.frame(fish_vars) %>% 
-  mutate(results=map(.x=fish_vars,~boot_lasso(.x,big_data=combo,ra=0.01,ut_mod='log')))
+rf_df_2<-as.data.frame(fish_vars) %>% 
+  mutate(results=map(.x=fish_vars,~boot_rf(.x,big_data=combo,ra=1,ut_mod='log')))
 
 
-lasso_df<-lasso_df %>%
+rf_df_2<-rf_df_2 %>%
   unnest_wider(results)
 
-save(lasso_df,file=here::here("data","output","lasso_df_6-7.Rdata"))
+save(lasso_df,file=here::here("data","output","lasso_df_6-7_cara.Rdata"))
