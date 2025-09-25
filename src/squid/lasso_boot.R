@@ -65,12 +65,12 @@ lasso_y<-train |>
 
 lasso_fit <- cv.glmnet(lasso_x, lasso_y, alpha = 1,nfolds=8)
 
-payout_vec<-predict(lasso_fit, newx = lasso_x, s = "lambda.min") |> 
+payout_vec<-predict(lasso_fit, newx = lasso_x, s = "lambda.1se") |> 
   map_dbl(.f=~max(coverage*mean(lasso_y)-.x,0))
 
 # Get fitted RMSE and R-squared
 
-residuals <- lasso_y - predict(lasso_fit, newx = lasso_x, s = "lambda.min")
+residuals <- lasso_y - predict(lasso_fit, newx = lasso_x, s = "lambda.1se")
 
 rmse <- sqrt(mean(residuals^2, na.rm = TRUE))
 
@@ -87,13 +87,13 @@ lasso_y_test<-test |>
   dplyr::select(fish_value) |> 
   as.matrix()
 
-payout_out_test<-predict(lasso_fit, newx = lasso_x_test, s = "lambda.min")|> 
+payout_out_test<-predict(lasso_fit, newx = lasso_x_test, s = "lambda.1se")|> 
   map_dbl(.f=~max(coverage*mean(lasso_y)-.x,0))
 
 
 
-u_out_i<-ut_fcn(value=lasso_y_test,payout_vec=payout_out_test,premium=prem,ra=0.1,mod='log')
-u_out_noi<-ut_fcn(value=lasso_y_test,payout_vec=0,premium=0,ra=0.1,mod='log')
+u_out_i<-ut_fcn(value=lasso_y_test,payout_vec=payout_out_test,premium=prem,ra=0.1,mod=ut_mod)
+u_out_noi<-ut_fcn(value=lasso_y_test,payout_vec=0,premium=0,ra=0.1,mod=ut_mod)
 
 u_noi_test<-u_out_noi$ut
 pi_noi_test<-u_out_noi$profit
@@ -190,10 +190,10 @@ boot_lasso<-function(fv,big_data,coverage=1,m=1,split_t=25,ra,ut_mod){
 }
 
 lasso_df<-as.data.frame(fish_vars) %>% 
-  mutate(results=map(.x=fish_vars,~boot_lasso(.x,big_data=combo,ra=0.01,ut_mod='log')))
+  mutate(results=map(.x=fish_vars,~boot_lasso(.x,big_data=combo,ra=2,ut_mod='cara')))
 
 
 lasso_df<-lasso_df %>%
   unnest_wider(results)
 
-save(lasso_df,file=here::here("data","output","lasso_df_6-7.Rdata"))
+save(lasso_df,file=here::here("data","output","lasso_df_6-7_cara.Rdata"))

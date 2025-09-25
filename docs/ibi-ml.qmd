@@ -39,21 +39,35 @@ execute:
 
 ## Introduction
 
-Fishers face enormous environmental variability that impacts their livelihoods. Extreme weather events such as hurricanes, or weather events that degrade stock health such as stagant upwelling or marine heatwaves can lead to significant losses in fishery productivity. These shocks can devastate fishing communities, leading to income loss and food insecurity [@Holland2020; @Jardine2020]. The need for financial tools to protect fishers from these shocks has never been greater [@Mumford2009,@Sethi2010].
+Fishers face enormous environmental variability that impacts their livelihoods. Extreme weather events that degrade stock health such as stagant upwelling or marine heatwaves can lead to significant losses in fishery productivity. These shocks can devastate fishing communities, leading to income loss and food insecurity [@Holland2020; @Jardine2020]. The need for financial tools to protect fishers from these shocks has never been greater [@Mumford2009,@Sethi2010@Kasperski2013;@Sumalia2020]. Index insurance has risen as a leading candidate to protect fishing communities during such disasters, but accurately identifying suitable weather indicies for fisheries has impeded widespread deployment [@Watson2023]. This paper is the first to empirically construct index insurance contracts to protect against flucuations in fishery biological productivity. 
 
-Index insurance has risen as a prime candidate to protect fishing communities during such disasters [@Watson2023]. Index insurance is a financial product that pays out when an independently verified index, such as sea surface temperature or El Nino Southern Oscillation (ENSO) measure, falls below a predetermined threshold, aka the trigger. The index is ideally chosen to be highly correlated with the asset being insured. In fisheries, catch or yield will be the primary underwritten asset. The trigger represents a critical value where the underlying assest is expected to suffer a loss. Fishers would pay a premium that transfers risk from good periods to bad periods.
+Index insurance is a financial product that pays out when an independently verified index, such as sea surface temperature or El Nino Southern Oscillation (ENSO) measures, falls below a predetermined threshold called the trigger. The index is ideally chosen to be highly correlated with the asset being insured. In fisheries, catch or yield will be the primary underwritten asset. The trigger represents a critical value where the underlying assest is expected to suffer a loss. Fishers pay a premium that transfers income from good periods to bad periods.
 
-The COAST program is the only extant index insurance product for fisheries [@Sainsbury2019]. It is a pilot program that insures small island nations in the Caribbean from hurricanes. It uses three indicies of wave height, wind speed, and storm surge to intiate payouts once they fall below the trigger.  There is growing interest to expand index insurance to cover other environemtnal shocks that prevent fishers from fishing, but significant market barriers have limited widespread implementation [@Watson2023].
+The COAST program is the only extant index insurance product for fisheries [@Sainsbury2019]. It is a pilot program that insures small island nations in the Caribbean from hurricanes. It uses indicies of wave height, wind speed, and storm surge to intiate payouts once they fall below the trigger.  There is growing interest to expand index insurance to cover other environmental shocks, but significant market barriers have limited widespread implementation [@Watson2023].
 
-The primary market barriers to date have been: 1) Demand limitations insisting on improved management, 2) Limited environmental and fishery data, and 3) Knowledge gaps within suppliers on how to address fisheries. The first two barriers have been sufficiently reduced to motivate exploring the viablility of index insurance in fisheries. The third remains the greatest challenge and where this paper aims to contribute the most. 
+The primary market barrier is empirically constructing contracts that sufficiently reduce basis risk. Basis risk is the potential for a policyholder's actual loss to not align with the contract payouts. For example, if a fisher suffers poor catch, but the weather index does not exceed the trigger, then the fisher will not receive payouts. The opposite may occur where insurance companies payout despite fishers receiving high catch. Basis risk lowers demand for index insurance and leads to exhoribant premium rates [@Clarke2016;@Binswanger2012].
 
-Fishery management is crucial to sustainable and consistent fishery harvest. Management provides the primary source of risk mitgation in fisheries by evaluating fishery health and establishing rules to eliminate inherent common pool fishery problems. However, management does not cover all risks, and fishers remain particularly exposed to financial risk [@Kasperski2013]. Quota adjustments or closures promote long term risk protection, but the short term financial losses can be devastating for fishers. Index insurance can close this gap by providing immediate financial relief when management needs to reduce fishing pressures in response to environmental shocks. For example, while testing the viability of an area-yield insurance program for the Bristol Bay Sockeye Fishery, @Herrmann2004 concluded that insurance would not sufficiently protect fisher loss and that more management was necessary to protect fisheres. Twenty years later, the Bristol Bay Sockeye Fishery is one of the most comprehensively managed and studied fisheries in the world, but environmental shocks continue to lead to financial losses for fishers^[Granted, the flucuations are nowhere near as severe in the past during the study @Herrman2004 study window.]. 
+Identifying triggers and indicies that are highly correlated to loss is the best way to eliminate basis risk. Agricultural index insurance has refined techniques to build and price contracts with minimal basis risk over the last 20 years. The most common design strategy is to match individual farms to the nearest meterological stations, then use linear regression to model yield-weather distributions. Premiums are then calculated based on the payout distribution of prior years for a given contract. 
+
+However, fisheries possess more difficult data and empirical challenges than agriculture. Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fish populations [@Lehodey2006], but even the most advance fishery stock assessment models use little to no year to year environmental data for projections [@Privitera2020]. Isolating environmental effects in fisheries usually entails estimating catch per unit effort data to reflect stock abundance then modeling a relationship through a generalized additive model. 
+
+The spatial and temporal dynamics of fish populations also present unique challenges. Fish 
+
+Despite these challenges, innovations in fishery and oceangraphic data collection and increased demand by fishers for assistance to combat against increasing environmental variability suggest a new opportunity has arisen to reconsider the use of index insurance in fisheries. 
+
+This paper is the first to empirically evaluate the feasibility of index insurance for fisheries. I use the Market Squid Fishery in California as a case study to test insurance contracts built on five different prediction models with twelve weather variables could be used to improve fisher welfare through insurance. I determine fishers marginal willingess to pay for an index insurance contract using expected utility, and identify what price a contract would be viable for an insurance company to offer.
+
+Contracts built with linear models possess basis risk that is too large to be market viable. Four linear models (Sea Surface Temperature, Upwelling, and a LASSO multivariate model) improve fisher utility when premiums are actuarilly fair, but none improve welfare at premium rates that keep the insurance fund solvent. All nonlinear models improved fisher utility by 1%-3% while remaining solvent with market premiums. The leading variable of influeunce in the nonlinear models were:.... Communicating to fishers the relative influence of each variable is crucial to build trust and transparency when using complex models.
+
+Fishery management is crucial to sustainable and consistent fishery harvest. Management provides the primary source of risk mitgation in fisheries by evaluating fishery health and establishing rules to eliminate inherent common pool fishery problems. However, management does not cover all risks, and fishers remain particularly exposed to financial risk [@Kasperski2013]. Quota adjustments or closures promote long term risk protection, but lead to short term financial losses that negatively impact fishing communities. Index insurance can close this gap by providing immediate financial relief when management needs to reduce fishing pressures in response to environmental shocks. For example, while testing the viability of an area-yield insurance program for the Bristol Bay Sockeye Fishery, @Herrmann2004 concluded that insurance would not sufficiently protect fisher loss and that more management was necessary to protect fisheres. Twenty years later, the Bristol Bay Sockeye Fishery is one of the most comprehensively managed and studied fisheries in the world, but environmental shocks continue to lead to financial losses for fishers^[Granted, the flucuations are nowhere near as severe in the past during the study @Herrman2004 study window.]. 
 
 Demand for more protection from fishers have been growing even in the best managed fisheries as the current financial tools, such as the Federal Fishery Disaster Relief Program, have become strained [@Bellquist2021]. The Federal Fishery Disaster Relief Program takes years to provide fishers with relief and has become unpopular. It is also inequitable as it does not cover all fisheries and often leaves out the most vulnerable fishers [@Holland2020; @Jardine2020]. Interviews with fishers in California have shown that fishers are willing to pay for insurance to protect against income shocks from environmental variability [TNC Study].
 
-The explosion of environmental and fisheries data in the 21st century has broken the second market barrier. To identify catch-index relationships, sufficient time series of both indices and catch are necessary. Standardized catch reporting is widely and publically available for thousands of fisheries [@Free2022;@Ram]. Satellite data has montiored global sea surface temperature at daily 5x5 km resolution since 1985. Paired with wind measures, sea level height, and other datasets allows for the creation of new indicies that can capture regional environmental events such as upwelling or heatwaves [@Jacox2018]. Fishery independent surveys, such as the Rockfish Recruitment and Ecosystem Assessment Survey, have also been conducted in standards ways for decades to be used as possible measures of fishery productivity. While not yet at sufficient temporal length to be applied now, the real time monitoring of fishing events through VIMS satellite data and Global Fishing Watch offers an exciting opportunity to evaluate fishery catch spatially in the future.
+The explosion of environmental and fisheries data in the 21st century has broken the second market barrier. To identify catch-index relationships, sufficient time series of both indices and catch are necessary. Standardized catch reporting is widely and publically available for thousands of fisheries [@Free2022;@Ram]. Satellite data has montiored global sea surface temperature at daily 5x5 km resolution since 1985. Paired with wind measures, sea level height, and other datasets allows for the creation of new indicies that can capture regional environmental events such as upwelling or heatwaves [@Jacox2018]. Fishery independent surveys, such as the Rockfish Recruitment and Ecosystem Assessment Survey, also provide decades of standarized biological information.
 
-Supplier knowledge gap remains as the greatest market barrier. Insurance companies have cultivated expertise and an effective collection of tools to design agriulcutral index insurance. However, fisheries are a unique and complex system such that expertise in agriculture does not transfer one to one. While there are regulatory and ethical considerations unique to fisheries, in this paper, I will focus solely on addressing data and methodologcial challenges^[@Watson2023 provides a much deeper discussion on regulatory issues for interested readers].
+New data sources are being rapidly established to provide greater insights. Global Fishing Watch provides real time monitoring of fishing events from every industrial vessel through the use of VIMS satellite data. AI assisted video identification software is being experimented with to enable managers to record fish catch at the species level while vessels are at sea. While these new sources do not have sufficently long temproal records to be used immediately, they represent the new frontier of data availability to provide accurate index insurance assessments.
+
+Supplier knowledge gap remains the greatest market barrier. Insurance companies have cultivated expertise and an effective collection of tools to design agriulcutral index insurance. However, fisheries are a unique and complex system such that expertise in agriculture does not transfer one to one. While there are regulatory and ethical considerations unique to fisheries, in this paper, I will focus solely on addressing data and methodologcial challenges^[@Watson2023 provides a much deeper discussion on regulatory issues for interested readers].
 
 Empirically defining the yield-index relationship is the crucial step in index insurance design. Poorly specified indices lead to basis risk, which is the primary barrier to index insurance uptake in agriculture [@Clarke2016; @binswanger2012;@Clement2018]. Basis risk is the probability that policyholders experience a harmful shock to their income, but the index does not trigger. 
 
@@ -67,7 +81,19 @@ In this section, I identify the unique fishery factors that actuarialists must c
 
 ### Definition of Loss
 
-Agriculture has long historical records on crop losses. Farmers plant set amounts of crop that equate to a maximum potential yield. Weather impacts the harvest leading to actual yield. The difference between maximum potential yield and actual yield is yearly loss. Farmers report these numbers to authorities to provide county/area level information [@Tack2015]. There is no equivalent framing in fisheries. When fishers deploy their gear, they are not guaranteed a catch. Does the discrepancy arise from the fisher's skill, the weather, or the fish population? The question of identifying loss in fisheries was a leading reason for the denial of a salmon fishery insurance in Alaska in the early 2000s [@Herrmann2004].
+Agriculture has long historical records on crop losses. Farmers plant set amounts of crop that equate to a maximum potential yield. Weather impacts the harvest leading to realized yield. The difference between maximum potential yield and realized yield is yearly loss. Farmers report yearly loss to authorities to provide county/area level information [@Tack2015]. 
+
+There is no equivalent framing in fisheries. When fishers deploy their gear, they are not guaranteed a catch. Does the discrepancy in what they expect to catch and realized catch arise from the fisher's skill, the weather, or the underlying fish population? The question of identifying loss in fisheries was a leading reason for the denial of a salmon fishery insurance in Alaska in the early 2000s [@Herrmann2004].
+
+Individual loss is not feasible for identifying weather loss to fishing loss. 
+
+### Ecological Complexity
+
+### Biological Dynamics
+
+### Management
+
+Management
 
 The biological dynamics of the system can lead to lower stock health persisting for years after a negative shock [@Hilborn2003]. Individual fisheries can cover enormous areas in ocean basins. The expansive spatial coverage of fisheries makes it unclear where and how much specific weather variables impact biological abundance. In addition, if weather impacts have been observed, they are most likely highly non-linear adding further complexity. If index insurance is to effectively protect fishers while remaing solvent for insurance companies, addressing these issues empirically through data is paramount. 
 
@@ -95,7 +121,187 @@ Recent expansions in oceanic remote sensing has led to a plethora of new environ
 
 The rest of the paper is structured as follows. @sec-model describes the insurance model tested in this study. @sec-data describes the data collection, transformations, and sources. Fisheries data comes from newly open-access sources provided by the California Department of Fish and Wildlife. @sec-methods describes the algorithms used to predict fishery productivity and evaluate the utility of index insurance. @sec-results demonstrates some preliminary results and highlights some of the challenges present. Future steps are outlined in @sec-discussion.
 
-## Insurance Model {#sec-model}
+## Insurance Framework {#sec-model}
+
+Index insurance is designed to protect policyholders from suffering lossess below critical yield thresholds. In fisheries index insurance, actuarlists must first estimate how fishery harvest is affected by weather variables. The inverse relationship between the predicted harvest and weather allows a contract to be defined in terms of the weather variables. For example, fisheries harvest, $\tilde{y}$ can be modeled with a simple technology function where fisher inputs, $x$ interact with a stock of biomass, $B$, which is a function of random weather shocks, $\tilde{w}$ as shown in equation @eq-fishprod:
+
+$$
+y=f(x,B(\tilde{w}))+\epsilon
+$${#eq-fishprod}
+
+The harvest technology function, $f(x,B(\tilde{w}))$, is increasing and concave in inputs and biomass. All other idiosyncratic shocks to harvest that are biological are captured in $\epsilon$. Assuming inputs are selected optimally conditional on the expected biomass, it is clearer to show the effects of weather on biomass and thus harvest:
+
+$$
+\tilde{y}=f(B(\tilde{w}))+\tilde{\epsilon}
+$${#eq-fishprod2}
+
+The weather and yield relationship, $f(B(\tilde w))$ can be empirically estimated by $g(\tilde{w})$, with a model error term $\eta$^[Fisheries scientists might argue that you should first estimate $b(\tilde w$) and then estimate the relationship between yield and biomass. However, that would introduce an additional model error term and is not feasible for the case study. Market squid have such short lifespans that estimating their abundance is not worthwhile. Therefore the data does not exist in our context. Also insurance companies do not have access to the confidential data sources needed to build catch per unit effort and thus biomass estimates.]. Subbing the estimator into the function gives:
+
+$$
+\tilde{y}=g(\tilde{w})+\tilde\eta+\tilde{\epsilon}
+$$ {#eq-g}
+
+
+Formally, basis risk is the combined stochastic effects of $\tilde\eta$ and $\tilde{\epsilon}$. The model error, $\tilde\eta$, arises from the inability to perfectly estimate the weather to yield relationship. The idiosyncratic error, $\tilde{\epsilon}$, arises from all other shocks to yield that are not related to weather. Well designed contracts minimize the negative effects of design risk stemming from $\tilde\eta$. For example, a perfectly estimated weather to harvest relationship would minimze $\tilde\eta$ to zero. 
+
+The estimation of $g(\tilde{w})$ is extremely difficult in fisheries. However, the estimation does not need to be perfect or even statistically significant to provide value to fishers. The model just needs to capture enough of the weather to harvest relationship to improve fisher welfare. 
+
+The four models are presented in more detail in @sec-mods. For now, the general model output will be represented as $\hat{y}(w)$, where $w$ is the observed weather variables and $\hat{y}$ is the predicted harvest. Insurance contracts can now be built off these models.
+
+
+Index insurance contracts are designed as put options that initate payouts once a predicted models' estimates, $\hat{y}(w)$, fall below a critical yield threshold, $c*\mathbb{E}[y]$. 
+
+$$
+\gamma(w)=\max(c*\mathbb{E}[y]-\hat{y}(w),0)
+$${#eq-gamma}
+
+@eq-gamma indicates fishers will receive the difference between the long run average of catch and the model predicted outcome from observed weather variables. The coverage level,$c$, represents the level of protection offered by the contract.  I will test two coverage levels, 70% and 100%, where the 70% represents disaster coverage that pays out only during extreme events, and 100% which pays more frequently.
+
+Premiums are calculated by determing the expected payout of the contract times a premium loading factor, $m$ as shown in equation @eq-prem.
+
+$$
+\rho(w)=\mathbb{E}[\gamma(w)]m
+$${#eq-prem}
+
+I use burn rate analysis to calculate the expected payout in @eq-prem. Burn rate analysis uses past realizations of weather variables to create a distribution of payouts that would have been observed if the policy was active over that time. The average payout is then used to calculate the expected payout of the contract. Burn rate analysis is a common method used by actuarialists to price index insurance contracts and is suitable in this setting because of the short time period of analysis. 
+
+## Results
+
+The mutlivariate models better predict weather-harvest dependency than univariate models (@fig-rmse). The highest variation explained in the training sets by a single variable was krill prey abundance (21%). However, the predictive accuracy of krill drops precipitously in the test set as krill had the highest RMSE out of all models. 
+
+Every multivariate model greatly increased the explained variation in the training sets, but demonstrate overfitting with proportionally higher increases in the error rates than univariate models when moving to the test set. 
+
+```{r}
+#|label: fig-rmse
+library(patchwork)
+
+p1<-models |> 
+  mutate(group=c(rep('Linear Regression',12),rep('Machine Multivariate',4))) |> 
+  ggplot(aes(x=fct_reorder(pred_mod,group),y=rmse,fill=group))+
+  geom_col()+
+  labs(x='Model',y='RMSE',fill='')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=45,hjust=1),)+
+  scale_y_continuous(expand=c(0,0))+
+  scale_fill_manual(values=c("#003660","#047C90"))
+
+p2<-models |> 
+  mutate(group=c(rep('Linear Regression',12),rep('Multivariate',4))) |> 
+  ggplot(aes(x=fct_reorder(pred_mod,group),y=rmse_test,fill=group))+
+  geom_col()+
+  labs(x='Model',y='RMSE',fill='')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=45,hjust=1),)+
+  scale_y_continuous(expand=c(0,0))+
+  scale_fill_manual(values=c("#003660","#047C90"))
+
+p1/p2+plot_annotation(tag_levels = 'A')+plot_layout(axes='collect')
+```
+
+
+Examining fisher utility provides clearer measures of whether a model sufficiently protects fishers from environmental risk. The majority of univariate models made fishers worse off as the fishers experienced high degrees of downside risk where they did not receive payouts when necessary (@fig-ur-lr Panel A). Only three weather indices improved fisher utility: average sea surface temperature (1.5%), relaxation of upwelling (4.3%), and the frequency of upwelling events (16%). However, each of the indicies were highly unprofitable for insurance companies as each had a loss ratio greater than 250% (@fig-ur-lr Panel B), which implies that insurance companies would have to pay out \$2.50 for every \$1 of premium collected. Each indices paid large sums at times when fishers did not experience loss. The large payouts act more as wealth transfers than risk protection. 
+
+Every multivariate model improved fisher utility while reducing the insurance company loss ratio (@fig-ur-lr) compared to the univariate models. LASSO regression provided the highest improvement in utility at 13%, but had the highest loss ratio at 167%. The random forest models balanced insurance solvency and fisher utility the best. The loss ratios for both models were 99% and 103% using actuarially fair rates. Utility gains were small at 0.8% and 2.6%. The support vector machine model improved fisher utility by 9% with
+
+```{r}
+#| label: fig-ur-lr
+ur_p<-models |> 
+  mutate(group=c(rep('Linear Regression',12),rep('Machine Learning',4))) |> 
+  ggplot(aes(x=fct_reorder(pred_mod,group),y=u_rr,fill=group))+
+  geom_col()+
+  labs(x='Model',y='Percent increase in utility with insurance',fill='')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=45,hjust=1),)+
+  scale_y_continuous(expand=c(0,0),labels=scales::percent)+
+  scale_fill_manual(values=c("#003660","#047C90"))+
+  geom_hline(yintercept=0,size=0.5,color='grey')
+
+lr_p<-models |> 
+  mutate(group=c(rep('Linear Regression',12),rep('Machine Learning',4))) |> 
+  ggplot(aes(x=fct_reorder(pred_mod,group),y=lr,fill=group))+
+  geom_col()+
+  labs(x='Model',y='Insurance Loss Ratio',fill='')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=45,hjust=1),)+
+  scale_y_continuous(expand=c(0,0))+
+  scale_fill_manual(values=c("#003660","#047C90"))+
+  geom_hline(yintercept=1,size=1,color='black')
+
+ur_p/lr_p+plot_annotation(tag_levels = 'A')+plot_layout(axes='collect',guides="collect")
+
+```
+
+
+While contracts built with these models would see positive demand based on the increases in utility, supply would collapse as insurance companies would not be profitable. Insurance companies would need to charge higher premiums to maintain solvency. @fig-urm-lrm shows how much utility fishers would gain if insurance companies charged premiums that kept them solvent at a loss ratio of 1. The percent increase in utility is shown in Panel A, and the loading factor is shown in Panel B. The linear models require high premiums to remain solvent, which eliminates any utility gains. Only the upwelling indices provide positive utility at high premium rates. The nonlinear machine learning models provide positive utility gains at premium rates that keep insurance companies solvent. The support vector machine allows insurance companies to charge premiums 
+
+```{r}
+#| label: fig-urm-lrm
+
+urm_p<-models |> 
+  mutate(group=c(rep('Linear Regression',12),rep('Machine Learning',4))) |> 
+  filter(u_rr>0) |> 
+  ggplot(aes(x=fct_reorder(pred_mod,group),y=u_rr_m,fill=group))+
+  geom_col()+
+  labs(x='Model',y='Percent increase in utility with insurance',fill='')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=45,hjust=1),)+
+  scale_y_continuous(expand=c(0,0),labels=scales::percent)+
+  scale_fill_manual(values=c("#003660","#047C90"))+
+  geom_hline(yintercept=0,size=0.5,color='grey')
+
+lrm_p<-models |> 
+  mutate(group=c(rep('Linear Regression',12),rep('Machine Learning',4))) |> 
+  filter(u_rr>0) |>
+  ggplot(aes(x=fct_reorder(pred_mod,group),y=lr_m,fill=group))+
+  geom_col()+
+  labs(x='Model',y='Loading Rate (m)',fill='')+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=45,hjust=1),)+
+  scale_y_continuous(expand=c(0,0))+
+  scale_fill_manual(values=c("#003660","#047C90"))+
+  geom_hline(yintercept=1,size=1,color='black')
+
+urm_p/lrm_p+plot_annotation(tag_levels = 'A')+plot_layout(axes='collect',guides='collect')
+```
+
+```{r}
+# show the payout schedule compared to actual catch
+
+pay<-models |> 
+  filter(pred_mod=='svm') |> 
+  select(payout_vec) |> 
+  unlist()
+
+prem<-models |> 
+  filter(pred_mod=='svm') |> 
+  select(prem_vec) |> 
+  unlist()
+
+max_len <- max(length(df$fish_value), length(pay))
+
+# Pad each vector
+fish_value <- c(df$fish_value, rep(NA, max_len - length(df$fish_value)))
+
+net_p <- c(rep(NA, max_len - length(pay)),pay-prem)
+
+ins_value<-net_p+fish_value
+
+data.frame(ins_value=ins_value,fish_value=fish_value,year=df$year) |> 
+  ggplot()+
+  geom_line(aes(x=year,y=fish_value),color='#003660')+
+  geom_point(aes(x=year,y=fish_value,color='Harvest'))+
+  geom_point(aes(x=year,y=ins_value,color='Net'),size=2)+
+  theme_classic()+
+  scale_color_manual(values=c(Harvest='#003660',Net='#900C3F'),labels=c("Harvest"="Harvest","Net"="Net Harvest with Insurance"),name="")+
+  geom_hline(yintercept=mean(df$fish_value))+
+  labs(x='',y='Harvest per fisher (MT)')+
+  theme(legend.position = "bottom")
+
+
+```
+
+
+### Utility evaluation
 
 The seminal work by @Clarke2016 proves the theoretical impacts of basis risk on insurance demand. Policyholders will choose non-zero coverage if the expected claim payment conditional on incurring a loss is higher than the paid premium (Equation 9 of @Clarke2016). @Clarke2016 proceed to use data from 270 insurance products in India to show that Indian farmers would be willing to pay a premium with a loading factor of up to 1.56 above the actuarailly fair rate for the product despite low Pearson correlation coefficients. His model uses explicit measures of crop loss and realized payment data. This presents two challenges in fisheries settings. First, the definition of loss arising from weather variability is not as clear in fisheries as it is agriculture. Second, there are no existing fishery index insurance products to calculate realized losses and payments to fit Clarke's ratio. 
 
