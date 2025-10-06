@@ -11,11 +11,11 @@ analysis_grrf<-function(index,data,coverage,controls,m,ra,ut_mod,pred_mod){
   
   y<-train$fish_value
   x<-train |> 
-    select(-c("year","fish_var","fish_value"))
+    dplyr::select(-c("year","fish_var","fish_value"))
   
   y_test<-test$fish_value
   x_test<-test |> 
-    select(-c("year","fish_var","fish_value"))
+    dplyr::select(-c("year","fish_var","fish_value"))
   
   base_rf<-RRF(x,y,
                flagReg=0,

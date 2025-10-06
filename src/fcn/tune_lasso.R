@@ -69,7 +69,7 @@ tune_lasso<-function(...,big_data,v,fv,coverage,m,start_year=24,ra,ut_mod,pred_m
   
   best_train_rsq<-mean(unlist(purrr::transpose(time_out$rsq)[[min_index]]))
   best_train_rmse<-mean(unlist(purrr::transpose(time_out$rmse)[[min_index]]))
-  
+ 
   return(tibble(lambda=controls,
                 u_rr=u_rr$V1,
                 rmse=best_train_rmse,
@@ -80,7 +80,8 @@ tune_lasso<-function(...,big_data,v,fv,coverage,m,start_year=24,ra,ut_mod,pred_m
                 train_vec=list(time_out$train_vec[[1]][,min_index]),
                 test_vec=list(test_vec),
                 prem_vec=list(prem_vec),
-                payout_vec=list(payout_vec))
+                payout_vec=list(payout_vec),
+                mods=list(time_out$mods))
                 
   )
 }

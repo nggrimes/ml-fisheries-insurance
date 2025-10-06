@@ -26,12 +26,10 @@ load(here::here("data","environmental","block_sst.rda"))
 load(here::here("data","environmental","enso_pdo.rda"))
 load(here::here('data','fisheries','squid_bio_all.Rdata'))
 
-#load designed fucntions
+#load designed functions
 source(here::here("src","fcn","cw_squid.R"))
-source(here::here("src","fcn","ci_fcn.R"))
 source(here::here("src","fcn","ut_fcn.R"))
 source(here::here("src","fcn","find_m.R"))
-source(here::here("src","fcn","inv_ut.R"))
 source(here::here("src","fcn","market.R"))
 
 source(here::here("src","fcn","analysis_lm.R"))
@@ -45,7 +43,7 @@ source(here::here("src","fcn","tune_lasso.R"))
 # Parameters
 ra=0.008  #if using log, ra is not necessary, but for 'cara' or 'negexp' it is risk aversion
 ut_mod='negexp'  #options so far include 'cara', 'power', and 'negexp'
-cov=1   # what proportion of mean catch to insure against
+cov=0.9   # what proportion of mean catch to insure against
 m=1     # actuarilly fair premium. Can be adjusted 
 
 
@@ -171,7 +169,7 @@ df<-port_cw$cw_data[[1]] |>
   pivot_wider(names_from = var, values_from = value) |> 
   drop_na()
 
-train_for_sigest <- df %>% slice(1:25) %>% select(-year, -fish_value,-fish_var)
+train_for_sigest <- df %>% slice(1:25) %>% dplyr::select(-year, -fish_value,-fish_var)
 
 # kernlab::sigest expects a matrix (unscaled OK; we'll estimate on raw predictors)
 sigest_vals <- sigest(as.matrix(train_for_sigest))
@@ -239,19 +237,19 @@ best_lasso<-time_lasso_df[which.min(time_lasso_df$rmse_test),]
 
 clean_lm<-time_lm_df |> 
   mutate(pred_mod=var_names) |> 
-  select(u_rr:payout_vec) 
+  dplyr::select(u_rr:pay_threshold_vec) 
 
 clean_rf<-best_rf |> 
-  select(u_rr:payout_vec)
+  dplyr::select(u_rr:pay_threshold_vec)
 
 clean_grrf<-best_grrf |>
-  select(u_rr:payout_vec)
+  dplyr::select(u_rr:pay_threshold_vec)
 
 clean_svm<-best_svm |>
-  select(u_rr:payout_vec)
+  dplyr::select(u_rr:pay_threshold_vec)
 
 clean_lasso<-best_lasso |>
-  select(u_rr:payout_vec)
+  dplyr::select(u_rr:mods)
 
 all_models<-bind_rows(clean_lm,
                       clean_rf,
@@ -266,4 +264,4 @@ models<-all_models |>
   unnest_wider(m_eq)
 
 
-save(models,file=here::here("data","output","squid_mtpd_9-23.rda"))
+save(models,file=here::here("data","output","squid_cara10-5_c90.rda"))

@@ -27,7 +27,7 @@ analysis_lasso<-function(index,data,coverage,controls,m,ra,ut_mod,pred_mod){
   
   #Build model
   set.seed(123)
-  las_mod<-glmnet(train_x, train_y, alpha = 1,lambda=controls)
+  las_mod<-glmnet(train_x, train_y, alpha = 1,lambda=controls,standardize=TRUE)
   
   #make prediction
   pred_train<- predict(las_mod, newx = train_x)
