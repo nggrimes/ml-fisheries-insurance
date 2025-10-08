@@ -41,9 +41,9 @@ source(here::here("src","fcn","tune_map.R"))
 source(here::here("src","fcn","tune_lasso.R"))
 
 # Parameters
-ra=0.008  #if using log, ra is not necessary, but for 'cara' or 'negexp' it is risk aversion
-ut_mod='negexp'  #options so far include 'cara', 'power', and 'negexp'
-cov=0.9   # what proportion of mean catch to insure against
+ra=1  #if using log, ra is not necessary, but for 'cara' or 'negexp' it is risk aversion
+ut_mod='power'  #options so far include 'cara', 'power', and 'negexp'
+cov=1  # what proportion of mean catch to insure against
 m=1     # actuarilly fair premium. Can be adjusted 
 
 
@@ -264,4 +264,4 @@ models<-all_models |>
   unnest_wider(m_eq)
 
 
-save(models,file=here::here("data","output","squid_cara10-5_c90.rda"))
+save(models,file=here::here("data","output","squid_log10-6.rda"))

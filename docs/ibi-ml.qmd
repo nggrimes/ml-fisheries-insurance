@@ -342,7 +342,7 @@ collapse_rows(columns = 1) |>
 
 
 
-## Results
+## Results {#sec-results}
 
 The multivariate models better predict weather-harvest dependency than univariate models (@fig-rmse). However, overfitting is a concern especially for the multivariate models.  All multivariate models had lower RMSE than every univariate linear model in the training set (Panel A). In the test set (Panel B), multivariate models remained more accurate as a group, but the discrepancy between the types of models was much smaller. Support vector machine models had the lowest out of sample RMSE for the multivariate models followed by random forest, and then LASSO.
 
