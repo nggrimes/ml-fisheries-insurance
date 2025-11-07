@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="gaines-lab-2025_files/libs/clipboard/clipboard.min.js"></script>
+<script src="gaines-lab-2025_files/libs/quarto-html/tabby.min.js"></script>
+<script src="gaines-lab-2025_files/libs/quarto-html/popper.min.js"></script>
+<script src="gaines-lab-2025_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="gaines-lab-2025_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="gaines-lab-2025_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="gaines-lab-2025_files/libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.39">
+
+  <title>gaines-lab-2025</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="gaines-lab-2025_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="gaines-lab-2025_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="gaines-lab-2025_files/libs/revealjs/dist/theme/quarto-e76e7dff51129d4d660dfa99354552c5.css">
+  <link href="gaines-lab-2025_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="gaines-lab-2025_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="gaines-lab-2025_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="gaines-lab-2025_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="gaines-lab-2025_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="gaines-lab-2025_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+
+<section id="title-slide" class="slide level2 center" data-menu-title="Title Slide" data-background=".white">
+<h2></h2>
+<p><span class="custom-title blue-text">Index Insurance in Fisheries</span></p>
+<p><span class="custom-subtitle gold">Gaines Lab Meeting</span></p>
+<hr class="hr-teal">
+<p><span class="body-text-l center-text blue-text">Nathaniel Grimes</span></p>
+<p><span class="center-text body-text-m blue-text">Bren School of Environmental Science &amp; Management</span></p>
+<p><span class="body-text-s blue-text"><strong>Last updated:</strong> Nov 06, 2025</span></p>
+</section>
+<section id="section" class="slide level2" data-background-image="https://i.insider.com/5644098bdd0895b0578b465f?width=1300&amp;format=jpeg&amp;auto=webp">
+<h2></h2>
+</section>
+<section id="tools" class="slide level2" data-menu-title="Financial Tools">
+<h2></h2>
+<p><span class="slide-title">Fishers need financial tools to protect income variability</span></p>
+<hr>
+<ul>
+<li><p>Fishers are risk averse in income <span class="citation" data-cites="Bockstael1983 Eggert2004 Brick2012 Holland2008">(<a href="#/references" role="doc-biblioref" onclick="">Eggert and Tveteras 2004</a>; <a href="#/references" role="doc-biblioref" onclick="">Holland 2008</a>; <a href="#/references" role="doc-biblioref" onclick="">Brick <em>et al.</em> 2012</a>; <a href="#/references" role="doc-biblioref" onclick=""><strong>Bockstael1983?</strong></a>)</span></p>
+<ul>
+<li>They would prefer more stable income, over flucutations</li>
+</ul></li>
+<li><p>Current finanicial tools are limited for fishers <span class="citation" data-cites="Mumford2009 Kaperski2013 Sethi2010">(<a href="#/references" role="doc-biblioref" onclick="">Mumford <em>et al.</em> 2009</a>; <a href="#/references" role="doc-biblioref" onclick="">Sethi 2010</a>; <a href="#/references" role="doc-biblioref" onclick=""><strong>Kaperski2013?</strong></a>)</span></p></li>
+<li><p>Call for new financial tools to build more resilient Blue Economies <span class="citation" data-cites="Sumaila2021 Watson2023">(<a href="#/references" role="doc-biblioref" onclick="">Sumaila <em>et al.</em> 2021</a>; <a href="#/references" role="doc-biblioref" onclick="">Watson <em>et al.</em> 2023</a>)</span></p></li>
+</ul>
+<div class="fragment">
+<div class="body-text-l">
+<div class="center-text">
+<p><strong>Index Insurance is a promising policy tool to fill this need</strong></p>
+</div>
+</div>
+</div>
+</section>
+<section id="ibi-1" class="slide level2" data-menu-title="Index Based Insurance">
+<h2></h2>
+<p><span class="slide-title">What is Index Insurance?</span></p>
+<hr>
+
+<img data-src="img/windex-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1983"></section>
+<section id="ibi-2" class="slide level2" data-menu-title="Index Based Insurance">
+<h2></h2>
+<p><span class="slide-title">What is Index Insurance?</span></p>
+<hr>
+
+<img data-src="img/windex-2.png" class="quarto-figure quarto-figure-center r-stretch" width="1986"></section>
+<section id="ibi-3" class="slide level2" data-menu-title="Index Based Insurance">
+<h2></h2>
+<p><span class="slide-title">What is Index Insurance?</span></p>
+<hr>
+
+<img data-src="img/windex.png" class="quarto-figure quarto-figure-center r-stretch" width="888"></section>
+<section id="ibi-why" class="slide level2" data-menu-title="Index Based Insurance">
+<h2></h2>
+<p><span class="slide-title">Why Index Insurance?</span></p>
+<hr>
+<ul>
+<li><p><strong>Avoids quantifying individual loss</strong></p>
+<ul>
+<li>Very difficult to indemnify whether a fisher lost income due to weather or their own luck</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><p><strong>Fast payouts and cheap administration</strong></p>
+<ul>
+<li>Money in policyholders accounts in as little as 3 days</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><p><strong>Index Insurance immune to “chasing the trigger” moral hazard</strong></p>
+<ul>
+<li><p>Fishers choosing to fish less will not lead to excessive payouts for the insurance company</p></li>
+<li><p>Fishers cannot control sea surface temperature</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="why-not" class="slide level2" data-menu-title="Why not">
+<h2></h2>
+<p><span class="slide-title">Why is there no index insurance market in fisheries?</span></p>
+<hr>
+<div style="font-size: 1.5em;">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Basis Risk Definition:</strong></p>
+</div>
+<div class="callout-content">
+<p>Policyholders not receiving insurance payouts when they suffer a loss</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Basis risk lowers demand for products <span class="citation" data-cites="Clarke2016">(<a href="#/references" role="doc-biblioref" onclick="">Clarke 2016</a>)</span></p>
+<ul>
+<li>Greatest impediment to uptake in agriculture <span class="citation" data-cites="binswanger2012 Jensen2018">(<a href="#/references" role="doc-biblioref" onclick="">Binswanger-Mkhize 2012</a>; <a href="#/references" role="doc-biblioref" onclick=""><strong>Jensen2018?</strong></a>)</span></li>
+</ul></li>
+<li><p>Indices that are tightly correlated with fish catch are needed</p></li>
+<li><p>Environmental variables influence catch, but really difficult to measure</p>
+<ul>
+<li>Non-linear, unobservables, management plays a role</li>
+</ul></li>
+</ul>
+</section>
+<section id="ml" class="slide level2" data-menu-title="Machine Learning">
+<h2></h2>
+<p><span class="slide-title">Machine learning may be able to tackle the challenges of fishery productivity</span></p>
+<div class="columns">
+<div class="column">
+<div class="center-text">
+<p><strong>ML in Ag IBI</strong></p>
+</div>
+</div><div class="column">
+<div class="center-text">
+<p><strong>ML in Fisheries</strong></p>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/ml-salmon.png" width="310"></p>
+<figcaption>From <span class="citation" data-cites="Ovando2022">(<a href="#/references" role="doc-biblioref" onclick="">Ovando <em>et al.</em> 2022</a>)</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="squid" class="slide level2" data-menu-title="Squid Fishery" data-background-image="https://wildlife.ca.gov/Portals/0/Images/Science_institute/Market_Squid_4.jpg">
+<h2></h2>
+<div class="absolute" style="font-size:.75em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .75); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;top: 8%; left: 50%; ">
+<p><span class="slide-title">California Market Squid Case Study</span></p>
+<div class="body-text-m">
+<ul>
+<li><p>“Corn-like” Biological attributes</p>
+<ul>
+<li><p>Short life span (6-9 months)</p></li>
+<li><p>Clear environmental connections</p></li>
+</ul></li>
+<li><p>2nd most valuable fishery in California</p></li>
+<li><p>Excellent data</p></li>
+<li><p>Simple management structure</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="ml-qs" class="slide level2" data-menu-title="ML Research Questions">
+<h2></h2>
+<p><span class="slide-title">Research Questions</span></p>
+<hr>
+<p><span class="body-text-l"><strong>How can we design indices to accurately indemnify fishery losses?</strong></span></p>
+<p><br></p>
+<p><span class="body-text-l"><strong>What is a fisher’s marginal willingness to pay for insurance?</strong></span></p>
+<p><br></p>
+<p><span class="body-text-l"><strong>Can insurance be offered in a private market?</strong></span></p>
+<p><br></p>
+<p><span class="body-text-l"><strong>What environmental variables influence the insurance models the most?</strong></span></p>
+</section>
+<section id="pre-res" class="slide level2" data-menu-title="Results Teaser">
+<h2></h2>
+<p><span class="slide-title">Results</span></p>
+<hr>
+<p><span class="body-text-m"><strong>Result 1:</strong> Single index models do not sufficiently predict loss. Machine learning models drasticially reduce basis risk</span></p>
+<p><br></p>
+<p><span class="body-text-m"><strong>Result 2:</strong> Fishers would be willing to pay for all machine learning models</span></p>
+<p><br></p>
+<p><span class="body-text-m"><strong>Result 3:</strong> A private market could operate as fishers would be willing to pay rates that allow insurnace companies to remain profitable.</span></p>
+<p><br></p>
+<p><span class="body-text-m"><strong>Result 4:</strong> Environmental variables that are expected to influence squid abundance are the primary contributors to multivariate machine learing models</span></p>
+<p>##{#contributions data-menu-title=“Contributions”}</p>
+<p><span class="slide-title">Contributions</span></p>
+<hr>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Climate Adaptation</strong></p>
+</div>
+<ul>
+<li><p>First evaluation of policy relevant tool</p></li>
+<li><p>Transition to resilient Blue Economy</p></li>
+<li><p>Inform management on new ways to handle climate shocks</p></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Index Based Insurance literature</strong></p>
+</div>
+<ul>
+<li><p>New machine learning methods in data limited space</p></li>
+<li><p>Uncover a unique form of data leakage in insurance pricing</p></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Fisheries Modeling</strong></p>
+</div>
+<ul>
+<li><p>Demonstrate value of non-linear machine learning</p></li>
+<li><p>Update information on climate predictions</p></li>
+</ul>
+</div></div>
+</section>
+<section id="outline" class="slide level2" data-menu-title="Outline">
+<h2></h2>
+<p><span class="slide-title">Outline</span></p>
+<hr>
+<p><strong>1.</strong> Define insurance contracts</p>
+<p><br></p>
+<p><strong>2.</strong> Models</p>
+<p><br></p>
+<p><strong>3.</strong> Data</p>
+<p><br></p>
+<p><strong>4.</strong> Results and demonstration of payout schedules</p>
+<p><br></p>
+<p><strong>5.</strong> Variable Importance</p>
+<p><br></p>
+<p><strong>6.</strong> Discussion</p>
+</section>
+<section id="econ" class="slide level2" data-menu-title="Economic Models" data-background-color="#047C90">
+<h2></h2>
+<div class="page-center">
+<div class="custom-subtitle">
+Index Insurance contracts
+</div>
+</div>
+</section>
+<section id="br-math" class="slide level2" data-menu-title="Basis Risk">
+<h2></h2>
+<p><span class="slide-title">What is Basis Risk?</span></p>
+<hr>
+<ul>
+<li>Fisher catch is a function of weather and other unobserved factors</li>
+</ul>
+<p><span id="eq-prod"><span class="math display">\[
+y=f(B(\tilde{w}))+ \epsilon
+\qquad(1)\]</span></span></p>
+<div class="columns">
+<div class="column">
+<div class="body-text-s">
+<p><span class="math inline">\(y\)</span>: harvest</p>
+<p><span class="math inline">\(\tilde{w}\)</span>: weather index</p>
+<p><span class="math inline">\(B(\cdot)\)</span>: function mapping weather to fishery productivity</p>
+</div>
+</div><div class="column">
+<div class="body-text-s">
+<p><span class="math inline">\(\epsilon\)</span>: random unobserved factors</p>
+<p><span class="math inline">\(f(\cdot)\)</span>: function mapping productivity to harvest</p>
+</div>
+</div></div>
+<div class="fragment">
+<div class="center-text">
+<p><strong>To create an index, we need a model to estimate</strong> <span class="math inline">\(f(B(\tilde{w}))\)</span></p>
+</div>
+</div>
+</section>
+<section id="br-var" class="slide level2" data-menu-title="Basis Risk">
+<h2></h2>
+<p><span class="slide-title">Basis Risk is the combined model error and unexplained variance</span></p>
+<hr>
+<p><span id="eq-g"><span class="math display">\[
+y=g(\tilde{w})+\eta+\epsilon
+\qquad(2)\]</span></span></p>
+<div class="columns">
+<div class="column">
+<div class="body-text-s">
+<ul>
+<li><span class="math inline">\(g(\tilde{w})\)</span>: Model</li>
+</ul>
+</div>
+</div><div class="column">
+<div class="body-text-s">
+<ul>
+<li><span class="math inline">\(\eta\)</span>: Random model error</li>
+</ul>
+</div>
+</div></div>
+<p><br></p>
+<ul>
+<li><p>Goal is to minimize <span class="math inline">\(\eta + \epsilon\)</span></p></li>
+<li><p>More weather variables may reduce <span class="math inline">\(\epsilon\)</span></p></li>
+<li><p>Better models may reduce <span class="math inline">\(\eta\)</span></p></li>
+</ul>
+</section>
+<section id="contract" class="slide level2" data-menu-title="Contract">
+<h2></h2>
+<p><span class="slide-title">Use our estimator as an index compared to a critical value</span></p>
+<hr>
+<ul>
+<li>Weather signal <span class="math inline">\(w\)</span> observed</li>
+</ul>
+<p><span id="eq-pay"><span class="math display">\[
+I(w)=\max(c\mathbb{E}[y]-\hat{y}(w),0)
+\qquad(3)\]</span></span></p>
+<div class="columns">
+<div class="column">
+<div class="body-text-s">
+<p><span class="math inline">\(I(w)\)</span>: insurance payout</p>
+<p><span class="math inline">\(c\)</span>: coverage level</p>
+</div>
+</div><div class="column">
+<div class="body-text-s">
+<p><span class="math inline">\(\mathbb{E}[y]\)</span>: Long run average catch</p>
+<p><span class="math inline">\(\hat{y}(w)\)</span>: Model prediction</p>
+</div>
+</div></div>
+<div class="fragment">
+<ul>
+<li>Insurance company charges a premium, <span class="math inline">\(\rho\)</span> fishers have to pay</li>
+</ul>
+<p><span id="eq-prem"><span class="math display">\[
+\rho=\mathbb{E}[I(w)]m
+\qquad(4)\]</span></span></p>
+<div class="columns">
+<div class="column">
+<div class="body-text-s">
+<p><span class="math inline">\(\mathbb{E}[I(w)]\)</span>: Average payout</p>
+</div>
+</div><div class="column">
+<div class="body-text-s">
+<p><span class="math inline">\(m\)</span>: premium loading factor (how much does an insurer charge to make a profit)</p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="ut" class="slide level2" data-menu-title="Utility">
+<h2></h2>
+<p><span class="slide-title">Measure utility to see if fishers are better off with insurance</span></p>
+<hr>
+<div style="font-size: 1.5em;">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Utility Definition:</strong></p>
+</div>
+<div class="callout-content">
+<p>Measure of how desirable something is. Includes our perception and tolerance for risk.</p>
+<p>People prefer a sure thing over a lottery</p>
+</div>
+</div>
+</div>
+</div>
+<div class="center-text">
+<p><strong>Compare the improvement as a percent increase in utility</strong></p>
+</div>
+<p><span class="math display">\[
+u_{rr}=\frac{u_i-u_{ni}}{u_{ni}}
+\]</span></p>
+<div class="fragment">
+<div class="center-text">
+<p><strong>Calculate how much money insurance earns with a loss ratio</strong></p>
+</div>
+<p><span class="math display">\[
+lr=\frac{\sum I(w)}{\sum \rho}
+\]</span></p>
+</div>
+</section>
+<section id="mrkt" class="slide level2" data-menu-title="Market">
+<h2></h2>
+<p><span class="slide-title">Find the “market” price: <span class="math inline">\(m^*\)</span></span></p>
+<hr>
+<p>Fishers will be indifferent between insurance and no insurance when <span class="math inline">\(u_{rr}=0\)</span></p>
+<p>The <span class="math inline">\(m^*\)</span> that makes <span class="math inline">\(u_{rr}=0\)</span> is the highest an insurance company could charge and still have fishers buy the contract</p>
+<div class="columns">
+<div class="column">
+<p><span class="math display">\[
+u_{ni}(y)=u_{i}(y,I(\omega),\rho)]
+\]</span></p>
+</div><div class="column">
+<p>Reminder: <span class="math inline">\(\rho=\mathbb{E}[I(w)]m\)</span></p>
+</div></div>
+<ul>
+<li><p>The selected <span class="math inline">\(m^*\)</span> is the marginal willingness to pay for insurance</p></li>
+<li><p>High <span class="math inline">\(m^*\)</span> means fishers really want insurance</p></li>
+<li><p><span class="math inline">\(m^*&lt;1\)</span>, insurance has to be subsidized</p></li>
+<li><p><span class="math inline">\(lr&lt;1\)</span>, then insurance is profitable for insurance company at <span class="math inline">\(m^*\)</span></p></li>
+</ul>
+</section>
+<section id="br" class="slide level2" data-menu-title="Basis Risk">
+<h2></h2>
+<p><span class="slide-title">Visualization of Basis Risk</span></p>
+<hr>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="gaines-lab-2025_files/figure-revealjs/unnamed-chunk-6-1.png" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="gaines-lab-2025_files/figure-revealjs/unnamed-chunk-7-1.png" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="gaines-lab-2025_files/figure-revealjs/unnamed-chunk-8-1.png" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="data-pg" class="slide level2" data-menu-title="Data" data-background-color="#047C90">
+<h2></h2>
+<div class="page-center">
+<div class="custom-subtitle">
+Data
+</div>
+</div>
+</section>
+<section id="data" class="slide level2" data-menu-title="Data">
+<h2></h2>
+<p><span class="slide-title">Environmental Data Sources</span></p>
+<hr>
+
+<img data-src="img/corr.png" width="2100" class="r-stretch quarto-figure-center" id="fig-cor"><p class="caption">
+Figure&nbsp;1: Correlation between detrended squid harvest in metric tons and all 12 environmental variables that may serve as a index. Correlations are presented in the box with linear best fit lines added.
+</p></section>
+<section id="sst" class="slide level2" data-menu-title="SST">
+<h2></h2>
+<p><span class="slide-title">Example of spatial coverage</span></p>
+<hr>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="img/beuti.png" width="409"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="img/hci.jpg" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="spatial" class="slide level2" data-menu-title="Spatial Data">
+<h2></h2>
+<p><span class="slide-title">Match fishing blocks with spatial data</span></p>
+<hr>
+
+<img data-src="img/cw_catch.png" width="1050" class="r-stretch"></section>
+<section id="algo" class="slide level2" data-menu-title="Models" data-background-color="#047C90">
+<h2></h2>
+<div class="page-center">
+<div class="custom-subtitle">
+Prediction Models
+</div>
+</div>
+</section>
+<section id="mod-out" class="slide level2" data-menu-title="Model Outline">
+<h2></h2>
+<p><span class="slide-title">Model Outline</span></p>
+<hr>
+<p><strong>Step 1: Train Model on Data</strong></p>
+<pre><code>- Perserve time order and split into training (&lt;2005), validation (2005-2013), and test (&gt;2013) sets. 
+
+- Tune hyperparameters on validation set</code></pre>
+<p><strong>Step 2: Predict payout schedule</strong></p>
+<pre><code>- Use model to predict payouts for each year (&lt;2013)</code></pre>
+<p><strong>Step 3: Find the actuarially fair premium for each of the testing set</strong></p>
+<pre><code>- Model updates and retrains each year in the testing set with realization of weather to find new insurance premiums 
+
+- Mimics real world insurance</code></pre>
+<p><strong>Step 4: Calculate utility in testing sample</strong></p>
+<p><strong>Step 5: Find the loading factor that leaves fishers just as well of with insurance</strong></p>
+</section>
+<section id="lm" class="slide level2" data-menu-title="Linear Models">
+<h2></h2>
+<p><span class="slide-title">Linear Models are the gold standard in agriculture insurance</span></p>
+<hr>
+<ul>
+<li><span class="math inline">\(\beta_1\)</span> captures the yield/weather dependence</li>
+</ul>
+<p><span class="math display">\[
+\hat\pi_t=\beta_0+\beta_1\omega_t+\epsilon_t
+\]</span></p>
+<ul>
+<li>Use the tuning set to select the best <span class="math inline">\(\omega\)</span> ,i.e.&nbsp;CUTI, BEUTI, SST, ENSO, or PDO</li>
+</ul>
+</section>
+<section id="rf" class="slide level2" data-menu-title="Random Forests">
+<h2></h2>
+<p><span class="slide-title">Random Forests are the most popular in agriculture</span></p>
+<hr>
+<div class="columns">
+<div class="column">
+<p><img data-src="https://media.geeksforgeeks.org/wp-content/uploads/20240701170624/Random-Forest-Algorithm.webp"></p>
+</div><div class="column">
+<ul>
+<li><p>Captures non-linear interactions</p></li>
+<li><p>Robust to overfitting</p></li>
+<li><p>Very black box</p></li>
+</ul>
+</div></div>
+</section>
+<section id="section-1" class="slide level2" data-background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg">
+<h2></h2>
+<div class="absolute" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;top: 8%; left: 10%; ">
+<p><strong>Questions?</strong></p>
+</div>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-binswanger2012" class="csl-entry" role="listitem">
+Binswanger-Mkhize, H.P. (2012) <a href="https://doi.org/10.1080/00220388.2011.625411">Is there too much hype about index-based agricultural insurance?</a> <em>Journal of Development Studies</em> <strong>48</strong>, 187–200.
+</div>
+<div id="ref-Brick2012" class="csl-entry" role="listitem">
+Brick, K., Visser, M. and Burns, J. (2012) <a href="https://doi.org/10.1093/ajae/aar120">Risk aversion: Experimental evidence from south african fishing communities</a>. <em>American Journal of Agricultural Economics</em> <strong>94</strong>, 133–152.
+</div>
+<div id="ref-Clarke2016" class="csl-entry" role="listitem">
+Clarke, D.J. (2016) <a href="https://doi.org/10.1257/mic.20140103">A theory of rational demand for index insurance</a>. <em>Journal: Microeconomics</em> <strong>8</strong>, 283–306.
+</div>
+<div id="ref-Eggert2004" class="csl-entry" role="listitem">
+Eggert, H. and Tveteras, R. (2004) Stochastic production and heterogeneous risk preferences: Commercial fishers’ gear choices. <em>American Journal of Agricultural Economics</em> <strong>86</strong>, 199–212.
+</div>
+<div id="ref-Holland2008" class="csl-entry" role="listitem">
+Holland, D.S. (2008) <a href="https://doi.org/10.1086/mre.23.3.42629621">Are fishermen rational? A fishing expedition</a>. <em>Marine Resource Economics</em> <strong>23</strong>, 325–344.
+</div>
+<div id="ref-Mumford2009" class="csl-entry" role="listitem">
+Mumford, J.D., Leach, A.W., Levontin, P. and Kell, L.T. (2009) <a href="https://doi.org/10.1093/icesjms/fsp100">Insurance mechanisms to mediate economic risks in marine fisheries</a>. <em>ICES Journal of Marine Science</em> <strong>66</strong>, 950–959.
+</div>
+<div id="ref-Ovando2022" class="csl-entry" role="listitem">
+Ovando, D., Cunningham, C., Kuriyama, P., Boatright, C. and Hilborn, R. (2022) <a href="https://doi.org/10.1139/cjfas-2021-0287">Improving forecasts of sockeye salmon (oncorhynchus nerka) with parametric and nonparametric models</a>. <em>Canadian Journal of Fisheries and Aquatic Sciences</em> <strong>79</strong>, 1198–1210.
+</div>
+<div id="ref-Sethi2010" class="csl-entry" role="listitem">
+Sethi, S.A. (2010) <a href="https://doi.org/10.1111/j.1467-2979.2010.00363.x">Risk management for fisheries</a>. <em>Fish and Fisheries</em> <strong>11</strong>, 341–365.
+</div>
+<div id="ref-Sumaila2021" class="csl-entry" role="listitem">
+Sumaila, U.R., Walsh, M., Hoareau, K., et al. (2021) <a href="https://doi.org/10.1038/s41467-021-23168-y">Financing a sustainable ocean economy</a>. <em>Nature Communications</em> <strong>12</strong>.
+</div>
+<div id="ref-Watson2023" class="csl-entry" role="listitem">
+Watson, J.R., Spillman, C.M., Little, L.R., Hobday, A.J. and Levin, P.S. (2023) <a href="https://doi.org/10.1093/icesjms/fsad175">Enhancing the resilience of blue foods to climate shocks using insurance</a>. <em>ICES Journal of Marine Science</em> <strong>80</strong>, 2457–2469.
+</div>
+</div>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="img/bren-logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="gaines-lab-2025_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="gaines-lab-2025_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

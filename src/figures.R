@@ -92,7 +92,12 @@ p1<-ggplot()+
         legend.text = element_text(size=5),
         legend.key.height = unit(dev.size()[1] / 40, "inches"))
 
-sst_p+sp_catch_p+p1+plot_annotation(tag_levels='A')
+((sst_p / sp_catch_p) | p1) +
+  plot_layout(widths = c(1.2, 0.8)) +
+  plot_annotation(tag_levels = 'A') &
+  theme(
+    plot.margin = margin(0, 0, 0, -10)  # reduce right margin of left column
+  )
 
 ggsave(here::here("data","fig","cw_catch.png"),height=5,width=7,dpi=300)
 
@@ -121,7 +126,7 @@ p2<-models |>
   scale_y_continuous(expand=c(0,0))+
   scale_fill_manual(values=c("#003660","#047C90"))
 
-p1/p2+plot_annotation(tag_levels = 'A')+plot_layout(axes='collect')
+p1/p2+plot_annotation(tag_levels = 'A')
 
 ggsave(here::here("data","fig","rmse.png"),height=7,width=5.5,dpi=300)
 #### Actuarially fair graphs ####
@@ -206,6 +211,28 @@ ggsave(here::here("data","fig","market_prem.png"),height=7,width=5.5,dpi=300)
 
 
 #### Insurance payout ####
+load(here::here("data","fisheries","cali_catch_detrend_2.rda"))
+
+#load weather data
+load(here::here("data","environmental","block_beuti.rda"))
+load(here::here("data","environmental","block_cuti.rda"))
+load(here::here("data","environmental","block_hci.rda"))
+load(here::here("data","environmental","block_sst.rda"))
+load(here::here("data","environmental","enso_pdo.rda"))
+load(here::here('data','fisheries','squid_bio_all.Rdata'))
+
+source(here::here("src","fcn","cw_squid.R"))
+
+port_cw<-cali_catch %>% 
+  filter(species_code=='MSQD') %>% 
+  mutate(mt_per_detrend=case_when(mt_per_detrend==Inf~0,
+                                  .default=as.numeric(mt_per_detrend)),
+         lb_per_fisher=case_when(lb_per_fisher==Inf~0,
+                                 .default=as.numeric(lb_per_fisher))) %>% 
+  filter(year>=1990) |> 
+  nest() %>% 
+  mutate(cw_data=pmap(list(spp=species_code,data=data),cw_squid))
+
 
 df<-port_cw$cw_data[[1]] |> 
   filter(fish_var=='mt_per_detrend') |> 
@@ -327,36 +354,37 @@ ggsave(here::here("data","fig","prem_out.png"),height=6,width=5.5,dpi=300)
 load(here::here("data","output","vip_models.rda"))
 
 my_palette <- c(
-  "#DF8073", # muted coral
-  "#FEBC11", # golden yellow
-  "#003660", # navy blue
-  "#09847A", # teal
-  "#6D7D33", # olive green
-  "#EF5645", # bright red-orange
+  "avg_sst"="#DF8073", # muted coral
+  "sp_beuti" = "#FEBC11", # golden yellow
+  "freq"= "#003660", # navy blue
+  "enso"= "#09847A", # teal
+  "krill" ="#6D7D33", # olive green
+  "squid" = "#EF5645", # bright red-orange
   
-  "#7B3C8C", # purple
-  "#00A9E0", # sky blue
-  "#FF7F0E", # orange
-  "#2CA02C", # green
-  "#9467BD", # lavender
-  "#8C564B"  # brown
+  "sti"= "#7B3C8C", # purple
+  "relax"= "#00A9E0", # sky blue
+  "sp_cuti" = "#FF7F0E", # orange
+  "chci" = "#2CA02C", # green
+  "pdo"= "#9467BD", # lavender
+  "oni" ="#8C564B"  # brown
 )
 
 names(my_palette)<-unique(out$Variable)
 
 shapes_12 <- c(
-  0,  # square
-  1,  # circle
-  2,  # triangle point-up
-  3,  # plus
-  4,  # cross (x)
-  5,  # diamond
-  6,  # triangle point-down
-  7,  # square cross
-  8,  # star
-  9,  # diamond plus
-  10, # circle plus
-  11  # up/down triangle
+  "avg_sst"= 0,
+  "sp_beuti" = 1,
+  "freq"= 2,
+  "enso"= 3,
+  "krill" = 4,
+  "squid" = 5,
+  
+  "sti"= 6,
+  "relax"= 7,
+  "sp_cuti" = 8,
+  "chci" = 9,
+  "pdo"= 10,
+  "oni" =11
 )
 
 names(shapes_12)<-unique(out$Variable)
@@ -367,7 +395,15 @@ vip_p<-out |>
   ggplot()+
   geom_line(aes(x=year,y=value,color=Variable))+
   geom_point(aes(x=year,y=value,color=Variable,shape=Variable))+
-  facet_wrap(~model,scales='free')+
+  facet_wrap(~model,scales='free',
+             labeller=labeller(model=c(
+               'grrf'='Regularized RF',
+               'rf'='Random Forest',
+               'svm'= 'SVM'
+             )))+
+  labs(title = "",
+       x = "",
+       y = "Variable Importance")+
   scale_color_manual(values = my_palette)+
   scale_shape_manual(values = shapes_12)+
   theme_classic()+
@@ -375,6 +411,7 @@ vip_p<-out |>
 
 ggsave(here::here("data","fig","vip_models.png"),vip_p,height=5,width=6,dpi=300)
 
+#,label=c("SST","BEUTI","Frequency","ENSO","Krill","Squid","STI","Relax","CUTI","CHCI","PDO","ONI")
 
 #### Lasso VIP ####
 
@@ -405,3 +442,68 @@ ggplot(data_for_plot, aes(x = year, y = value,color=Variable)) +
   theme_classic()
 
 ggsave(here::here("data","fig","vip_lasso.png"),height=5,width=6,dpi=300)
+
+#### Correlation graphs ####
+my_palette <- c(
+  "Upwelling"= "#003660", # navy blue
+  "Regional"= "#09847A", # teal
+  "Temperature" ="#6D7D33", # olive green
+  "Biological"= "#7B3C8C" # purple
+
+)
+
+
+obj<-df |> 
+  dplyr::select(-c(year,fish_var)) |> 
+  pivot_longer(cols=-fish_value)
+
+obj$label<-rep(c("Temperature","Upwelling","Upwelling","Upwelling","Upwelling","Upwelling","Temperature","Regional","Regional","Regional","Biological","Biological"),length.out=nrow(obj)) 
+  
+label_order <- obj %>%
+  group_by(name) %>%
+  summarise(main_label = first(sort(unique(label)))) %>%
+  arrange(main_label) %>%
+  pull(name)
+
+obj$name <- factor(obj$name, levels = label_order)
+
+txt_label<-df |> 
+  dplyr::select(-c(year,fish_var)) |> 
+  pivot_longer(cols=-fish_value) |> 
+  group_by(name) |> 
+  summarize(corr=cor(value,fish_value)) |> 
+  mutate(label = paste0("r = ", round(corr, 2)))
+
+range_df <- obj %>%
+  group_by(name) %>%
+  summarise(x = max(value), y = max(fish_value))
+
+cor_labels<-left_join(txt_label,range_df,by='name')
+
+ggplot(data=obj,aes(x=value,y=fish_value,color=label))+
+  geom_point()+
+  geom_smooth(method='lm',se=FALSE)+
+  facet_wrap(~name,scales='free',
+             labeller=labeller(name=c(
+               'avg_sst'='SST',
+               'chci'='Habitat Compression',
+               'enso'= 'ENSO (Mei v2)',
+               'freq'='Frequency',
+               'krill'='Krill Abundance',
+               'oni'='ONI',
+               'pdo'='PDO',
+               'relax'='Relax',
+               'sp_beuti'='Spring BEUTI',
+               'sp_cuti'='Spring CUTI',
+               'sti'='Spring Transition',
+               'squid'='Squid')))+
+  labs(x='',
+       y='Harvest (mt)')+
+  theme_minimal()+
+  scale_color_manual(values=my_palette,name='')+
+  geom_label(data=cor_labels,aes(x=x,y=y,label=label),inherit.aes=FALSE,hjust=1,vjust=1)
+  
+
+ggsave(here::here("data","fig","corr.png"),height=5,width=8,dpi=600)
+
+
