@@ -48,7 +48,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="gaines-lab-2025_files/libs/revealjs/dist/theme/quarto-e76e7dff51129d4d660dfa99354552c5.css">
+  <link rel="stylesheet" href="gaines-lab-2025_files/libs/revealjs/dist/theme/quarto-d605e7b4d40a130c7c4cb8a035043a3d.css">
   <link href="gaines-lab-2025_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="gaines-lab-2025_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="gaines-lab-2025_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -142,6 +142,11 @@
       margin-right: 0; 
     }
   </style>
+  <script src="gaines-lab-2025_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+  <link href="gaines-lab-2025_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -155,7 +160,7 @@
 <hr class="hr-teal">
 <p><span class="body-text-l center-text blue-text">Nathaniel Grimes</span></p>
 <p><span class="center-text body-text-m blue-text">Bren School of Environmental Science &amp; Management</span></p>
-<p><span class="body-text-s blue-text"><strong>Last updated:</strong> Nov 06, 2025</span></p>
+<p><span class="body-text-s blue-text"><strong>Last updated:</strong> Nov 12, 2025</span></p>
 </section>
 <section id="section" class="slide level2" data-background-image="https://i.insider.com/5644098bdd0895b0578b465f?width=1300&amp;format=jpeg&amp;auto=webp">
 <h2></h2>
@@ -245,20 +250,35 @@
 <ul>
 <li>Greatest impediment to uptake in agriculture <span class="citation" data-cites="binswanger2012 Jensen2018">(<a href="#/references" role="doc-biblioref" onclick="">Binswanger-Mkhize 2012</a>; <a href="#/references" role="doc-biblioref" onclick=""><strong>Jensen2018?</strong></a>)</span></li>
 </ul></li>
-<li><p>Indices that are tightly correlated with fish catch are needed</p></li>
-<li><p>Environmental variables influence catch, but really difficult to measure</p>
+</ul>
+<div>
 <ul>
-<li>Non-linear, unobservables, management plays a role</li>
+<li class="fragment"><p>Indices that are tightly correlated with fish catch are needed</p></li>
+<li class="fragment"><p>Environmental variables influence catch, but really difficult to measure</p>
+<ul>
+<li class="fragment">Non-linear, unobservables, management plays a role</li>
 </ul></li>
 </ul>
+</div>
 </section>
 <section id="ml" class="slide level2" data-menu-title="Machine Learning">
 <h2></h2>
-<p><span class="slide-title">Machine learning may be able to tackle the challenges of fishery productivity</span></p>
+<p><span class="slide-title">New data and models could address limitations</span></p>
+<hr>
 <div class="columns">
 <div class="column">
 <div class="center-text">
 <p><strong>ML in Ag IBI</strong></p>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/ag-ml.png" style="width:100.0%"></p>
+<figcaption>From <span class="citation" data-cites="Cesarini2022">(<a href="#/references" role="doc-biblioref" onclick=""><strong>Cesarini2022?</strong></a>)</span></figcaption>
+</figure>
+</div>
+</div>
 </div>
 </div><div class="column">
 <div class="center-text">
@@ -268,17 +288,21 @@
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/ml-salmon.png" width="310"></p>
+<p><img data-src="img/ml-salmon.png" style="width:100.0%"></p>
 <figcaption>From <span class="citation" data-cites="Ovando2022">(<a href="#/references" role="doc-biblioref" onclick="">Ovando <em>et al.</em> 2022</a>)</span></figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
+<ul>
+<li>Available Fishery and Oceanographic data has exploded</li>
+</ul>
 </section>
 <section id="squid" class="slide level2" data-menu-title="Squid Fishery" data-background-image="https://wildlife.ca.gov/Portals/0/Images/Science_institute/Market_Squid_4.jpg">
 <h2></h2>
-<div class="absolute" style="font-size:.75em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .75); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;top: 8%; left: 50%; ">
+<div class="fragment">
+<div class="absolute" style="font-size:.75em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .90); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;top: 8%; left: 30%; ">
 <p><span class="slide-title">California Market Squid Case Study</span></p>
 <div class="body-text-m">
 <ul>
@@ -293,60 +317,27 @@
 </ul>
 </div>
 </div>
+</div>
 </section>
 <section id="ml-qs" class="slide level2" data-menu-title="ML Research Questions">
 <h2></h2>
 <p><span class="slide-title">Research Questions</span></p>
 <hr>
-<p><span class="body-text-l"><strong>How can we design indices to accurately indemnify fishery losses?</strong></span></p>
+<p><span class="body-text-l text-blue"><strong>Question 1:</strong> Would squid fishers have been better off with insurance contracts?</span></p>
 <p><br></p>
-<p><span class="body-text-l"><strong>What is a fisher’s marginal willingness to pay for insurance?</strong></span></p>
+<p><span class="body-text-l text-blue"><strong>Question 2:</strong> Can insurance be offered in a private market?</span></p>
 <p><br></p>
-<p><span class="body-text-l"><strong>Can insurance be offered in a private market?</strong></span></p>
-<p><br></p>
-<p><span class="body-text-l"><strong>What environmental variables influence the insurance models the most?</strong></span></p>
+<p><span class="body-text-l text-blue"><strong>Question 3:</strong> What environmental variables influence the insurance models the most?</span></p>
 </section>
 <section id="pre-res" class="slide level2" data-menu-title="Results Teaser">
 <h2></h2>
-<p><span class="slide-title">Results</span></p>
+<p><span class="slide-title">Results Preview</span></p>
 <hr>
-<p><span class="body-text-m"><strong>Result 1:</strong> Single index models do not sufficiently predict loss. Machine learning models drasticially reduce basis risk</span></p>
+<p><span class="body-text-m"><strong>Result 1:</strong> Single index models do not sufficiently predict loss. Machine learning models drasticially reduce basis risk and improve fisher livelihoods</span></p>
 <p><br></p>
-<p><span class="body-text-m"><strong>Result 2:</strong> Fishers would be willing to pay for all machine learning models</span></p>
+<p><span class="body-text-m"><strong>Result 2:</strong> A private market could operate as fishers would be willing to pay rates that allow insurnace companies to remain profitable.</span></p>
 <p><br></p>
-<p><span class="body-text-m"><strong>Result 3:</strong> A private market could operate as fishers would be willing to pay rates that allow insurnace companies to remain profitable.</span></p>
-<p><br></p>
-<p><span class="body-text-m"><strong>Result 4:</strong> Environmental variables that are expected to influence squid abundance are the primary contributors to multivariate machine learing models</span></p>
-<p>##{#contributions data-menu-title=“Contributions”}</p>
-<p><span class="slide-title">Contributions</span></p>
-<hr>
-<div class="columns">
-<div class="column" style="width:33%;">
-<div class="center-text">
-<p><strong>Climate Adaptation</strong></p>
-</div>
-<ul>
-<li><p>First evaluation of policy relevant tool</p></li>
-<li><p>Transition to resilient Blue Economy</p></li>
-<li><p>Inform management on new ways to handle climate shocks</p></li>
-</ul>
-</div><div class="column" style="width:33%;">
-<div class="center-text">
-<p><strong>Index Based Insurance literature</strong></p>
-</div>
-<ul>
-<li><p>New machine learning methods in data limited space</p></li>
-<li><p>Uncover a unique form of data leakage in insurance pricing</p></li>
-</ul>
-</div><div class="column" style="width:33%;">
-<div class="center-text">
-<p><strong>Fisheries Modeling</strong></p>
-</div>
-<ul>
-<li><p>Demonstrate value of non-linear machine learning</p></li>
-<li><p>Update information on climate predictions</p></li>
-</ul>
-</div></div>
+<p><span class="body-text-m"><strong>Result 3:</strong> Upwelling, prey abundance, and temperature are the primary contributors to multivariate machine learing models</span></p>
 </section>
 <section id="outline" class="slide level2" data-menu-title="Outline">
 <h2></h2>
@@ -354,9 +345,9 @@
 <hr>
 <p><strong>1.</strong> Define insurance contracts</p>
 <p><br></p>
-<p><strong>2.</strong> Models</p>
+<p><strong>2.</strong> Data</p>
 <p><br></p>
-<p><strong>3.</strong> Data</p>
+<p><strong>3.</strong> Models</p>
 <p><br></p>
 <p><strong>4.</strong> Results and demonstration of payout schedules</p>
 <p><br></p>
@@ -385,14 +376,14 @@ y=f(B(\tilde{w}))+ \epsilon
 <div class="columns">
 <div class="column">
 <div class="body-text-s">
-<p><span class="math inline">\(y\)</span>: harvest</p>
-<p><span class="math inline">\(\tilde{w}\)</span>: weather index</p>
-<p><span class="math inline">\(B(\cdot)\)</span>: function mapping weather to fishery productivity</p>
+<p><span class="math inline">\(y\)</span> harvest</p>
+<p><span class="math inline">\(\tilde{w}\)</span> weather index</p>
+<p><span class="math inline">\(B(\cdot)\)</span> function mapping weather to fishery productivity</p>
 </div>
 </div><div class="column">
 <div class="body-text-s">
-<p><span class="math inline">\(\epsilon\)</span>: random unobserved factors</p>
-<p><span class="math inline">\(f(\cdot)\)</span>: function mapping productivity to harvest</p>
+<p><span class="math inline">\(\epsilon\)</span> random unobserved factors</p>
+<p><span class="math inline">\(f(\cdot)\)</span> function mapping productivity to harvest</p>
 </div>
 </div></div>
 <div class="fragment">
@@ -411,23 +402,21 @@ y=g(\tilde{w})+\eta+\epsilon
 <div class="columns">
 <div class="column">
 <div class="body-text-s">
-<ul>
-<li><span class="math inline">\(g(\tilde{w})\)</span>: Model</li>
-</ul>
+<p><span class="math inline">\(g(\tilde{w})\)</span> Prediction Model</p>
 </div>
 </div><div class="column">
 <div class="body-text-s">
-<ul>
-<li><span class="math inline">\(\eta\)</span>: Random model error</li>
-</ul>
+<p><span class="math inline">\(\eta\)</span> Random model error</p>
 </div>
 </div></div>
 <p><br></p>
+<div>
 <ul>
-<li><p>Goal is to minimize <span class="math inline">\(\eta + \epsilon\)</span></p></li>
-<li><p>More weather variables may reduce <span class="math inline">\(\epsilon\)</span></p></li>
-<li><p>Better models may reduce <span class="math inline">\(\eta\)</span></p></li>
+<li class="fragment"><p>Goal is to minimize <span class="math inline">\(\eta + \epsilon\)</span></p></li>
+<li class="fragment"><p>More weather variables may reduce <span class="math inline">\(\epsilon\)</span></p></li>
+<li class="fragment"><p>Better models may reduce <span class="math inline">\(\eta\)</span></p></li>
 </ul>
+</div>
 </section>
 <section id="contract" class="slide level2" data-menu-title="Contract">
 <h2></h2>
@@ -437,23 +426,27 @@ y=g(\tilde{w})+\eta+\epsilon
 <li>Weather signal <span class="math inline">\(w\)</span> observed</li>
 </ul>
 <p><span id="eq-pay"><span class="math display">\[
-I(w)=\max(c\mathbb{E}[y]-\hat{y}(w),0)
+I(w)=\overbrace{\max(c\mathbb{E}[y]-\hat{y}(w),0)}^{\text{Payout if model predicts less than average catch}}
 \qquad(3)\]</span></span></p>
 <div class="columns">
 <div class="column">
 <div class="body-text-s">
-<p><span class="math inline">\(I(w)\)</span>: insurance payout</p>
-<p><span class="math inline">\(c\)</span>: coverage level</p>
+<p><span class="math inline">\(I(w)\)</span> Insurance payout</p>
+<p><span class="math inline">\(c\)</span> Coverage level</p>
 </div>
 </div><div class="column">
 <div class="body-text-s">
-<p><span class="math inline">\(\mathbb{E}[y]\)</span>: Long run average catch</p>
-<p><span class="math inline">\(\hat{y}(w)\)</span>: Model prediction</p>
+<p><span class="math inline">\(\mathbb{E}[y]\)</span> Long run average catch</p>
+<p><span class="math inline">\(\hat{y}(w)\)</span> Model prediction</p>
 </div>
 </div></div>
-<div class="fragment">
+</section>
+<section id="premium" class="slide level2" data-menu-title="Premium">
+<h2></h2>
+<p><span class="slide-title">Fishers have to pay a premium</span></p>
+<hr>
 <ul>
-<li>Insurance company charges a premium, <span class="math inline">\(\rho\)</span> fishers have to pay</li>
+<li>Insurance company charges a premium, <span class="math inline">\(\rho\)</span></li>
 </ul>
 <p><span id="eq-prem"><span class="math display">\[
 \rho=\mathbb{E}[I(w)]m
@@ -461,67 +454,19 @@ I(w)=\max(c\mathbb{E}[y]-\hat{y}(w),0)
 <div class="columns">
 <div class="column">
 <div class="body-text-s">
-<p><span class="math inline">\(\mathbb{E}[I(w)]\)</span>: Average payout</p>
+<p><span class="math inline">\(\mathbb{E}[I(w)]\)</span> Average payout</p>
 </div>
 </div><div class="column">
 <div class="body-text-s">
-<p><span class="math inline">\(m\)</span>: premium loading factor (how much does an insurer charge to make a profit)</p>
+<p><span class="math inline">\(m\)</span> premium loading factor (how much does an insurer charge to make a profit)</p>
 </div>
 </div></div>
-</div>
-</section>
-<section id="ut" class="slide level2" data-menu-title="Utility">
-<h2></h2>
-<p><span class="slide-title">Measure utility to see if fishers are better off with insurance</span></p>
-<hr>
-<div style="font-size: 1.5em;">
-<div class="callout callout-note no-icon callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Utility Definition:</strong></p>
-</div>
-<div class="callout-content">
-<p>Measure of how desirable something is. Includes our perception and tolerance for risk.</p>
-<p>People prefer a sure thing over a lottery</p>
-</div>
-</div>
-</div>
-</div>
-<div class="center-text">
-<p><strong>Compare the improvement as a percent increase in utility</strong></p>
-</div>
-<p><span class="math display">\[
-u_{rr}=\frac{u_i-u_{ni}}{u_{ni}}
-\]</span></p>
 <div class="fragment">
 <div class="center-text">
-<p><strong>Calculate how much money insurance earns with a loss ratio</strong></p>
+<p><strong>Example</strong></p>
 </div>
-<p><span class="math display">\[
-lr=\frac{\sum I(w)}{\sum \rho}
-\]</span></p>
+<p><em>We observe a SST of 15<span class="math inline">\(^{\circ}\)</span>C. Our model predicts a catch of 80 metric tons, the long run average catch is 100 metric tons. Insurance will pay the equivalent of 20 metric tons. Fishers have to pay a small premium equivlalent to 5 metric tons each year</em></p>
 </div>
-</section>
-<section id="mrkt" class="slide level2" data-menu-title="Market">
-<h2></h2>
-<p><span class="slide-title">Find the “market” price: <span class="math inline">\(m^*\)</span></span></p>
-<hr>
-<p>Fishers will be indifferent between insurance and no insurance when <span class="math inline">\(u_{rr}=0\)</span></p>
-<p>The <span class="math inline">\(m^*\)</span> that makes <span class="math inline">\(u_{rr}=0\)</span> is the highest an insurance company could charge and still have fishers buy the contract</p>
-<div class="columns">
-<div class="column">
-<p><span class="math display">\[
-u_{ni}(y)=u_{i}(y,I(\omega),\rho)]
-\]</span></p>
-</div><div class="column">
-<p>Reminder: <span class="math inline">\(\rho=\mathbb{E}[I(w)]m\)</span></p>
-</div></div>
-<ul>
-<li><p>The selected <span class="math inline">\(m^*\)</span> is the marginal willingness to pay for insurance</p></li>
-<li><p>High <span class="math inline">\(m^*\)</span> means fishers really want insurance</p></li>
-<li><p><span class="math inline">\(m^*&lt;1\)</span>, insurance has to be subsidized</p></li>
-<li><p><span class="math inline">\(lr&lt;1\)</span>, then insurance is profitable for insurance company at <span class="math inline">\(m^*\)</span></p></li>
-</ul>
 </section>
 <section id="br" class="slide level2" data-menu-title="Basis Risk">
 <h2></h2>
@@ -529,16 +474,6 @@ u_{ni}(y)=u_{i}(y,I(\omega),\rho)]
 <hr>
 <div class="columns">
 <div class="column" style="width:33%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="gaines-lab-2025_files/figure-revealjs/unnamed-chunk-6-1.png" width="384"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:33%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -558,7 +493,62 @@ u_{ni}(y)=u_{i}(y,I(\omega),\rho)]
 </div>
 </div>
 </div>
+</div><div class="column" style="width:33%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="gaines-lab-2025_files/figure-revealjs/unnamed-chunk-9-1.png" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
 </div></div>
+</section>
+<section id="ut" class="slide level2" data-menu-title="Utility">
+<h2></h2>
+<p><span class="slide-title">Measure utility to see if fishers are better off with insurance</span></p>
+<hr>
+<div style="font-size: 1.5em;">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Utility Definition:</strong></p>
+</div>
+<div class="callout-content">
+<p>Measure of how desirable something is. Includes our perception and tolerance for risk.</p>
+<p>People prefer a sure thing over a lottery</p>
+</div>
+</div>
+</div>
+</div>
+<div class="center-text">
+<p><strong>Demand:</strong> Compare the improvement as a percent increase in utility</p>
+</div>
+<p><span class="math display">\[
+u_{rr}=\frac{u_i-u_{ni}}{u_{ni}}
+\]</span></p>
+</section>
+<section id="mrkt" class="slide level2" data-menu-title="Market">
+<h2></h2>
+<p><span class="slide-title">Find the “market” price: <span class="math inline">\(m^*\)</span></span></p>
+<hr>
+<p>Fishers will be indifferent between insurance and no insurance when <span class="math inline">\(u_{rr}=0\)</span></p>
+<p>The <span class="math inline">\(m^*\)</span> that makes <span class="math inline">\(u_{rr}=0\)</span> is the highest an insurance company could charge and still have fishers buy the contract</p>
+<div class="columns">
+<div class="column">
+<p><span class="math display">\[
+u_{ni}(y)=u_{i}(y,I(\omega),\rho)
+\]</span></p>
+</div><div class="column">
+<p>Reminder: <span class="math inline">\(\rho=\mathbb{E}[I(w)]m\)</span></p>
+</div></div>
+<ul>
+<li><p>The selected <span class="math inline">\(m^*\)</span> is the marginal willingness to pay for insurance</p></li>
+<li><p>High <span class="math inline">\(m^*\)</span> means fishers really want insurance</p></li>
+<li><p><span class="math inline">\(m^*&lt;1\)</span>, insurance has to be subsidized</p></li>
+<li><p>Loss Ratio: <span class="math inline">\(\frac{\sum I(w)}{\sum \rho}&lt;1\)</span>, then insurance is profitable for insurance company at <span class="math inline">\(m^*\)</span></p></li>
+</ul>
 </section>
 <section id="data-pg" class="slide level2" data-menu-title="Data" data-background-color="#047C90">
 <h2></h2>
@@ -573,9 +563,481 @@ Data
 <p><span class="slide-title">Environmental Data Sources</span></p>
 <hr>
 
-<img data-src="img/corr.png" width="2100" class="r-stretch quarto-figure-center" id="fig-cor"><p class="caption">
+<img data-src="img/corr.png" width="2400" class="r-stretch quarto-figure-center" id="fig-cor"><p class="caption">
 Figure&nbsp;1: Correlation between detrended squid harvest in metric tons and all 12 environmental variables that may serve as a index. Correlations are presented in the box with linear best fit lines added.
+</p><p><a href="#/vars" class="btn btn-outline-primary" role="button">Calculation of all variables</a></p>
+</section>
+<section id="spatial" class="slide level2" data-menu-title="Spatial Data">
+<h2></h2>
+<p><span class="slide-title">Spatially match catch with weather</span></p>
+<hr>
+
+<img data-src="img/cw_catch.png" class="quarto-figure quarto-figure-center r-stretch" width="1050"></section>
+<section id="harvest" class="slide level2" data-menu-title="Harvest">
+<h2></h2>
+<p><span class="slide-title">Harvest comes from CDFW</span></p>
+<hr>
+
+<img data-src="img/harvest.png" class="quarto-figure quarto-figure-center r-stretch" width="900" id="fig-harvest"><p class="caption">
+Figure&nbsp;2: Market squid harvest per number of registered fishers. Vertical line indicates the transition to new permit system in 2005.
 </p></section>
+<section id="harvest-detrend" class="slide level2" data-menu-title="Harvest detrend">
+<h2></h2>
+<p><span class="slide-title">Detrend harvest to focus on shocks</span></p>
+<hr>
+
+<img data-src="img/harvest_detrend.png" class="quarto-figure quarto-figure-center r-stretch" width="900" id="fig-detrend"><p class="caption">
+Figure&nbsp;3: Market squid harvest per number of registered fishers detrened to account for management and technology change.
+</p></section>
+<section id="algo" class="slide level2" data-menu-title="Models" data-background-color="#047C90">
+<h2></h2>
+<div class="page-center">
+<div class="custom-subtitle">
+Prediction Models
+</div>
+</div>
+</section>
+<section id="mod-out" class="slide level2" data-menu-title="Model Outline">
+<h2></h2>
+<p><span class="slide-title">Model Outline</span></p>
+<hr>
+
+<img data-src="img/ins-test.png" class="quarto-figure quarto-figure-center r-stretch" width="900"></section>
+<section id="mod-out-pred" class="slide level2" data-menu-title="Model Outline">
+<h2></h2>
+<p><span class="slide-title">Model Outline</span></p>
+<hr>
+
+<img data-src="img/ins-pred.png" class="quarto-figure quarto-figure-center r-stretch" width="900"></section>
+<section id="mod-out-pay" class="slide level2" data-menu-title="Model Outline">
+<h2></h2>
+<p><span class="slide-title">Model Outline</span></p>
+<hr>
+
+<img data-src="img/ins-pay-demo.png" class="quarto-figure quarto-figure-center r-stretch" width="900"></section>
+<section id="mod-out-gif" class="slide level2" data-menu-title="Model Outline">
+<h2></h2>
+<p><span class="slide-title">Model Outline</span></p>
+<hr>
+<div style="text-align: center;">
+<p><img src="img/squid.gif" width="80%"></p>
+</div>
+</section>
+<section id="rolling" class="slide level2" data-menu-title="Rolling Forecast">
+<h2></h2>
+<p><span class="slide-title">Advantages of validation strategy</span></p>
+<hr>
+<ul>
+<li><p>Assess model performance in true out-of-sample setting</p>
+<ul>
+<li>Calculate <span class="math inline">\(u_{rr}\)</span> for each year in test set</li>
+</ul></li>
+<li><p>Mimics how insurance would be offered in practice</p>
+<ul>
+<li>Update model each year with new data</li>
+</ul></li>
+<li><p>Tune hyperparameters on the average RMSE in the test set</p>
+<ul>
+<li>Limited data availability (n=34), can’t afford to drop more data</li>
+</ul></li>
+</ul>
+</section>
+<section id="lm" class="slide level2" data-menu-title="Linear Models">
+<h2></h2>
+<p><span class="slide-title">Linear Models are the gold standard in agriculture insurance</span></p>
+<hr>
+<ul>
+<li><span class="math inline">\(\beta_1\)</span> captures the yield/weather dependence</li>
+</ul>
+<p><span class="math display">\[
+y_t=\beta_0+\beta_1w_t+\epsilon_t
+\]</span></p>
+<ul>
+<li>Easy interpretation:</li>
+</ul>
+<p><strong>Fishers receive <span class="math inline">\(\beta_1\)</span> dollars for every one degree sea surface temperature rises above 16<span class="math inline">\(^{\circ}\)</span>, </strong></p>
+</section>
+<section id="lasso" class="slide level2" data-menu-title="Lasso">
+<h2></h2>
+<p><span class="slide-title">Lasso Regression: Data driven shrinkage</span></p>
+<hr>
+<p><span id="eq-lasso"><span class="math display">\[
+\hat{\beta}^{lasso}=\arg\min_{\beta}\left\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}w_{ij}\beta_j)^2+\lambda\sum_{j=1}^{p}|\beta_j|\right\}
+\qquad(5)\]</span></span></p>
+<div class="cell" data-tbl-align="center">
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:900px; ">
+<table class="lightable-paper caption-top" data-quarto-postprocess="true" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Variables</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">Coefficient Estimates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">avg_sst</td>
+<td style="text-align: right; background-color: white !important;">-78.35</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sp_beuti</td>
+<td style="text-align: right; font-weight: bold; background-color: lightblue !important;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sti</td>
+<td style="text-align: right; font-weight: bold; background-color: lightblue !important;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">freq</td>
+<td style="text-align: right; background-color: white !important;">-2517.14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">relax</td>
+<td style="text-align: right; background-color: white !important;">2.82</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sp_cuti</td>
+<td style="text-align: right; background-color: white !important;">271.79</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">chci</td>
+<td style="text-align: right; font-weight: bold; background-color: lightblue !important;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">enso</td>
+<td style="text-align: right; background-color: white !important;">-122.40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pdo</td>
+<td style="text-align: right; background-color: white !important;">0.02</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">oni</td>
+<td style="text-align: right; font-weight: bold; background-color: lightblue !important;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">krill</td>
+<td style="text-align: right; background-color: white !important;">50.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">squid</td>
+<td style="text-align: right; background-color: white !important;">26.18</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+</section>
+<section id="rf" class="slide level2" data-menu-title="Random Forests">
+<h2></h2>
+<p><span class="slide-title">Random Forests</span></p>
+<hr>
+
+<img data-src="https://media.geeksforgeeks.org/wp-content/uploads/20240701170624/Random-Forest-Algorithm.webp" class="quarto-figure quarto-figure-center r-stretch"><div class="columns">
+<div class="column">
+<ul>
+<li><p>Captures non-linear interactions</p></li>
+<li><p>Very black box</p></li>
+</ul>
+</div><div class="column">
+<ul>
+<li><p>Expert Choice of variables</p></li>
+<li><p>Regularized random forest: similar to lasso but for RF</p></li>
+</ul>
+</div></div>
+</section>
+<section id="svm" class="slide level2" data-menu-title="SVM">
+<h2></h2>
+<p><span class="slide-title">Support Vector Machine</span></p>
+<hr>
+
+<img data-src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*XE9jt0r1yAW8LnliQ3mllQ.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="mod-sum" class="slide level2" data-menu-title="Model Summary">
+<h2></h2>
+<p><span class="slide-title">Test 4 types of Models</span></p>
+<hr>
+<div class="columns">
+<div class="column">
+<div class="center-text">
+<p><strong>Linear Models</strong></p>
+</div>
+<ul>
+<li><p>Easy to interpret</p></li>
+<li><p>Single variable correlations may not be sufficient</p></li>
+</ul>
+</div><div class="column">
+<div class="center-text">
+<p><strong>LASSO</strong></p>
+</div>
+<ul>
+<li><p>Easy to interpret</p></li>
+<li><p>Selects important variables</p></li>
+</ul>
+</div></div>
+<div class="columns">
+<div class="column">
+<div class="center-text">
+<p><strong>Random Forest</strong></p>
+</div>
+<ul>
+<li><p>Black Box</p></li>
+<li><p>Captures non-linear relationships</p></li>
+</ul>
+</div><div class="column">
+<div class="center-text">
+<p><strong>SVM</strong></p>
+</div>
+<ul>
+<li><p>Black Box</p></li>
+<li><p>Captures non-linear relationships</p></li>
+</ul>
+</div></div>
+</section>
+<section id="results" class="slide level2" data-menu-title="Results" data-background-color="#047C90">
+<h2></h2>
+<div class="page-center">
+<div class="custom-subtitle">
+Results
+</div>
+</div>
+</section>
+<section id="pred-res" class="slide level2" data-menu-title="Prediction Results">
+<h2></h2>
+<p><span class="slide-title">Prediction Results</span></p>
+<hr>
+
+<img data-src="img/rmse.png" class="quarto-figure quarto-figure-center r-stretch" width="1050" id="fig-rmse"><p class="caption">
+Figure&nbsp;4: Panel A: Root Mean Square Error (RMSE) in the test set for each model type. Panel B: RMSE in the test set.
+</p></section>
+<section id="ut-res" class="slide level2" data-menu-title="Utility Results">
+<h2></h2>
+<p><span class="slide-title">Utility Results</span></p>
+<hr>
+
+<img data-src="img/act_fair.png" class="quarto-figure quarto-figure-center r-stretch" width="1050" id="fig-ut"><p class="caption">
+Figure&nbsp;5: Panel A: Percent increase in utility for fishers using insurance contracts compared
+</p></section>
+<section id="market-res" class="slide level2" data-menu-title="Market Results">
+<h2></h2>
+<p><span class="slide-title">Insurance is feasible with ML Contracts</span></p>
+<hr>
+
+<img data-src="img/market_prem.png" class="quarto-figure quarto-figure-center r-stretch" width="1050" id="fig-market"><p class="caption">
+Figure&nbsp;6: Panel A: Market premium that would make fishers indifferent between insurance and no insurance. Panel B: Loss ratio for insurance companies offering contracts at the market premium.
+</p></section>
+<section id="payout-res" class="slide level2" data-menu-title="Payout Results">
+<h2></h2>
+<p><span class="slide-title">Payout schedules differ greatly between contract types</span></p>
+<hr>
+
+<img data-src="img/pay_out.png" class="quarto-figure quarto-figure-center r-stretch" width="1050" id="fig-pay"><p class="caption">
+Figure&nbsp;7: Multivariate payout schedules (Left Panel) are more flexible than univariate contracts (Right Panel)
+</p></section>
+<section id="prem-res" class="slide level2" data-menu-title="Premium Results">
+<h2></h2>
+<p><span class="slide-title">Premiums are higher, but more stable with ML contracts</span></p>
+<hr>
+
+<img data-src="img/prem_out.png" id="fig-prem" class="quarto-figure quarto-figure-center r-stretch" width="1050"><p class="caption">
+Figure&nbsp;8
+</p></section>
+<section id="pay-path" class="slide level2" data-menu-title="Payout Pathways">
+<h2></h2>
+<p><span class="slide-title">Payout Pathways</span></p>
+<hr>
+
+<img data-src="img/ins_pay.png" class="quarto-figure quarto-figure-center r-stretch" width="1050" id="fig-path"><p class="caption">
+Figure&nbsp;9: Comparison betweeen observed catch, in blue, versus the netpayout (payment minus premium) for SVM in purple and Random Forest in Green
+</p></section>
+<section id="res-sum" class="slide level2" data-menu-title="Results Summary">
+<h2></h2>
+<p><span class="slide-title">Summary of Demand Results</span></p>
+<hr>
+<ul>
+<li><p>Single index models perform poorly</p>
+<ul>
+<li></li>
+</ul></li>
+<li><p>Multivariate models appear to be the only viable option for fisheries index insurance</p>
+<ul>
+<li>The ML models had insurance profitability and utility gains in line with the only other ML study in ag <span class="citation" data-cites="Chen2024">(<a href="#/references" role="doc-biblioref" onclick="">Chen <em>et al.</em> 2024</a>)</span></li>
+</ul></li>
+<li><p>Still not immune to shocks outside environmental causes (COVID-19)</p></li>
+<li><p>Would fishers feel comfortable buying black box models?</p>
+<ul>
+<li>Shine some light by looking at variable importance</li>
+</ul></li>
+</ul>
+</section>
+<section id="var-imp" class="slide level2" data-menu-title="Variable Importance">
+<h2></h2>
+<p><span class="slide-title">Variable Importance</span></p>
+<hr>
+
+<img data-src="img/vip_models.png" class="quarto-figure quarto-figure-center r-stretch" width="1050" id="fig-varimp"><p class="caption">
+Figure&nbsp;10: Variable importance for Regularized Random Forest (left), Random Forest with Feature Selection (Middle) and SVM (right).
+</p></section>
+<section id="disc" class="slide level2" data-menu-title="Discussion" data-background-color="#047C90">
+<h2></h2>
+<div class="page-center">
+<div class="custom-subtitle">
+Discussion
+</div>
+</div>
+</section>
+<section id="disc-1" class="slide level2" data-menu-title="Discussion">
+<h2></h2>
+<p><span class="slide-title">Fisheries Index Insurance is feasible</span></p>
+<hr>
+<ul>
+<li><p>We must account for the non-linear interactions between catch and weather due to the Ecosystem nature of fisheries</p></li>
+<li><p>Machine Learning models can capture these complex relationships and reduce basis risk</p>
+<ul>
+<li><p>Their flexibility is what makes them so useful</p></li>
+<li><p>Need to be cautious of overfitting</p></li>
+<li><p>Data leakage in the premium</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="disc-2" class="slide level2" data-menu-title="Discussion">
+<h2></h2>
+<p><span class="slide-title">Expanding beyond Squid</span></p>
+<hr>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Squid</strong></p>
+</div>
+<p><img data-src="img/squid.png"></p>
+<ul>
+<li>Demonstrated potential</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Salmon</strong></p>
+</div>
+<p><img data-src="img/chinook.jpg"></p>
+<ul>
+<li><p>Run strength</p></li>
+<li><p>Water levels</p></li>
+<li><p>Environmental Variables</p></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Dungeness Crab 2016</strong></p>
+</div>
+<p><img data-src="img/d-crab.jpg"></p>
+<ul>
+<li>Upwelling during larval stage impacts commercial catch four years later</li>
+</ul>
+</div></div>
+</section>
+<section id="mang" class="slide level2" data-menu-title="Management Triggers">
+<h2></h2>
+<p><span class="slide-title">Management decisions impact catch</span></p>
+<hr>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Squid</strong></p>
+</div>
+<p><img data-src="img/squid.png"></p>
+<ul>
+<li>Demonstrated potential</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Salmon</strong></p>
+</div>
+<p><img data-src="img/chinook.jpg"></p>
+<ul>
+<li><p>Preseason Forecasts</p></li>
+<li><p>Quotas</p></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Dungeness Crab 2016</strong></p>
+</div>
+<p><img data-src="img/d-crab.jpg"></p>
+<ul>
+<li><p>Lost Fishing Days from closures</p></li>
+<li><p>Whale Entanglements</p></li>
+</ul>
+</div></div>
+</section>
+<section id="value" class="slide level2" data-menu-title="ML added Value">
+<h2></h2>
+<p><span class="slide-title">ML could enhance</span></p>
+<hr>
+</section>
+<section id="section-1" class="slide level2" data-background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg">
+<h2></h2>
+<div class="absolute" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;top: 8%; left: 10%; ">
+<p><strong>Questions?</strong></p>
+</div>
+</section>
+<section id="extra" class="slide level2" data-menu-title="Extra" data-background-color="#047C90">
+<h2></h2>
+<div class="page-center">
+<div class="custom-subtitle">
+Extra
+</div>
+</div>
+</section>
+<section id="contributions" class="slide level2" data-menu-title="Contributions">
+<h2></h2>
+<p><span class="slide-title">Contributions</span></p>
+<hr>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Climate Adaptation</strong></p>
+</div>
+<ul>
+<li><p>First evaluation of policy relevant tool</p></li>
+<li><p>Transition to resilient Blue Economy</p></li>
+<li><p>Inform management on new ways to handle climate shocks</p></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Index Based Insurance</strong></p>
+</div>
+<ul>
+<li><p>New machine learning methods in data limited space</p></li>
+<li><p>Uncover a unique form of data leakage in insurance pricing</p></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<div class="center-text">
+<p><strong>Fisheries Modeling</strong></p>
+</div>
+<ul>
+<li><p>Demonstrate value of non-linear machine learning</p></li>
+<li><p>Update information on climate predictions for management</p></li>
+</ul>
+</div></div>
+</section>
+<section id="vars" class="slide level2" data-menu-title="Calculation of Weather Variables">
+<h2></h2>
+<p><span class="slide-title">How each variable is calculated</span></p>
+<hr>
+<div class="center">
+<p><a href="#/data" class="btn btn-outline-primary" role="button">Back to Data slide</a></p>
+</div>
+<p><strong>Sea Surface Temperature:</strong> Yearly Average from NOAA Marine heat wave (MHW) readings ats 5x5 km resolution aggregated and weighted by fishing block</p>
+<p><strong>Habitat Compression Index:</strong> Cummulative scores of monthly area of cold water below average temperature thresholds along the US West Coast.</p>
+<p><strong>BEUTI:</strong> Monthly average of BEUTI Index in the spring months of March, April, and May from <span class="citation" data-cites="Jacox2018">Jacox <em>et al.</em> (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></p>
+<p><strong>CUTI:</strong> Monthly average of CUTI Index in the spring months of March, April, and May from <span class="citation" data-cites="Jacox2018">Jacox <em>et al.</em> (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></p>
+<p><strong>Spring Transition Index:</strong> First day of the year when cummulative sum of BEUTI reaches minimum value <span class="citation" data-cites="Suca2022">(<a href="#/references" role="doc-biblioref" onclick=""><strong>Suca2022?</strong></a>)</span></p>
+<p><strong>Relaxtion:</strong> Count of the number of days when CUTI exceeds 1.0 <span class="math inline">\(m^2s^{-1}\)</span> followed by three or more consecutive days of CUTI &lt;0.5 <span class="math inline">\(m^2s^{-1}\)</span>.</p>
+<p><strong>Frequency:</strong> Proportion of days when CUTI is between 0.5 and 2.0 <span class="math inline">\(m^2s^{-1}\)</span></p>
+<p><strong>El Nino:</strong> Average of MEI.v2 index</p>
+<p><strong>PDO:</strong> Average of PDO ERSST V5</p>
+<p><strong>ONI</strong> The 3 month rolling average of ERSST v5 SST in the Nino 3.4 Region. Use January, February, and March measure.</p>
+<p><strong>Krill Abundance:</strong> Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecoystem Assessment Survey</p>
+<p><strong>Paralarvae Abundance:</strong> Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecoystem Assessment Survey</p>
+</section>
 <section id="sst" class="slide level2" data-menu-title="SST">
 <h2></h2>
 <p><span class="slide-title">Example of spatial coverage</span></p>
@@ -603,72 +1065,6 @@ Figure&nbsp;1: Correlation between detrended squid harvest in metric tons and al
 </div>
 </div></div>
 </section>
-<section id="spatial" class="slide level2" data-menu-title="Spatial Data">
-<h2></h2>
-<p><span class="slide-title">Match fishing blocks with spatial data</span></p>
-<hr>
-
-<img data-src="img/cw_catch.png" width="1050" class="r-stretch"></section>
-<section id="algo" class="slide level2" data-menu-title="Models" data-background-color="#047C90">
-<h2></h2>
-<div class="page-center">
-<div class="custom-subtitle">
-Prediction Models
-</div>
-</div>
-</section>
-<section id="mod-out" class="slide level2" data-menu-title="Model Outline">
-<h2></h2>
-<p><span class="slide-title">Model Outline</span></p>
-<hr>
-<p><strong>Step 1: Train Model on Data</strong></p>
-<pre><code>- Perserve time order and split into training (&lt;2005), validation (2005-2013), and test (&gt;2013) sets. 
-
-- Tune hyperparameters on validation set</code></pre>
-<p><strong>Step 2: Predict payout schedule</strong></p>
-<pre><code>- Use model to predict payouts for each year (&lt;2013)</code></pre>
-<p><strong>Step 3: Find the actuarially fair premium for each of the testing set</strong></p>
-<pre><code>- Model updates and retrains each year in the testing set with realization of weather to find new insurance premiums 
-
-- Mimics real world insurance</code></pre>
-<p><strong>Step 4: Calculate utility in testing sample</strong></p>
-<p><strong>Step 5: Find the loading factor that leaves fishers just as well of with insurance</strong></p>
-</section>
-<section id="lm" class="slide level2" data-menu-title="Linear Models">
-<h2></h2>
-<p><span class="slide-title">Linear Models are the gold standard in agriculture insurance</span></p>
-<hr>
-<ul>
-<li><span class="math inline">\(\beta_1\)</span> captures the yield/weather dependence</li>
-</ul>
-<p><span class="math display">\[
-\hat\pi_t=\beta_0+\beta_1\omega_t+\epsilon_t
-\]</span></p>
-<ul>
-<li>Use the tuning set to select the best <span class="math inline">\(\omega\)</span> ,i.e.&nbsp;CUTI, BEUTI, SST, ENSO, or PDO</li>
-</ul>
-</section>
-<section id="rf" class="slide level2" data-menu-title="Random Forests">
-<h2></h2>
-<p><span class="slide-title">Random Forests are the most popular in agriculture</span></p>
-<hr>
-<div class="columns">
-<div class="column">
-<p><img data-src="https://media.geeksforgeeks.org/wp-content/uploads/20240701170624/Random-Forest-Algorithm.webp"></p>
-</div><div class="column">
-<ul>
-<li><p>Captures non-linear interactions</p></li>
-<li><p>Robust to overfitting</p></li>
-<li><p>Very black box</p></li>
-</ul>
-</div></div>
-</section>
-<section id="section-1" class="slide level2" data-background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg">
-<h2></h2>
-<div class="absolute" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;top: 8%; left: 10%; ">
-<p><strong>Questions?</strong></p>
-</div>
-</section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 
@@ -679,6 +1075,9 @@ Binswanger-Mkhize, H.P. (2012) <a href="https://doi.org/10.1080/00220388.2011.62
 <div id="ref-Brick2012" class="csl-entry" role="listitem">
 Brick, K., Visser, M. and Burns, J. (2012) <a href="https://doi.org/10.1093/ajae/aar120">Risk aversion: Experimental evidence from south african fishing communities</a>. <em>American Journal of Agricultural Economics</em> <strong>94</strong>, 133–152.
 </div>
+<div id="ref-Chen2024" class="csl-entry" role="listitem">
+Chen, Z., Lu, Y., Zhang, J. and Zhu, W. (2024) <a href="https://doi.org/10.1287/mnsc.2023.4902">Managing weather risk with a neural network-based index insurance</a>. <em>Management Science</em> <strong>70</strong>, 4306–4327.
+</div>
 <div id="ref-Clarke2016" class="csl-entry" role="listitem">
 Clarke, D.J. (2016) <a href="https://doi.org/10.1257/mic.20140103">A theory of rational demand for index insurance</a>. <em>Journal: Microeconomics</em> <strong>8</strong>, 283–306.
 </div>
@@ -687,6 +1086,9 @@ Eggert, H. and Tveteras, R. (2004) Stochastic production and heterogeneous risk 
 </div>
 <div id="ref-Holland2008" class="csl-entry" role="listitem">
 Holland, D.S. (2008) <a href="https://doi.org/10.1086/mre.23.3.42629621">Are fishermen rational? A fishing expedition</a>. <em>Marine Resource Economics</em> <strong>23</strong>, 325–344.
+</div>
+<div id="ref-Jacox2018" class="csl-entry" role="listitem">
+Jacox, M.G., Edwards, C.A., Hazen, E.L. and Bograd, S.J. (2018) <a href="https://doi.org/10.1029/2018JC014187">Coastal upwelling revisited: Ekman, bakun, and improved upwelling indices for the u.s. West coast</a>. <em>Journal of Geophysical Research: Oceans</em> <strong>123</strong>, 7332–7350.
 </div>
 <div id="ref-Mumford2009" class="csl-entry" role="listitem">
 Mumford, J.D., Leach, A.W., Levontin, P. and Kell, L.T. (2009) <a href="https://doi.org/10.1093/icesjms/fsp100">Insurance mechanisms to mediate economic risks in marine fisheries</a>. <em>ICES Journal of Marine Science</em> <strong>66</strong>, 950–959.

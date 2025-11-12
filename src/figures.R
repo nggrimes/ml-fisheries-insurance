@@ -499,7 +499,7 @@ ggplot(data=obj,aes(x=value,y=fish_value,color=label))+
                'squid'='Squid')))+
   labs(x='',
        y='Harvest (mt)')+
-  theme_minimal()+
+  theme_classic()+
   scale_color_manual(values=my_palette,name='')+
   geom_label(data=cor_labels,aes(x=x,y=y,label=label),inherit.aes=FALSE,hjust=1,vjust=1)
   

@@ -338,3 +338,24 @@ hr {
   text-align: center;      /* center text itself */
   height: 100%;            /* use full slide height */
 }
+
+/* Define the grid container style */
+.square-grid-2 {
+  display: grid;
+  /* Creates 3 columns of equal width and makes rows auto-size */
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px; /* Adjust gap between cells as needed */
+  width: 100%;
+  height: 100%; /* Use full slide height */
+}
+
+/* Style for individual grid items (cells) */
+.grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc; /* Optional: adds a border to visualize the "square" cell */
+  padding: 10px;
+  text-align: center;
+  /* To help make them "square" in appearance, you may need further aspect ratio control */
+}

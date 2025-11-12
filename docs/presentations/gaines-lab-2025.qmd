@@ -7,6 +7,9 @@ format:
     theme:
      - ucsb-media.scss
     logo: img/bren-logo.png
+include-in-header:
+  text: |
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel ="stylesheet" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous">
 bibliography: library.bib
 csl: fish-and-fisheries.csl
 ---
@@ -38,8 +41,10 @@ csl: fish-and-fisheries.csl
 - Fishers are risk averse in income [@Bockstael1983; @Eggert2004;@Brick2012;@Holland2008]
 
   - They would prefer more stable income, over flucutations
+
   
 - Current finanicial tools are limited for fishers [@Mumford2009;@Kaperski2013;@Sethi2010]
+
 
 - Call for new financial tools to build more resilient Blue Economies [@Sumaila2021;@Watson2023]
 
@@ -129,15 +134,21 @@ Policyholders not receiving insurance payouts when they suffer a loss
 
   - Greatest impediment to uptake in agriculture [@binswanger2012;@Jensen2018]
   
+::: {.incremental}
+  
 - Indices that are tightly correlated with fish catch are needed  
 
 - Environmental variables influence catch, but really difficult to measure
 
   - Non-linear, unobservables, management plays a role
   
+:::  
+  
 ## {#ml data-menu-title="Machine Learning"}
 
-[Machine learning may be able to tackle the challenges of fishery productivity]{.slide-title}
+[New data and models could address limitations]{.slide-title}
+
+<hr>
 
 ::::{.columns}
 
@@ -146,6 +157,14 @@ Policyholders not receiving insurance payouts when they suffer a loss
 :::{.center-text}
 **ML in Ag IBI**
 :::
+
+```{r}
+#| fig-align: center
+#| fig-cap: From [@Cesarini2022]
+#| out-width: "100%"
+
+knitr::include_graphics("img/ag-ml.png")
+```
 
 :::
 
@@ -158,6 +177,7 @@ Policyholders not receiving insurance payouts when they suffer a loss
 ```{r}
 #| fig-align: center
 #| fig-cap: From [@Ovando2022]
+#| out-width: "100%"
 
 knitr::include_graphics("img/ml-salmon.png")
 ```
@@ -167,10 +187,15 @@ knitr::include_graphics("img/ml-salmon.png")
 
 ::::
 
+- Available Fishery and Oceanographic data has exploded
+
 
 ## {#squid data-menu-title="Squid Fishery" background-image="https://wildlife.ca.gov/Portals/0/Images/Science_institute/Market_Squid_4.jpg"}
 
-::: {.absolute left="50%" top="8%" style="font-size:.75em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .75); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+
+::: fragment
+
+::: {.absolute left="30%" top="8%" style="font-size:.75em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .90); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
 
 [California Market Squid Case Study]{.slide-title}
 
@@ -192,7 +217,7 @@ knitr::include_graphics("img/ml-salmon.png")
 
 :::
 
-
+:::
 
 
 ## {#ml-qs data-menu-title="ML Research Questions"}
@@ -201,92 +226,38 @@ knitr::include_graphics("img/ml-salmon.png")
 
 <hr>
 
-[**How can we design indices to accurately indemnify fishery losses?**]{.body-text-l}
+[**Question 1:** Would squid fishers have been better off with insurance contracts?]{.body-text-l .text-blue}
+
 
 <br>
 
-[**What is a fisher's marginal willingness to pay for insurance?**]{.body-text-l}
+[**Question 2:** Can insurance be offered in a private       market?]{.body-text-l .text-blue}
 
 <br>
 
-[**Can insurance be offered in a private market?**]{.body-text-l}
-
-<br>
-
-[**What environmental variables influence the insurance models the most?**]{.body-text-l}
+[**Question 3:** What environmental variables influence the insurance models the most?]{.body-text-l .text-blue}
 
 
 
 ## {#pre-res data-menu-title="Results Teaser"}
 
-[Results]{.slide-title}
+[Results Preview]{.slide-title}
 
 <hr>
 
-
-[**Result 1:** Single index models do not sufficiently predict loss. Machine learning models drasticially reduce basis risk]{.body-text-m}
+[**Result 1:** Single index models do not sufficiently predict loss. Machine learning models drasticially reduce basis risk and improve fisher livelihoods]{.body-text-m}
 
 
 <br>
 
 
-[**Result 2:** Fishers would be willing to pay for all machine learning models]{.body-text-m}
-
-<br>
-
-[**Result 3:** A private market could operate as fishers would be willing to pay rates that allow insurnace companies to remain profitable. ]{.body-text-m}
+[**Result 2:** A private market could operate as fishers would be willing to pay rates that allow insurnace companies to remain profitable. ]{.body-text-m}
 
        
 <br>
 
-[**Result 4:** Environmental variables that are expected to influence squid abundance are the primary contributors to multivariate machine learing models]{.body-text-m}
+[**Result 3:** Upwelling, prey abundance, and temperature are the primary contributors to multivariate machine learing models]{.body-text-m}
 
-##{#contributions data-menu-title="Contributions"}
-
-[Contributions]{.slide-title}
-
-<hr>
-
-::::{.columns}
-
-:::{.column width="33%"}
-
-:::{.center-text}
-**Climate Adaptation**
-:::
-
-- First evaluation of policy relevant tool
-
-- Transition to resilient Blue Economy
-
-- Inform management on new ways to handle climate shocks
-:::
-
-:::{.column width="33%"}
-
-:::{.center-text}
-**Index Based Insurance literature**
-:::
-
-- New machine learning methods in data limited space
-
-- Uncover a unique form of data leakage in insurance pricing
-
-:::
-
-:::{.column width="33%"}
-
-:::{.center-text}
-**Fisheries Modeling**
-:::
-
-- Demonstrate value of non-linear machine learning
-
-- Update information on climate predictions
-
-:::
-
-::::
 
 
 ##  {#outline data-menu-title="Outline"}
@@ -299,11 +270,11 @@ knitr::include_graphics("img/ml-salmon.png")
 
 <br>
 
-**2.** Models
+**2.** Data
 
 <br>
 
-**3.** Data
+**3.** Models
 
 <br>
 
@@ -342,11 +313,11 @@ $${#eq-prod}
 :::{.column}
 
 :::{.body-text-s}
-$y$: harvest
+$y$ harvest
 
-$\tilde{w}$: weather index
+$\tilde{w}$ weather index
 
-$B(\cdot)$: function mapping weather to fishery productivity
+$B(\cdot)$ function mapping weather to fishery productivity
 
 :::
 
@@ -355,9 +326,9 @@ $B(\cdot)$: function mapping weather to fishery productivity
 :::{.column}
 
 :::{.body-text-s}
-$\epsilon$: random unobserved factors
+$\epsilon$ random unobserved factors
 
-$f(\cdot)$: function mapping productivity to harvest
+$f(\cdot)$ function mapping productivity to harvest
 
 :::
 
@@ -388,7 +359,7 @@ $${#eq-g}
 :::{.column}
 
 :::{.body-text-s}
-- $g(\tilde{w})$: Model
+$g(\tilde{w})$ Prediction Model
 
 
 :::
@@ -400,7 +371,7 @@ $${#eq-g}
 :::{.body-text-s}
 
 
-- $\eta$: Random model error
+$\eta$  Random model error
 
 :::
 
@@ -410,11 +381,16 @@ $${#eq-g}
 
 <br>
 
+::: {.incremental}
+
 - Goal is to minimize $\eta + \epsilon$
 
 - More weather variables may reduce $\epsilon$
 
 - Better models may reduce $\eta$
+
+:::
+
 
 
 ## {#contract data-menu-title="Contract"}
@@ -427,7 +403,7 @@ $${#eq-g}
 
 
 $$
-I(w)=\max(c\mathbb{E}[y]-\hat{y}(w),0)
+I(w)=\overbrace{\max(c\mathbb{E}[y]-\hat{y}(w),0)}^{\text{Payout if model predicts less than average catch}}
 $${#eq-pay}
 
 ::::{.columns}
@@ -436,9 +412,9 @@ $${#eq-pay}
 
 :::{.body-text-s}
 
-$I(w)$: insurance payout
+$I(w)$ Insurance payout
 
-$c$: coverage level
+$c$ Coverage level
 
 :::
 
@@ -447,9 +423,9 @@ $c$: coverage level
 :::{.column}
 
 :::{.body-text-s}
-$\mathbb{E}[y]$: Long run average catch
+$\mathbb{E}[y]$ Long run average catch
 
-$\hat{y}(w)$: Model prediction
+$\hat{y}(w)$ Model prediction
 
 :::
 
@@ -458,9 +434,14 @@ $\hat{y}(w)$: Model prediction
 ::::
 
 
-::: fragment
+## {#premium data-menu-title="Premium"}
 
-- Insurance company charges a premium, $\rho$ fishers have to pay
+[Fishers have to pay a premium]{.slide-title}
+
+<hr>
+
+
+- Insurance company charges a premium, $\rho$
 
 $$
 \rho=\mathbb{E}[I(w)]m
@@ -472,7 +453,7 @@ $${#eq-prem}
 
 :::{.body-text-s}
 
- $\mathbb{E}[I(w)]$: Average payout 
+ $\mathbb{E}[I(w)]$ Average payout 
 
 :::
 
@@ -481,7 +462,7 @@ $${#eq-prem}
 :::{.column}
 
 :::{.body-text-s}
-$m$: premium loading factor (how much does an insurer charge to make a profit)
+$m$ premium loading factor (how much does an insurer charge to make a profit)
 
 :::
 
@@ -489,82 +470,15 @@ $m$: premium loading factor (how much does an insurer charge to make a profit)
 
 ::::
 
-:::
-
-
-## {#ut data-menu-title="Utility"}
-
-[Measure utility to see if fishers are better off with insurance ]{.slide-title}
-
-<hr>
-
-::: {.callout-note icon="false"  style="font-size: 1.5em;"}
-## Utility Definition:
-
-Measure of how desirable something is. Includes our perception and tolerance for risk. 
-
-People prefer a sure thing over a lottery
-
-:::
-
-
-:::{.center-text}
-
-**Compare the improvement as a percent increase in utility**
-
-:::
-
-$$
-u_{rr}=\frac{u_i-u_{ni}}{u_{ni}}
-$$
 
 ::: fragment
 
 :::{.center-text}
-**Calculate how much money insurance earns with a loss ratio**
+**Example**
 :::
 
-$$
-lr=\frac{\sum I(w)}{\sum \rho}
-$$
+*We observe a SST of 15$^{\circ}$C. Our model predicts a catch of 80 metric tons, the long run average catch is 100 metric tons. Insurance will pay the equivalent of 20 metric tons. Fishers have to pay a small premium  equivlalent to 5 metric tons each year*
 :::
-
-## {#mrkt data-menu-title="Market"}
-
-[Find the "market" price: $m^*$]{.slide-title}
-
-<hr>
-
-Fishers will be indifferent between insurance and no insurance when $u_{rr}=0$
-
-The $m^*$ that makes $u_{rr}=0$ is the highest an insurance company could charge and still have fishers buy the contract
-
-::::{.columns}
-
-:::{.column}
-
-$$
-u_{ni}(y)=u_{i}(y,I(\omega),\rho)]
-$$
-
-:::
-
-:::{.column}
-Reminder:
-$\rho=\mathbb{E}[I(w)]m$
-
-:::
-
-::::
-  
-  - The selected $m^*$ is the marginal willingness to pay for insurance
-  
-  - High $m^*$ means fishers really want insurance
-  
-  - $m^*<1$, insurance has to be subsidized
-  
-- $lr<1$, then insurance is profitable for insurance company at $m^*$
-
 
 ## {#br data-menu-title="Basis Risk"}
 
@@ -618,13 +532,13 @@ library(tidyverse)
     theme(axis.title = element_text(size=txt_size+4))+
     theme(axis.text = element_text(size=txt_size))+
     theme(plot.title = element_text(size=txt_size+8))+
-    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
-    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_hline(yintercept=0,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=0,color="#FEBC11",size=1.75)+ #used to be -0.85
     annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=4)+
-    annotate("label",x=2,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
+    annotate("label",x=1.6,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
     annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=4)+
-    annotate("label",x=2,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
-    labs(x="Weather Shock",y="Revenue Shock")
+    annotate("label",x=1.6,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
+    labs(x="Weather Shock",y="Harvest Shock")
   
   med_plot<-ggplot(sim_med,aes(x=w,y=z))+
     geom_point(size=2,color="#003660")+
@@ -635,13 +549,13 @@ library(tidyverse)
     theme(axis.title = element_text(size=txt_size+4))+
     theme(axis.text = element_text(size=txt_size))+
     theme(plot.title = element_text(size=txt_size+8))+
-    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
-    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_hline(yintercept=0,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=0,color="#FEBC11",size=1.75)+
     annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=4)+
-    annotate("label",x=2,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
+    annotate("label",x=1.6,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
     annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=4)+
-    annotate("label",x=2,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
-    labs(x="Weather Shock",y="Revenue Shock")
+    annotate("label",x=1.6,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
+    labs(x="Weather Shock",y="Harvest Shock")
   
   perf_plt<-ggplot(sim_perf,aes(x=w,y=z))+
     geom_point(size=2,color="#003660")+
@@ -652,13 +566,13 @@ library(tidyverse)
     theme(axis.title = element_text(size=txt_size+4))+
     theme(axis.text = element_text(size=txt_size))+
     theme(plot.title = element_text(size=txt_size+8))+
-    geom_hline(yintercept=-.85,color="#FEBC11",size=1.75)+
-    geom_vline(xintercept=-.85,color="#FEBC11",size=1.75)+
+    geom_hline(yintercept=0,color="#FEBC11",size=1.75)+
+    geom_vline(xintercept=0,color="#FEBC11",size=1.75)+
     annotate("label",x=-2,y=2.5,label="Insurance pays out\nRevenue good",fill="yellow",size=4)+
-    annotate("label",x=2,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
+    annotate("label",x=1.6,y=2.5,label="Insurance does not pay\nRevenue good",fill="green",size=4)+
     annotate("label",x=-2,y=-2.5,label="Insurance pays out\nRevenue bad",fill="green",size=4)+
-    annotate("label",x=2,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
-    labs(x="Weather Shock",y="Revenue Shock")
+    annotate("label",x=1.6,y=-2.5,label="Insurance does not pay\nRevenue bad",fill="red",size=4)+
+    labs(x="Weather Shock",y="Harvet Shock")
   
 ```
 
@@ -687,6 +601,73 @@ perf_plt
 
 ::::
 
+
+
+
+## {#ut data-menu-title="Utility"}
+
+[Measure utility to see if fishers are better off with insurance ]{.slide-title}
+
+<hr>
+
+::: {.callout-note icon="false"  style="font-size: 1.5em;"}
+## Utility Definition:
+
+Measure of how desirable something is. Includes our perception and tolerance for risk. 
+
+People prefer a sure thing over a lottery
+
+:::
+
+
+:::{.center-text}
+
+**Demand:** Compare the improvement as a percent increase in utility
+
+:::
+
+$$
+u_{rr}=\frac{u_i-u_{ni}}{u_{ni}}
+$$
+
+## {#mrkt data-menu-title="Market"}
+
+[Find the "market" price: $m^*$]{.slide-title}
+
+<hr>
+
+Fishers will be indifferent between insurance and no insurance when $u_{rr}=0$
+
+The $m^*$ that makes $u_{rr}=0$ is the highest an insurance company could charge and still have fishers buy the contract
+
+::::{.columns}
+
+:::{.column}
+
+$$
+u_{ni}(y)=u_{i}(y,I(\omega),\rho)
+$$
+
+:::
+
+:::{.column}
+Reminder:
+$\rho=\mathbb{E}[I(w)]m$
+
+:::
+
+::::
+  
+  - The selected $m^*$ is the marginal willingness to pay for insurance
+  
+  - High $m^*$ means fishers really want insurance
+  
+  - $m^*<1$, insurance has to be subsidized
+  
+- Loss Ratio: $\frac{\sum I(w)}{\sum \rho}<1$, then insurance is profitable for insurance company at $m^*$
+
+
+
     
 ## {#data-pg data-menu-title="Data" background-color="#047C90"}
 
@@ -709,6 +690,633 @@ perf_plt
 knitr::include_graphics("img/corr.png")
 
 ```
+
+
+[Calculation of all variables](#vars){.btn .btn-outline-primary .btn role="button"}
+
+## {#spatial data-menu-title="Spatial Data"}
+
+[Spatially match catch with weather]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+knitr::include_graphics('img/cw_catch.png')
+```
+
+## {#harvest data-menu-title="Harvest"}
+
+[Harvest comes from CDFW]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+#| fig-cap: Market squid harvest per number of registered fishers. Vertical line indicates the transition to new permit system in 2005.
+#| label: fig-harvest
+
+knitr::include_graphics("img/harvest.png")
+```
+
+
+## {#harvest-detrend data-menu-title="Harvest detrend"}
+
+[Detrend harvest to focus on shocks]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+#| fig-cap: Market squid harvest per number of registered fishers detrened to account for management and technology change.
+#| label: fig-detrend
+
+knitr::include_graphics("img/harvest_detrend.png")
+```
+
+
+
+## {#algo data-menu-title="Models" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Prediction Models</div>
+</div>
+
+## {#mod-out data-menu-title="Model Outline"}
+
+[Model Outline]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+
+knitr::include_graphics("img/ins-test.png")
+```
+
+
+## {#mod-out-pred data-menu-title="Model Outline"}
+
+[Model Outline]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+
+knitr::include_graphics("img/ins-pred.png")
+```
+
+
+## {#mod-out-pay data-menu-title="Model Outline"}
+
+[Model Outline]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+
+knitr::include_graphics("img/ins-pay-demo.png")
+```
+
+## {#mod-out-gif data-menu-title="Model Outline"}
+
+[Model Outline]{.slide-title}
+
+<hr>
+
+
+<div style="text-align: center;">
+  <img src="img/squid.gif" width="80%">
+</div>
+
+## {#rolling data-menu-title="Rolling Forecast"}
+
+[Advantages of validation strategy]{.slide-title}
+
+<hr>
+
+- Assess model performance in true out-of-sample setting
+
+  - Calculate $u_{rr}$ for each year in test set
+  
+- Mimics how insurance would be offered in practice
+
+  - Update model each year with new data
+
+- Tune hyperparameters on the average RMSE in the test set
+
+  - Limited data availability (n=34), can't afford to drop more data
+
+## {#lm data-menu-title="Linear Models"}
+
+[Linear Models are the gold standard in agriculture insurance]{.slide-title}
+
+<hr>
+
+- $\beta_1$ captures the yield/weather dependence
+
+$$
+y_t=\beta_0+\beta_1w_t+\epsilon_t
+$$
+
+- Easy interpretation:
+
+**Fishers receive $\beta_1$ dollars for every one degree sea surface temperature rises above 16$^{\circ}$, **
+
+
+## {#lasso data-menu-title="Lasso"}
+
+[Lasso Regression: Data driven shrinkage]{.slide-title}
+
+<hr>
+
+$$
+\hat{\beta}^{lasso}=\arg\min_{\beta}\left\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}w_{ij}\beta_j)^2+\lambda\sum_{j=1}^{p}|\beta_j|\right\}
+$$ {#eq-lasso}
+
+```{r}
+#| tbl-align: center
+
+load(here::here("data","output","squid_cara10-1.rda"))
+
+library(kableExtra)
+
+las<-models |> filter(pred_mod=='lasso') |> select(mods)
+a<-las[1]
+b<-a$mods[[1]][[1]][[2]][,33] 
+
+round(b,2)|> broom::tidy() |> knitr::kable(col.names=c("Variables","Coefficient Estimates")) |> 
+  kable_paper() |> 
+  scroll_box(width="900px",height="400px") |> 
+  column_spec(2, bold=ifelse(b==0,TRUE,FALSE),background=ifelse(b==0,"lightblue","white"))
+```
+
+## {#rf data-menu-title="Random Forests"}
+
+[Random Forests]{.slide-title}
+
+<hr>
+
+![](https://media.geeksforgeeks.org/wp-content/uploads/20240701170624/Random-Forest-Algorithm.webp){fig-align="center"}
+
+::::{.columns}
+
+:::{.column}
+- Captures non-linear interactions
+
+
+- Very black box
+
+:::
+
+:::{.column}
+
+- Expert Choice of variables
+
+- Regularized random forest: similar to lasso but for RF
+
+:::
+
+::::
+
+## {#svm data-menu-title="SVM"}
+
+[Support Vector Machine]{.slide-title}
+
+<hr>
+
+![](https://miro.medium.com/v2/resize:fit:720/format:webp/1*XE9jt0r1yAW8LnliQ3mllQ.png){fig-align="center"}
+
+## {#mod-sum data-menu-title="Model Summary"}
+
+[Test 4 types of Models]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column}
+
+:::{.center-text}
+**Linear Models**
+:::
+
+- Easy to interpret
+
+- Single variable correlations may not be sufficient
+:::
+
+:::{.column}
+
+:::{.center-text}
+**LASSO**
+:::
+
+- Easy to interpret
+
+- Selects important variables
+
+:::
+
+::::
+
+::::{.columns}
+
+:::{.column}
+
+:::{.center-text}
+**Random Forest**
+:::
+
+- Black Box
+
+- Captures non-linear relationships
+
+
+:::
+
+:::{.column}
+
+:::{.center-text}
+**SVM**
+:::
+
+- Black Box
+
+- Captures non-linear relationships
+
+:::
+
+
+::::
+
+
+## {#results data-menu-title="Results" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Results</div>
+</div>
+
+## {#pred-res data-menu-title="Prediction Results"}
+
+[Prediction Results]{.slide-title}
+
+<hr>
+
+```{r}
+#| label: fig-rmse
+#| fig-align: center
+#| fig-cap: 'Panel A: Root Mean Square Error (RMSE) in the test set for each model type. Panel B: RMSE in the test set.'
+
+
+knitr::include_graphics("img/rmse.png")
+```
+
+
+## {#ut-res data-menu-title="Utility Results"}
+
+[Utility Results]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+#| fig-cap: 'Panel A: Percent increase in utility for fishers using insurance contracts compared'
+#| label: fig-ut
+
+#| to no insurance. Panel B: Loss ratio for insurance companies offering contracts.
+
+knitr::include_graphics("img/act_fair.png")
+
+```
+
+## {#market-res data-menu-title="Market Results"}
+
+[Insurance is feasible with ML Contracts]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+#| fig-cap: 'Panel A: Market premium that would make fishers indifferent between insurance and no insurance. Panel B: Loss ratio for insurance companies offering contracts at the market premium.'
+#| label: fig-market
+
+knitr::include_graphics("img/market_prem.png")
+
+```
+
+## {#payout-res data-menu-title="Payout Results"}
+
+[Payout schedules differ greatly between contract types]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+#| fig-cap: 'Multivariate payout schedules (Left Panel) are more flexible than univariate contracts (Right Panel)'
+#| label: fig-pay
+
+knitr::include_graphics("img/pay_out.png")
+
+```
+
+## {#prem-res data-menu-title="Premium Results"}
+
+[Premiums are higher, but more stable with ML contracts]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+#| fig-cap:
+#| label: fig-prem
+
+knitr::include_graphics("img/prem_out.png")
+
+```
+
+## {#pay-path data-menu-title="Payout Pathways"}
+
+[Payout Pathways]{.slide-title}
+
+<hr>
+
+```{r}
+#| fig-align: center
+#| fig-cap: 'Comparison betweeen observed catch, in blue, versus the netpayout (payment minus premium) for SVM in purple and Random Forest in Green'
+#| label: fig-path
+
+knitr::include_graphics("img/ins_pay.png")
+```
+
+## {#res-sum data-menu-title="Results Summary"}
+
+[Summary of Demand Results]{.slide-title}
+
+<hr>
+
+- Single index models perform poorly
+
+  - 
+
+- Multivariate models appear to be the only viable option for fisheries index insurance
+
+  - The ML models had insurance profitability and utility gains in line with the only other ML study in ag [@Chen2024]
+
+- Still not immune to shocks outside environmental causes (COVID-19)
+
+- Would fishers feel comfortable buying black box models?
+
+  - Shine some light by looking at variable importance
+  
+## {#var-imp data-menu-title="Variable Importance"}
+
+[Variable Importance]{.slide-title}
+
+<hr>  
+
+```{r}
+#| fig-align: center
+#| fig-cap: 'Variable importance for Regularized Random Forest (left), Random Forest with Feature Selection (Middle) and SVM (right).'
+#| label: fig-varimp
+
+knitr::include_graphics("img/vip_models.png")
+```
+
+
+## {#disc data-menu-title="Discussion" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Discussion</div>
+</div>
+
+## {#disc-1 data-menu-title="Discussion"}
+
+[Fisheries Index Insurance is feasible]{.slide-title}
+
+<hr>
+
+- We must account for the non-linear interactions between catch and weather due to the Ecosystem nature of fisheries
+
+- Machine Learning models can capture these complex relationships and reduce basis risk
+
+  - Their flexibility is what makes them so useful
+  
+  - Need to be cautious of overfitting
+  
+  - Data leakage in the premium
+  
+## {#disc-2 data-menu-title="Discussion"}
+
+[Expanding beyond Squid]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Squid**
+:::
+
+![](img/squid.png)
+
+- Demonstrated potential
+
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Salmon**
+:::
+
+![](img/chinook.jpg)
+
+
+- Run strength
+
+- Water levels
+
+- Environmental Variables
+
+
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Dungeness Crab 2016**
+:::
+
+![](img/d-crab.jpg)
+
+- Upwelling during larval stage impacts commercial catch four years later
+
+:::
+
+::::
+
+
+
+## {#mang data-menu-title="Management Triggers"}
+
+[Management decisions impact catch]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Squid**
+:::
+
+![](img/squid.png)
+
+- Demonstrated potential
+
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Salmon**
+:::
+
+![](img/chinook.jpg)
+
+
+- Preseason Forecasts
+
+- Quotas
+
+
+
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Dungeness Crab 2016**
+:::
+
+![](img/d-crab.jpg)
+
+- Lost Fishing Days from closures
+
+- Whale Entanglements
+:::
+
+::::
+
+## {#value data-menu-title="ML added Value"}
+
+[ML could enhance ]{.slide-title}
+
+<hr>
+
+## {background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg"}
+
+::: {.absolute left="10%" top="8%" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+
+**Questions?**
+
+:::
+
+## {#extra data-menu-title="Extra" background-color="#047C90"}
+
+<div class="page-center">
+<div class="custom-subtitle">Extra</div>
+</div>
+
+
+## {#contributions data-menu-title="Contributions"}
+
+[Contributions]{.slide-title}
+
+<hr>
+
+::::{.columns}
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Climate Adaptation**
+:::
+
+- First evaluation of policy relevant tool
+
+- Transition to resilient Blue Economy
+
+- Inform management on new ways to handle climate shocks
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Index Based Insurance**
+:::
+
+- New machine learning methods in data limited space
+
+- Uncover a unique form of data leakage in insurance pricing
+
+:::
+
+:::{.column width="33%"}
+
+:::{.center-text}
+**Fisheries Modeling**
+:::
+
+- Demonstrate value of non-linear machine learning
+
+- Update information on climate predictions for management
+
+:::
+
+::::
+
+## {#vars data-menu-title="Calculation of Weather Variables"}
+
+[How each variable is calculated]{.slide-title}
+
+<hr>
+
+:::{.center}
+[Back to Data slide](#data){.btn .btn-outline-primary .btn role="button"}
+:::
+
+**Sea Surface Temperature:** Yearly Average from NOAA Marine heat wave (MHW) readings ats 5x5 km resolution aggregated and weighted by fishing block
+
+**Habitat Compression Index:** Cummulative scores of monthly area of cold water below average temperature thresholds along the US West Coast. 
+
+**BEUTI:** Monthly average of BEUTI Index in the spring months of March, April, and May from @Jacox2018
+
+**CUTI:** Monthly average of CUTI Index in the spring months of March, April, and May from @Jacox2018
+
+**Spring Transition Index:** First day of the year when cummulative sum of BEUTI reaches minimum value [@Suca2022]
+
+**Relaxtion:** Count of the number of days when CUTI exceeds 1.0 $m^2s^{-1}$ followed by three or more consecutive days of CUTI <0.5 $m^2s^{-1}$.
+
+**Frequency:** Proportion of days when CUTI is between 0.5 and 2.0 $m^2s^{-1}$
+
+**El Nino:** Average of MEI.v2 index
+
+**PDO:** Average of PDO ERSST V5
+
+**ONI** The 3 month rolling average of ERSST v5 SST in the Nino 3.4 Region. Use January, February, and March measure.
+
+**Krill Abundance:** Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecoystem Assessment Survey
+
+**Paralarvae Abundance:** Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecoystem Assessment Survey
+
+
 
 ## {#sst data-menu-title="SST"}
 
@@ -739,97 +1347,5 @@ knitr::include_graphics("img/hci.jpg")
 ::::
 
 
-## {#spatial data-menu-title="Spatial Data"}
-
-[Spatially match catch with weather data]{.slide-title}
-
-<hr>
-
-```{r}
-#| fig-align: center
-knitr::include_graphics('img/cw_catch.png')
-```
-
-## {#algo data-menu-title="Models" background-color="#047C90"}
-
-<div class="page-center">
-<div class="custom-subtitle">Prediction Models</div>
-</div>
-
-## {#mod-out data-menu-title="Model Outline"}
-
-[Model Outline]{.slide-title}
-
-<hr>
-
-**Step 1: Train Model on Data**
-
-    - Perserve time order and split into training (<2005), validation (2005-2013), and test (>2013) sets. 
-    
-    - Tune hyperparameters on validation set
-    
-**Step 2: Predict payout schedule**
-
-    - Use model to predict payouts for each year (<2013)
-    
-**Step 3: Find the actuarially fair premium for each of the testing set**
-
-    - Model updates and retrains each year in the testing set with realization of weather to find new insurance premiums 
-    
-    - Mimics real world insurance
-
-**Step 4: Calculate utility in testing sample**
-
-**Step 5: Find the loading factor that leaves fishers just as well of with insurance**
-
-## {#lm data-menu-title="Linear Models"}
-
-[Linear Models are the gold standard in agriculture insurance]{.slide-title}
-
-<hr>
-
-- $\beta_1$ captures the yield/weather dependence
-
-$$
-\hat\pi_t=\beta_0+\beta_1\omega_t+\epsilon_t
-$$
-
-- Use the tuning set to select the best $\omega$ ,i.e. CUTI, BEUTI, SST, ENSO, or PDO
-
-
-
-
-## {#rf data-menu-title="Random Forests"}
-
-[Random Forests are the most popular in agriculture]{.slide-title}
-
-<hr>
-
-::::{.columns}
-
-:::{.column}
-
-![](https://media.geeksforgeeks.org/wp-content/uploads/20240701170624/Random-Forest-Algorithm.webp)
-
-:::
-
-:::{.column}
-
-- Captures non-linear interactions
-
-- Robust to overfitting
-
-- Very black box
-:::
-
-::::
-
-## {background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg"}
-
-::: {.absolute left="10%" top="8%" style="font-size:1.8em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .5); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
-
-**Questions?**
-
-:::
 
 ## References
