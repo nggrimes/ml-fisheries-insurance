@@ -16,7 +16,7 @@ csl: fish-and-fisheries.csl
 
 ## {#title-slide data-menu-title="Title Slide" background=.white}
 
-[Index Insurance in Fisheries]{.custom-title .blue-text}
+[Suitable weather indices for novel fisheries index insurance]{.custom-title .blue-text}
 
 [Gaines Lab Meeting]{.custom-subtitle .gold}
 
@@ -40,10 +40,10 @@ csl: fish-and-fisheries.csl
 
 - Fishers are risk averse in income [@Bockstael1983; @Eggert2004;@Brick2012;@Holland2008]
 
-  - They would prefer more stable income, over flucutations
+  - They would prefer more stable income, over fluctuations
 
   
-- Current finanicial tools are limited for fishers [@Mumford2009;@Kaperski2013;@Sethi2010]
+- Current financial tools are limited for fishers [@Mumford2009;@Kasperski2013;@Sethi2010]
 
 
 - Call for new financial tools to build more resilient Blue Economies [@Sumaila2021;@Watson2023]
@@ -132,12 +132,15 @@ Policyholders not receiving insurance payouts when they suffer a loss
 
 - Basis risk lowers demand for products [@Clarke2016]
 
-  - Greatest impediment to uptake in agriculture [@binswanger2012;@Jensen2018]
+  - Greatest impediment to uptake in agriculture [@binswanger2012;@Jensen2016]
   
-::: {.incremental}
+::: fragment
   
 - Indices that are tightly correlated with fish catch are needed  
 
+:::
+
+::: fragment
 - Environmental variables influence catch, but really difficult to measure
 
   - Non-linear, unobservables, management plays a role
@@ -160,7 +163,7 @@ Policyholders not receiving insurance payouts when they suffer a loss
 
 ```{r}
 #| fig-align: center
-#| fig-cap: From [@Cesarini2022]
+#| fig-cap: From [@Cesarini2021]
 #| out-width: "100%"
 
 knitr::include_graphics("img/ag-ml.png")
@@ -195,7 +198,7 @@ knitr::include_graphics("img/ml-salmon.png")
 
 ::: fragment
 
-::: {.absolute left="30%" top="8%" style="font-size:.75em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .90); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
+::: {.absolute left="25%" top="8%" style="font-size:.75em; padding: 0.5em 1em; background-color: rgba(255, 255, 255, .90); backdrop-filter: blur(5px); box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .75); border-radius: 20px;"}
 
 [California Market Squid Case Study]{.slide-title}
 
@@ -245,18 +248,18 @@ knitr::include_graphics("img/ml-salmon.png")
 
 <hr>
 
-[**Result 1:** Single index models do not sufficiently predict loss. Machine learning models drasticially reduce basis risk and improve fisher livelihoods]{.body-text-m}
+[**Result 1:** Single index models do not sufficiently predict loss. Machine learning models drastically reduce basis risk and improve fisher livelihoods]{.body-text-m}
 
 
 <br>
 
 
-[**Result 2:** A private market could operate as fishers would be willing to pay rates that allow insurnace companies to remain profitable. ]{.body-text-m}
+[**Result 2:** A private market could operate as fishers would be willing to pay rates that allow insurance companies to remain profitable. ]{.body-text-m}
 
        
 <br>
 
-[**Result 3:** Upwelling, prey abundance, and temperature are the primary contributors to multivariate machine learing models]{.body-text-m}
+[**Result 3:** Upwelling, prey abundance, and temperature are the primary contributors to multivariate machine learning models]{.body-text-m}
 
 
 
@@ -477,7 +480,7 @@ $m$ premium loading factor (how much does an insurer charge to make a profit)
 **Example**
 :::
 
-*We observe a SST of 15$^{\circ}$C. Our model predicts a catch of 80 metric tons, the long run average catch is 100 metric tons. Insurance will pay the equivalent of 20 metric tons. Fishers have to pay a small premium  equivlalent to 5 metric tons each year*
+*We observe a SST of 15$^{\circ}$C. Our model predicts a catch of 80 metric tons, the long run average catch is 100 metric tons. Insurance will pay the equivalent of 20 metric tons. Fishers have to pay a small premium  equivalent to 5 metric tons each year*
 :::
 
 ## {#br data-menu-title="Basis Risk"}
@@ -797,13 +800,17 @@ knitr::include_graphics("img/ins-pay-demo.png")
 
 <hr>
 
-- Assess model performance in true out-of-sample setting
+- Assess model performance in out-of-sample setting
 
   - Calculate $u_{rr}$ for each year in test set
+  
+  <br>
   
 - Mimics how insurance would be offered in practice
 
   - Update model each year with new data
+  
+  <br>
 
 - Tune hyperparameters on the average RMSE in the test set
 
@@ -836,6 +843,9 @@ $$
 \hat{\beta}^{lasso}=\arg\min_{\beta}\left\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}w_{ij}\beta_j)^2+\lambda\sum_{j=1}^{p}|\beta_j|\right\}
 $$ {#eq-lasso}
 
+
+:::{.center}
+
 ```{r}
 #| tbl-align: center
 
@@ -852,6 +862,7 @@ round(b,2)|> broom::tidy() |> knitr::kable(col.names=c("Variables","Coefficient 
   scroll_box(width="900px",height="400px") |> 
   column_spec(2, bold=ifelse(b==0,TRUE,FALSE),background=ifelse(b==0,"lightblue","white"))
 ```
+:::
 
 ## {#rf data-menu-title="Random Forests"}
 
@@ -867,15 +878,15 @@ round(b,2)|> broom::tidy() |> knitr::kable(col.names=c("Variables","Coefficient 
 - Captures non-linear interactions
 
 
-- Very black box
+1: Expert Choice of variables
 
 :::
 
 :::{.column}
 
-- Expert Choice of variables
+- Very "black box"
 
-- Regularized random forest: similar to lasso but for RF
+2:  Regularized random forest - similar to lasso but for RF
 
 :::
 
@@ -895,62 +906,123 @@ round(b,2)|> broom::tidy() |> knitr::kable(col.names=c("Variables","Coefficient 
 
 <hr>
 
-::::{.columns}
+::::::{.columns}
 
-:::{.column}
-
+::::: {.column width="50%"}
 :::{.center-text}
 **Linear Models**
 :::
 
-- Easy to interpret
+::::{layout="[[1,1],[1]]"}
 
-- Single variable correlations may not be sufficient
+:::{#pros}
+
+**Pros:**
+
+- Easy Interpretation
+
 :::
 
-:::{.column}
+:::{#cons}
+
+**Cons:**
+
+- Correlations not sufficient
+:::
+
+::::
+
+:::::
+
+:::::{.column width="50%"}
 
 :::{.center-text}
 **LASSO**
 :::
 
-- Easy to interpret
+::::{layout="[[1,1],[1]]"}
 
-- Selects important variables
+:::{#pros}
 
+**Pros:**
+
+- Selects Important Variables
+
+:::
+
+:::{#cons}
+
+**Cons:**
+
+- Linear Restriction
 :::
 
 ::::
 
-::::{.columns}
+:::::
 
-:::{.column}
+::::::
 
+::::::{.columns}
+
+::::: {.column width="50%"}
 :::{.center-text}
 **Random Forest**
 :::
 
-- Black Box
+::::{layout="[[1,1],[1]]"}
+
+:::{#pros}
+
+**Pros:**
 
 - Captures non-linear relationships
 
-
 :::
 
-:::{.column}
+:::{#cons}
+
+**Cons:**
+
+- Black Box
+:::
+
+::::
+
+:::::
+
+:::::{.column width="50%"}
 
 :::{.center-text}
 **SVM**
 :::
 
-- Black Box
+::::{layout="[[1,1],[1]]"}
+
+:::{#pros}
+
+**Pros:**
 
 - Captures non-linear relationships
 
+- Capable of handling small n, high p problem
+
 :::
 
+:::{#cons}
+
+**Cons:**
+
+- Black Box
+:::
 
 ::::
+
+:::::
+
+::::::
+
+
 
 
 ## {#results data-menu-title="Results" background-color="#047C90"}
@@ -968,7 +1040,7 @@ round(b,2)|> broom::tidy() |> knitr::kable(col.names=c("Variables","Coefficient 
 ```{r}
 #| label: fig-rmse
 #| fig-align: center
-#| fig-cap: 'Panel A: Root Mean Square Error (RMSE) in the test set for each model type. Panel B: RMSE in the test set.'
+#| fig-cap: 'Root Mean Square Error (RMSE) in the training set for each model type (Panel B). RMSE in the test set (Panel B).'
 
 
 knitr::include_graphics("img/rmse.png")
@@ -983,10 +1055,9 @@ knitr::include_graphics("img/rmse.png")
 
 ```{r}
 #| fig-align: center
-#| fig-cap: 'Panel A: Percent increase in utility for fishers using insurance contracts compared'
+#| fig-cap: 'Percent increase in utility for fishers using insurance (Panel A) contracts compared to no insurance at actuarilly fair premiums (m=1). Loss ratio for insurance companies (Panel B).'
 #| label: fig-ut
 
-#| to no insurance. Panel B: Loss ratio for insurance companies offering contracts.
 
 knitr::include_graphics("img/act_fair.png")
 
@@ -994,13 +1065,13 @@ knitr::include_graphics("img/act_fair.png")
 
 ## {#market-res data-menu-title="Market Results"}
 
-[Insurance is feasible with ML Contracts]{.slide-title}
+[Insurance is feasible if account for non-linear interactions]{.slide-title}
 
 <hr>
 
 ```{r}
 #| fig-align: center
-#| fig-cap: 'Panel A: Market premium that would make fishers indifferent between insurance and no insurance. Panel B: Loss ratio for insurance companies offering contracts at the market premium.'
+#| fig-cap: 'Market premium that would make fishers indifferent between insurance and no insurance (Panel A). Loss ratio for insurance companies offering contracts at the market premium (Panel B).'
 #| label: fig-market
 
 knitr::include_graphics("img/market_prem.png")
@@ -1030,7 +1101,7 @@ knitr::include_graphics("img/pay_out.png")
 
 ```{r}
 #| fig-align: center
-#| fig-cap:
+#| fig-cap: 'Insurance premiums in the test set for multivariate models (left panel) and single index contracts (right panel) with positive increases in utility'
 #| label: fig-prem
 
 knitr::include_graphics("img/prem_out.png")
@@ -1059,13 +1130,11 @@ knitr::include_graphics("img/ins_pay.png")
 
 - Single index models perform poorly
 
-  - 
-
 - Multivariate models appear to be the only viable option for fisheries index insurance
 
   - The ML models had insurance profitability and utility gains in line with the only other ML study in ag [@Chen2024]
 
-- Still not immune to shocks outside environmental causes (COVID-19)
+- Vulnerable to non-environmental shocks (COVID-19)
 
 - Would fishers feel comfortable buying black box models?
 
@@ -1099,6 +1168,8 @@ knitr::include_graphics("img/vip_models.png")
 <hr>
 
 - We must account for the non-linear interactions between catch and weather due to the Ecosystem nature of fisheries
+
+<br>
 
 - Machine Learning models can capture these complex relationships and reduce basis risk
 
@@ -1149,7 +1220,7 @@ knitr::include_graphics("img/vip_models.png")
 :::{.column width="33%"}
 
 :::{.center-text}
-**Dungeness Crab 2016**
+**Dungeness Crab**
 :::
 
 ![](img/d-crab.jpg)
@@ -1202,7 +1273,7 @@ knitr::include_graphics("img/vip_models.png")
 :::{.column width="33%"}
 
 :::{.center-text}
-**Dungeness Crab 2016**
+**Dungeness Crab**
 :::
 
 ![](img/d-crab.jpg)
@@ -1216,9 +1287,15 @@ knitr::include_graphics("img/vip_models.png")
 
 ## {#value data-menu-title="ML added Value"}
 
-[ML could enhance ]{.slide-title}
+[ML could enhance fisheries management ]{.slide-title}
 
 <hr>
+
+- Machine learning could assist management in identifying important weather variables
+
+- Anticipate changes in biomass more readily
+
+- Incentive for managers and insurers to collaborate together 
 
 ## {background-image="https://scx1.b-cdn.net/csz/news/800a/2017/ocean.jpg"}
 
@@ -1282,7 +1359,7 @@ knitr::include_graphics("img/vip_models.png")
 
 ::::
 
-## {#vars data-menu-title="Calculation of Weather Variables"}
+## {#vars .scrollable data-menu-title="Calculation of Weather Variables"}
 
 [How each variable is calculated]{.slide-title}
 
@@ -1294,15 +1371,15 @@ knitr::include_graphics("img/vip_models.png")
 
 **Sea Surface Temperature:** Yearly Average from NOAA Marine heat wave (MHW) readings ats 5x5 km resolution aggregated and weighted by fishing block
 
-**Habitat Compression Index:** Cummulative scores of monthly area of cold water below average temperature thresholds along the US West Coast. 
+**Habitat Compression Index:** Cumulative scores of monthly area of cold water below average temperature thresholds along the US West Coast. 
 
 **BEUTI:** Monthly average of BEUTI Index in the spring months of March, April, and May from @Jacox2018
 
 **CUTI:** Monthly average of CUTI Index in the spring months of March, April, and May from @Jacox2018
 
-**Spring Transition Index:** First day of the year when cummulative sum of BEUTI reaches minimum value [@Suca2022]
+**Spring Transition Index:** First day of the year when cumulative sum of BEUTI reaches minimum value [@Suca2022]
 
-**Relaxtion:** Count of the number of days when CUTI exceeds 1.0 $m^2s^{-1}$ followed by three or more consecutive days of CUTI <0.5 $m^2s^{-1}$.
+**Relaxation:** Count of the number of days when CUTI exceeds 1.0 $m^2s^{-1}$ followed by three or more consecutive days of CUTI <0.5 $m^2s^{-1}$.
 
 **Frequency:** Proportion of days when CUTI is between 0.5 and 2.0 $m^2s^{-1}$
 
@@ -1312,9 +1389,9 @@ knitr::include_graphics("img/vip_models.png")
 
 **ONI** The 3 month rolling average of ERSST v5 SST in the Nino 3.4 Region. Use January, February, and March measure.
 
-**Krill Abundance:** Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecoystem Assessment Survey
+**Krill Abundance:** Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecosystem Assessment Survey
 
-**Paralarvae Abundance:** Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecoystem Assessment Survey
+**Paralarvae Abundance:** Log catch per unit effort using a delta-generalized linear model from Rockfish Recruitment and Ecosystem Assessment Survey
 
 
 

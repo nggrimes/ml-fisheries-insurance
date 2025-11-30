@@ -1,6 +1,6 @@
 ---
 title: Finding suitable weather indices for novel fisheries index insurance
-subtitle: Working Paper not for Distribution
+subtitle: Manuscript Draft for Fish and Fisheries Submission
 author: 
   - name: Nathaniel Grimes
     email: nggrimes@ucsb.edu
@@ -14,7 +14,7 @@ author:
     attributes:
       corresponding: true
 abstract: |
- Index insurance is a financial tool gaining traction for application in fisheries. However, identifying weather indicies to serve as triggers remains a significant barrier to widespread implementation. Weak correlations between weather variables and catch will lead to substaintial basis risk. This paper is the first to empirically evaluate the feasibility of index insurance for fisheries. I use the Market Squid Fishery in California as a case study to test insurance contracts built on five different prediction models with twelve weather variables.  Only three weather variables in single index contracts improved fisher welfare at an actuarially fair premium. Only the index with krill abundance was profitable for insurance companies.  All four multivariatve models improved utility from a range of 5%-35% at actuarially fair premiums. When charging a competitive market premium, the random forest, regularized random forest, and support vector machine were profitable for insurance. Index insurance is feasible in a private market, and provides fishers with protection against environmental variability.
+ Index insurance is a financial tool gaining traction for application in fisheries. However, identifying weather indicies to serve as triggers remains a significant barrier to widespread implementation. Weak correlations between weather variables and catch will lead to substaintial basis risk. This paper is the first to empirically evaluate the feasibility of index insurance for fisheries. I use the Market Squid Fishery in California as a case study to test insurance contracts built on five different prediction models with twelve weather variables.  Only three weather variables in single index contracts improved fisher welfare at an actuarially fair premium. Only the index with krill abundance was profitable for insurance companies.  All four multivariatve models improved utility from a range of 5%-35% at actuarially fair premiums. When charging a competitive market premium, contracts built with random forest, regularized random forest, and support vector machine algorithms were profitable for insurance. Thus, index insurance is feasible in a private market, and provides fishers with protection against environmental variability. However, bolstering fisher trust in products built from complex machine learning algorithms remains a significant step. 
 keywords:
    - Index Insurance
    - Fisheries
@@ -22,7 +22,6 @@ keywords:
 date: last-modified
 bibliography: library.bib
 csl: fish-and-fisheries.csl
-toc: true
 number-sections: true
 format:
     pdf:
@@ -30,6 +29,7 @@ format:
       include-in-header:
         text: |
          \addtokomafont{disposition}{\rmfamily}
+         \usepackage{float}
     
 execute:
   echo: false
@@ -57,18 +57,18 @@ The primary market barrier is empirically constructing contracts that sufficient
 
 Identifying triggers and indices that are highly correlated to loss is the best way to eliminate basis risk [@Jensen2019]. Agricultural index insurance has refined techniques to build and price contracts over the last 20 years [@Jensen2016]. The most common design strategy is to match individual farms to the nearest meteorological stations, then use linear regression to model yield-weather distributions [@Benso2023;@Miranda2012;@Conradt2015;@Spicka2013;@Dalhaus2018]. Premiums are then calculated based on the payout distribution of prior years for a given contract. 
 
-However, fisheries possess more difficult data and empirical challenges than agriculture. Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fish populations [@Lehodey2006], but even the most advance fishery stock assessment models use little to no environmental data for projections [@Privitera2020]. Spatial distributions of fisheries can cover large areas making it unclear where and how much specific weather variables impact biological abundance. Additionally, if weather to catch connections can be established, they are often nonlinear and interact with other variables. The biological dynamics of fish reproduction can lead to lower stock health persisting for years after a negative shock [@Hilborn2003].
+However, fisheries possess more difficult data and empirical challenges than agriculture. Predicting fishery output from weather variables is notoriously difficult. It is widely established that climate and weather affect fish populations [@Lehodey2006], but even the most advanced fishery stock assessment models use little to no environmental data for projections [@Privitera2020]. Spatial distributions of fisheries can cover large areas making it unclear where and how much specific weather variables impact biological abundance. Additionally, if weather to catch connections can be established, they are often nonlinear and interact with other variables. The biological dynamics of fish reproduction can lead to lower stock health persisting for years after a negative shock [@Hilborn2003].
 
-Management is also unique challenge to navigate empirically that is absent from agriculture insurance. Good fisheries management provides the necessary data to model weather to catch dependency, but can also sever the connection. For example, many fisheries in the United States transitioned from open access to individual transferable quota systems in the early 2000s [@Costello2008].  Distortions in catch would be attributable to shifts in management regimes rather than weather. In ensuing years after the implementation of quota systems, catch would then become contingent on management choices instead of weather. 
+Fishery management is also unique challenge to navigate empirically that is absent from agriculture insurance. Good fisheries management provides the necessary data to model weather to catch dependency, but can also sever the connection. For example, many fisheries in the United States transitioned from open access to individual transferable quota systems in the early 2000s [@Costello2008].  Distortions in catch would be attributable to shifts in management regimes rather than weather. In ensuing years after the implementation of quota systems, catch would then become contingent on management choices instead of weather. 
 
 Despite these challenges, innovations in fishery and oceanographic data collection, and increased exposure of fishers to environmental variability,  suggest a new opportunity has arisen to reconsider the use of index insurance in fisheries. New methods including machine learning algorithms could better capture the complex, nonlinear relationships between weather and fishery productivity. 
 
 
 This paper is the first to empirically evaluate the feasibility of index insurance for fisheries using established univariate, linear methods and novel machine learning techniques. I use the Market Squid Fishery in California as a case study to test insurance contracts built on five different prediction models with twelve weather variables. I evaluate whether the contracts improve fisher welfare by determining their marginal willingness to pay. Through the marginal willingness to pay, I assess whether insurance companies could feasibly offer contracts within a private market to remain solvent. 
 
-Only one index, krill abundance, in univariate linear models improved fisher welfare at the market premium. All four multivariate models improved utility from a range of 5%-35% improvement at actuarially fair rates. When charging a competitive market premium, the random forest, regularized random forest, and support vector machine contracts were profitable for insurance companies. The leading variable of influence in the nonlinear models included upwelling measures, regional El Nino metrics, and krill abundance. Communicating to fishers the relative influence of each variable is crucial to build trust and transparency when using complex models. Overall, there is potential for index insurance to be feasible in a private market, and provide fishers with protection against environmental variability.
+Only one index, krill abundance, in univariate linear models improved fisher welfare at the market premium. All four multivariate models improved utility from a range of 5%-35% improvement at actuarially fair rates. When charging a competitive market premium, the contracts built with random forest, regularized random forest, and support vector machine algorithms were profitable for insurance companies. The leading variable of influence in the nonlinear models included upwelling measures, regional El Nino metrics, and krill abundance. Communicating to fishers the relative influence of each variable is crucial to build trust and transparency when using complex models. Overall, there is potential for index insurance to be feasible in a private market, and provide fishers with protection against environmental variability.
 
-These results contribute to three literatures.  Fisheries risk management includes formal and informal means of mitigating risk. However, developing formal financial tools to manage fisheries risk as been limited. Prior studies have explored the theoretical application of insurance in fisheries [@Mumford2009;@Sethi2010;@Watson2023;@Herrmann2004;@Hobday2025], but few have empirically tested the feasibility of such programs. @Hobday2025 provides a compelling case for index insurance in fisheries as well as a comprehensive review of the potential barriers. My study provides an evaluation of a new formal risk mitigation tools that could be used by fishers to manage environmental risk.
+These results contribute to three literatures.  Fisheries risk management includes formal and informal means of mitigating risk. However, developing formal financial tools to manage fisheries risk has been limited. Prior studies have explored the theoretical application of insurance in fisheries [@Mumford2009;@Sethi2010;@Watson2023;@Herrmann2004;@Hobday2025], but few have empirically tested the feasibility of such programs. @Hobday2025 provides a compelling case for index insurance in fisheries as well as a comprehensive review of the potential barriers. My study provides an evaluation of a new formal risk mitigation tools that could be used by fishers to manage environmental risk.
 
 Within the index insurance literature, there has been a growing application of machine learning to improve index design [@Cesarini2021;@Feng2019]. Payout schedules limited to linear payouts introduce unnecessary basis risk that can be mitigated with neural networks directly predicting the triggers [@Chen2024]. Machine learning models can also improve estimation of crops yields [@vanklompenburg2020]. Improved estimation of crop yields leads to better insurance performance [@Schmidt2022]. My study further demonstrates the value of machine learning for index design, but reinforces the challenge of communicating complex models to policyholders and additional considerations that influence pricing. 
 
@@ -203,12 +203,12 @@ I tune three parameters to optimize the random forest model. The number of varia
 
 Regularized random forest requires one additional tuning parameter along with the three used in standard random forests. The regularization parameter, $\gamma_{rrf}$, controls the threshold a variable will be added contingent on the permutation score. It is normalized from 0-1 with 1 acting as the most aggressive regularization. Models are built with `grrf` package in R.
 
-### Support Vector Machine
+### Support Vector Macine
 
-Support Vector Machine (SVM) constructs a decision boundary by maximizing the margin between support vectors, the observations closest to the separating hyperplane. I use a radial basis function kernel to map the predictors into a higher-dimensional feature space, enabling the algorithm to capture nonlinear patterns without explicitly defining transformations of the input variables. Support Vector Machines work well in time series data with low observations and high dimensionality [@Sapankevych2009].
+Support Vector Machine (SVM) constructs vectors that define an error insenstive margin when used for regression. The algorithm then minimizes a loss function on the slack points outside the support vectors.  I use a radial basis function kernel to map the predictors into a higher-dimensional feature space, enabling the algorithm to capture nonlinear patterns without explicitly defining transformations of the input variables. Support Vector Machines work well in time series data with low observations and high dimensionality [@Sapankevych2009].
 
 Model complexity is controlled by the regularization parameter,
-C, which balances margin maximization against prediction error. A smaller C allows for a wider margin, potentially misclassifying some training points but enhancing generalization. A larger C aims to classify all training points correctly, which may lead to overfitting. The kernel coefficient, $\gamma_{svm}$, defines the influence of individual training examples. A small $\gamma_{svm}$ implies a broader influence, leading to smoother decision boundaries, while a large $\gamma_{svm}$ focuses on nearby points, capturing more intricate patterns but risking overfitting. I use a grid search method to tune C and $\gamma_{svm}$ to minimize RMSE in the test set. Models are built using the `kernlab` package in R.
+C, which controls the width of the support vectors. A smaller C allows for a wider margin, placing more data points within the support vectors and enhances generalization. A larger C aims to minimize the error all training points correctly, which may lead to overfitting. The kernel coefficient, $\gamma_{svm}$, defines the influence of individual training examples. A small $\gamma_{svm}$ implies a broader influence, leading to less sensitivity to outliers, while a large $\gamma_{svm}$ focuses on nearby points, capturing more intricate patterns but risking overfitting. I use a grid search method to tune C and $\gamma_{svm}$ to minimize RMSE in the test set. Models are built using the `kernlab` package in R.
 
 ### Weather variables of importance
 
@@ -232,6 +232,7 @@ Fishery catch data is publicly available from the California Department of Fish 
 ```{r}
 #| label: fig-cw
 #| fig-cap: "Demonstration of spatially matching catch data with weather variables. Panel A shows sea surface temperature at a 5km resolution. Panel B is the proportion of historical market squid catch by fishing block. Panel C is the intersection of fishing grids and weather variables. Sea surface temperature values are then averaged within each block, and the weighted sum by percent of historical catch is aggregated for each year."
+#| fig-align: left
 
 knitr::include_graphics(here::here("data","fig","cw_catch.png"))
 ```
@@ -469,7 +470,7 @@ df<-port_cw$cw_data[[1]] %>%
 library(knitr)
 library(kableExtra)
 
-custom_order<-c("Sea Surface Temperature","Cummulcative Habitat Compression Index","Spring BEUTI","Spring CUTI","Frequency","Relaxation","Spring Transition Index",
+custom_order<-c("Sea Surface Temperature","Cummulative Habitat Compression Index","Spring BEUTI","Spring CUTI","Frequency","Relaxation","Spring Transition Index",
                 "Pacific Decadal Oscillation","Oceanic Nino Index","El Nino Southern Oscillation Index",
                 "Squid Paralarvae","Krill Abundance")
 
@@ -487,11 +488,155 @@ data.frame(name=custom_order,resolution=resolution,spatial=spatial,source=source
         digits=2,
         booktabs=TRUE,
         col.names = c("", "Variable Name","Temporal Resolution","Spatial Resolution","Source")) |> 
-collapse_rows(columns = 1) |> 
-    kable_classic_2(full_width = F)
+  collapse_rows(columns = 1) |>
+  kable_classic_2() |>
+  kableExtra::row_spec(0, bold = TRUE) |> 
+  kableExtra::kable_styling(latex_options = "scale_down",
+                            font_size = 8)
 ```
 
 :::
 
 
+```{r}
+#| label: tbl-c80
+#| tbl-cap: "Model performance and utility results when coverage level of contract is set to 80% of average catch. Instances where no payouts are issued in the test set are indicated by \"No payouts\". Loss ratios of market premiums that would need to be subsized are indicated by \"-\"."
+
+load(here::here("data","output","squid_cara10-5_c80.rda"))
+
+# make a table to summarize results
+tbl<-models |>
+  select(pred_mod, u_rr, lr, rmse, m_eq, lr_m) |> 
+  mutate(across(u_rr, ~ round(.x * 100, 1)),
+         across(c(lr, lr_m), ~ round(.x, 3)),
+         across(c(rmse, m_eq), ~ round(.x, 1))) |> 
+mutate(
+  lr_m = case_when(
+    lr == 0        ~ "No payouts",   # must come first!
+    m_eq < 1       ~ "-",
+    TRUE           ~ as.character(lr_m)
+  )
+)|> 
+mutate(
+  m_eq = case_when(
+    lr == 0 ~ "No payouts",
+    TRUE    ~ as.character(m_eq)
+  )
+)
+
+tbl$pred_mod<-c("SST","Spring BEUTI","STI","Frequency","Relaxation","Spring CUTI","CHCI","ENSO","PDO","ONI","Krill","Squid",
+              "Random Forest","Regularized RF",
+              "Support Vector Machine",
+              "LASSO")
+
+#colnames(tbl)<-c("Model","% Increase in Utility","Loss Ratio","RMSE (mt per fisher)","Market Premium ($m^*$)","Loss Ratio at ($m^*$)")
+
+
+tbl|>
+  kable(format='latex',
+        digits=2,
+        booktabs=TRUE,
+        escape=FALSE,
+        col.names = c("Model", "\\% Utility","Loss Ratio","Train RMSE (mt per fisher)","$m^*$","Loss Ratio at $m^*$")) |>
+  kable_classic_2(full_width = F) |> 
+  kableExtra::kable_styling(latex_options = "scale_down")
+
+
+  
+```
+
+```{r}
+#| label: tbl-c90
+#| tbl-cap: "Model performance and utility results when coverage level of contract is set to 90% of average catch. Instances where no payouts are issued in the test set are indicated by \"No payouts\". Loss ratios of market premiums that would need to be subsized are indicated by \"-\"."
+
+load(here::here("data","output","squid_cara10-5_c90.rda"))
+
+# make a table to summarize results
+tbl<-models |>
+  select(pred_mod, u_rr, lr, rmse, m_eq, lr_m) |> 
+  mutate(across(u_rr, ~ round(.x * 100, 1)),
+         across(c(lr, lr_m), ~ round(.x, 3)),
+         across(c(rmse, m_eq), ~ round(.x, 1))) |> 
+mutate(
+  lr_m = case_when(
+    lr == 0        ~ "No payouts",   # must come first!
+    m_eq < 1       ~ "-",
+    TRUE           ~ as.character(lr_m)
+  )
+)|> 
+mutate(
+  m_eq = case_when(
+    lr == 0 ~ "No payouts",
+    TRUE    ~ as.character(m_eq)
+  )
+)
+
+tbl$pred_mod<-c("SST","Spring BEUTI","STI","Frequency","Relaxation","Spring CUTI","CHCI","ENSO","PDO","ONI","Krill","Squid",
+              "Random Forest","Regularized RF",
+              "Support Vector Machine",
+              "LASSO")
+
+#colnames(tbl)<-c("Model","% Increase in Utility","Loss Ratio","RMSE (mt per fisher)","Market Premium ($m^*$)","Loss Ratio at ($m^*$)")
+
+
+tbl|>
+  kable(format='latex',
+        digits=2,
+        booktabs=TRUE,
+        escape=FALSE,
+        col.names = c("Model", "\\% Utility","Loss Ratio","Train RMSE (mt per fisher)","$m^*$","Loss Ratio at $m^*$")) |>
+  kable_classic_2(full_width = F) |> 
+  kableExtra::kable_styling(latex_options = "scale_down")
+
+
+  
+```
+
+
+```{r}
+#| label: tbl-log
+#| tbl-cap: "Model performance and utility results with log utility. Instances where no payouts are issued in the test set are indicated by \"No payouts\". Loss ratios of market premiums that would need to be subsized are indicated by \"-\"."
+
+load(here::here("data","output","squid_log10-6.rda"))
+
+# make a table to summarize results
+tbl<-models |>
+  select(pred_mod, u_rr, lr, rmse, m_eq, lr_m) |> 
+  mutate(across(u_rr, ~ round(.x * 100, 1)),
+         across(c(lr, lr_m), ~ round(.x, 3)),
+         across(c(rmse, m_eq), ~ round(.x, 1))) |> 
+mutate(
+  lr_m = case_when(
+    lr == 0        ~ "No payouts",   # must come first!
+    m_eq < 1       ~ "-",
+    TRUE           ~ as.character(lr_m)
+  )
+)|> 
+mutate(
+  m_eq = case_when(
+    lr == 0 ~ "No payouts",
+    TRUE    ~ as.character(m_eq)
+  )
+)
+
+tbl$pred_mod<-c("SST","Spring BEUTI","STI","Frequency","Relaxation","Spring CUTI","CHCI","ENSO","PDO","ONI","Krill","Squid",
+              "Random Forest","Regularized RF",
+              "Support Vector Machine",
+              "LASSO")
+
+#colnames(tbl)<-c("Model","% Increase in Utility","Loss Ratio","RMSE (mt per fisher)","Market Premium ($m^*$)","Loss Ratio at ($m^*$)")
+
+
+tbl|>
+  kable(format='latex',
+        digits=2,
+        booktabs=TRUE,
+        escape=FALSE,
+        col.names = c("Model", "\\% Utility","Loss Ratio","Train RMSE (mt per fisher)","$m^*$","Loss Ratio at $m^*$")) |>
+  kable_classic_2(full_width = F) |> 
+  kableExtra::kable_styling(latex_options = "scale_down")
+
+
+  
+```
 ## References
